@@ -16,6 +16,6 @@ export const COMMON_DELAY = 200;
 
 /**
  * Transition duration when opening or closing
- * a tiles container.
+ * a live tiles container.
  */
 export const TILES_OPEN_DELAY = 200;

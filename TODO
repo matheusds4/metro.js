@@ -28,6 +28,26 @@
 
 - [ ] Done
 
+# TextInput
+
+- [ ] Done
+
+# FormGroup
+
+- [ ] Done
+- [ ] Think in a nice way of arranging warning/error labels under form groups.
+
+# ProgressBar
+
+- [ ] Done
+- [ ] Ellipsis
+- [ ] Solid
+
+# ProgressRing
+
+- [x] Done
+- [ ] Use primary color when preferred
+
 # Item
 
 Way contextual; skinning and behavior relies on surrounding container (e.g. `PopoverMenu`).
