@@ -21,6 +21,7 @@
 # Label
 
 - [ ] Done
+- [ ] Error boolean (for the `Theme`'s danger color)
 - [ ] Warning boolean (for the `Theme`'s warning color)
 
 # Button
