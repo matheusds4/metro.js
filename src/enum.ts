@@ -1,4 +1,13 @@
 /**
+ * Easing function enumeration.
+ */
+export type EasingFunction =
+  | "ease"
+  | "ease-in"
+  | "ease-out"
+  | "ease-in-out";
+
+/**
  * Alignment in a container such as `HGroup` and `VGroup`.
  */
 export type Alignment =
