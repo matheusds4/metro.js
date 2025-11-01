@@ -72,7 +72,7 @@ import { REMObserver } from "../utils/REMObserver";
  */
 export type IconParams = {
   /**
-   * Icon ID. For a library integrated icon, use an `IntegratedIcons` constant.
+   * Icon ID. For a library native icon, use a `NativeIcons` constant.
    */
   type?: string;
   size?: number;
@@ -107,9 +107,9 @@ export const IconRegistry = {
 };
 
 /**
- * Metro library's integrated icon constants.
+ * Metro library's native icon constants.
  */
-export const IntegratedIcons = {
+export const NativeIcons = {
   BULLET: "bullet",
   CHECKED: "checked",
   ARROW: "arrow",
@@ -145,34 +145,34 @@ const iconMap = new Map<string, { black: any; white: any }>();
 
 // Initial registers
 IconRegistry.registerMap(new Map([
-  [IntegratedIcons.BULLET, { black: bullet_black, white: bullet_white }],
-  [IntegratedIcons.CHECKED, { black: checked_black, white: checked_white }],
-  [IntegratedIcons.ARROW, { black: arrow_black, white: arrow_white }],
-  [IntegratedIcons.FULLARROW, { black: fullarrow_black, white: fullarrow_white }],
-  [IntegratedIcons.SEARCH, { black: search_black, white: search_white }],
-  [IntegratedIcons.CLEAR, { black: clear_black, white: clear_white }],
-  [IntegratedIcons.GAMES, { black: games_black, white: games_white }],
-  [IntegratedIcons.INTERNET_EXPLORER, { black: ie_black, white: ie_white }],
-  [IntegratedIcons.VIDEO, { black: video_black, white: video_white }],
-  [IntegratedIcons.STORE, { black: store_black, white: store_white }],
-  [IntegratedIcons.SETTINGS, { black: settings_black, white: settings_white }],
-  [IntegratedIcons.MAIL, { black: mail_black, white: mail_white }],
-  [IntegratedIcons.USER, { black: user_black, white: user_white }],
-  [IntegratedIcons.SECURITY, { black: security_black, white: security_white }],
-  [IntegratedIcons.CALCULATOR, { black: calc_black, white: calc_white }],
-  [IntegratedIcons.CAMERA, { black: camera_black, white: camera_white }],
-  [IntegratedIcons.BLUETOOTH, { black: bluetooth_black, white: bluetooth_white }],
-  [IntegratedIcons.NEWS, { black: news_black, white: news_white }],
-  [IntegratedIcons.BING, { black: bing_black, white: bing_white }],
-  [IntegratedIcons.OPERA, { black: opera_black, white: opera_white }],
-  [IntegratedIcons.CHROME, { black: chrome_black, white: chrome_white }],
-  [IntegratedIcons.FIREFOX, { black: firefox_black, white: firefox_white }],
-  [IntegratedIcons.MSEDGE, { black: msedge_black, white: msedge_white }],
-  [IntegratedIcons.LAPIS, { black: lapis_black, white: lapis_white }],
-  [IntegratedIcons.IDEA, { black: idea_black, white: idea_white }],
-  [IntegratedIcons.HELP, { black: help_black, white: help_white }],
-  [IntegratedIcons.HELP_CIRCLE, { black: help_circle_black, white: help_circle_white }],
-  [IntegratedIcons.NEW, { black: new_black, white: new_white }],
+  [NativeIcons.BULLET, { black: bullet_black, white: bullet_white }],
+  [NativeIcons.CHECKED, { black: checked_black, white: checked_white }],
+  [NativeIcons.ARROW, { black: arrow_black, white: arrow_white }],
+  [NativeIcons.FULLARROW, { black: fullarrow_black, white: fullarrow_white }],
+  [NativeIcons.SEARCH, { black: search_black, white: search_white }],
+  [NativeIcons.CLEAR, { black: clear_black, white: clear_white }],
+  [NativeIcons.GAMES, { black: games_black, white: games_white }],
+  [NativeIcons.INTERNET_EXPLORER, { black: ie_black, white: ie_white }],
+  [NativeIcons.VIDEO, { black: video_black, white: video_white }],
+  [NativeIcons.STORE, { black: store_black, white: store_white }],
+  [NativeIcons.SETTINGS, { black: settings_black, white: settings_white }],
+  [NativeIcons.MAIL, { black: mail_black, white: mail_white }],
+  [NativeIcons.USER, { black: user_black, white: user_white }],
+  [NativeIcons.SECURITY, { black: security_black, white: security_white }],
+  [NativeIcons.CALCULATOR, { black: calc_black, white: calc_white }],
+  [NativeIcons.CAMERA, { black: camera_black, white: camera_white }],
+  [NativeIcons.BLUETOOTH, { black: bluetooth_black, white: bluetooth_white }],
+  [NativeIcons.NEWS, { black: news_black, white: news_white }],
+  [NativeIcons.BING, { black: bing_black, white: bing_white }],
+  [NativeIcons.OPERA, { black: opera_black, white: opera_white }],
+  [NativeIcons.CHROME, { black: chrome_black, white: chrome_white }],
+  [NativeIcons.FIREFOX, { black: firefox_black, white: firefox_white }],
+  [NativeIcons.MSEDGE, { black: msedge_black, white: msedge_white }],
+  [NativeIcons.LAPIS, { black: lapis_black, white: lapis_white }],
+  [NativeIcons.IDEA, { black: idea_black, white: idea_white }],
+  [NativeIcons.HELP, { black: help_black, white: help_white }],
+  [NativeIcons.HELP_CIRCLE, { black: help_circle_black, white: help_circle_white }],
+  [NativeIcons.NEW, { black: new_black, white: new_white }],
 ]));
 
 const Img = styled.img<{

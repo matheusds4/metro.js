@@ -20,6 +20,11 @@
       "types": "./dist/components/index.d.ts",
       "default": "./dist/components/index.js"
     },
+    "./components/Group": {
+      "typedoc": "./src/components/Group.tsx",
+      "types": "./dist/components/Group.d.ts",
+      "default": "./dist/components/Group.js"
+    },
     "./components/Icon": {
       "typedoc": "./src/components/Icon.tsx",
       "types": "./dist/components/Icon.d.ts",
@@ -36,9 +41,9 @@
       "default": "./dist/components/Root.js"
     },
     "./enum": {
-      "typedoc": "./src/enum.ts",
-      "types": "./dist/enum.d.ts",
-      "default": "./dist/enum.js"
+      "typedoc": "./src/enum/index.ts",
+      "types": "./dist/enum/index.d.ts",
+      "default": "./dist/enum/index.js"
     },
     "./fonts": {
       "typedoc": "./src/fonts/index.ts",
