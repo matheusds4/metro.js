@@ -7,3 +7,4 @@ export * from "./VGroup";
 export * from "./Label";
 export * from "./Button";
 export * from "./TextInput";
+export * from "./FormGroup";

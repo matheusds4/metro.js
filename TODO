@@ -51,8 +51,7 @@ Baseline group.
 
 # FormGroup
 
-- [ ] Done
-- [ ] Think in a nice way of arranging warning/error labels under form groups.
+- [x] Done
 
 # ProgressBar
 
@@ -133,7 +132,6 @@ Used for triggering a `PopoverMenu` from the direct button child.
 
 - [ ] Trash
 - [ ] Menu (hamburguer icon)
-- [ ] Provide a React.js component for each native icon (some already have, but not all of them) with an `Icon` suffix.
 
 # Themes
 
