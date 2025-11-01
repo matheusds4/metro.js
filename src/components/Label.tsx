@@ -1,4 +1,4 @@
-// third-party
+ // third-party
 import extend from "extend";
 import { styled } from "styled-components";
 import { useEffect } from "react";
@@ -15,10 +15,10 @@ import { SimplePlacementType } from "../utils/PlacementUtils";
 
 export type LabelVariant =
   | "normal"
-  | "heading1"
-  | "heading2"
-  | "heading3"
-  | "heading4"
+  | "heading"
+  | "subheading"
+  | "subsubheading"
+  | "subsubsubheading"
   | "legend";
 
 const TooltipDiv = styled.div<{
@@ -389,7 +389,7 @@ export function Label(params: {
         </>
       );
     }
-    case "heading1": {
+    case "heading": {
       if (params.for) {
         return (
           <>
@@ -432,7 +432,7 @@ export function Label(params: {
         </>
       );
     }
-    case "heading2": {
+    case "subheading": {
       if (params.for) {
         return (
           <>
@@ -475,7 +475,7 @@ export function Label(params: {
         </>
       );
     }
-    case "heading3": {
+    case "subsubheading": {
       if (params.for) {
         return (
           <>
@@ -518,7 +518,7 @@ export function Label(params: {
         </>
       );
     }
-    case "heading4": {
+    case "subsubsubheading": {
       if (params.for) {
         return (
           <>
