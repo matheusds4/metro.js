@@ -5,6 +5,7 @@ import { styled, keyframes } from "styled-components";
 import extend from "extend";
 
 // local
+import { Theme, ThemeContext, PrimaryContext } from "../theme/Theme";
 import { REMObserver } from "../utils/REMObserver";
 import * as REMConvert from "../utils/REMConvert";
 
@@ -22,27 +23,45 @@ export function ProgressRing(params: {
   className?: string;
   id?: string;
 }) {
-  // Some of the implementation uses code from
+  // some of the implementation uses code from
   // https://stackoverflow.com/a/20371835/26380963
 
-  // Div ref
+  // theme
+  const theme = React.useContext(ThemeContext);
+  const theme_ref = React.useRef(theme);
+
+  // primary
+  const primary = React.useContext(PrimaryContext);
+  const primary_ref = React.useRef(primary);
+
+  // div ref
   const ref = React.useRef<null | HTMLDivElement>(null);
 
-  // States
+  // states
   const [color, set_color] = React.useState<string>("#fff");
   const [rem, set_rem] = React.useState<number>(0);
 
-  // Set style
+  // set style
   const newStyle: React.CSSProperties = {};
   newStyle.verticalAlign = "middle";
   if (params.style) {
     extend(newStyle, params.style);
   }
 
-  // Adjust color
+  // reflect primary context
+  React.useEffect(() => {
+    primary_ref.current = primary;
+  }, [primary]);
+
+  // reflect theme context
+  React.useEffect(() => {
+    theme_ref.current = theme;
+  }, [theme]);
+
+  // adjust color
   React.useEffect(() => {
     const color_observer = new ColorObserver(ref.current, (color: Color) => {
-      set_color(color.isLight() ? "#fff" : "#000");
+      set_color(primary_ref.current ? theme_ref.current.colors.primary : (color.isLight() ? "#fff" : "#000"));
     });
 
     return () => {
@@ -50,7 +69,7 @@ export function ProgressRing(params: {
     };
   });
 
-  // Adjust size
+  // adjust size
   React.useEffect(() => {
     const rem_observer = new REMObserver(ref.current!, rem => {
       set_rem(rem);
@@ -153,24 +172,24 @@ const Div = styled.div<{
 }>`
   && {
     position: relative;
-    padding-top: ${($) => ($.$size * $.$rem) / 5}px;
-    width: ${($) => $.$size * $.$rem}px;
-    height: ${($) => $.$size * $.$rem}px;
+    padding-top: ${$ => ($.$size * $.$rem) / 5}px;
+    width: ${$ => $.$size * $.$rem}px;
+    height: ${$ => $.$size * $.$rem}px;
   }
 
   && .progress-ring__wrap {
     position: absolute;
-    width: ${($) => $.$size * $.$rem - 2}px;
-    height: ${($) => $.$size * $.$rem - 2}px;
+    width: ${$ => $.$size * $.$rem - 2}px;
+    height: ${$ => $.$size * $.$rem - 2}px;
   }
 
   && .progress-ring__circle {
     transform: rotate(225deg);
     animation-iteration-count: infinite;
     animation-name: ${orbit};
-    animation-duration: ${($) => $.$time}ms;
-    width: ${($) => $.$size * $.$rem - 2}px;
-    height: ${($) => $.$size * $.$rem - 2}px;
+    animation-duration: ${$ => $.$time}ms;
+    width: ${$ => $.$size * $.$rem - 2}px;
+    height: ${$ => $.$size * $.$rem - 2}px;
 
     opacity: 0;
   }
@@ -178,35 +197,35 @@ const Div = styled.div<{
   && .progress-ring__circle:after {
     content: "";
     position: absolute;
-    width: ${($) => ($.$size * $.$rem) / 8}px;
-    height: ${($) => ($.$size * $.$rem) / 8}px;
-    border-radius: ${($) => ($.$size * $.$rem) / 8}px;
-    box-shadow: 0px 0px 5% ${($) => $.$color};
-    background: ${($) => $.$color};
+    width: ${$ => ($.$size * $.$rem) / 8}px;
+    height: ${$ => ($.$size * $.$rem) / 8}px;
+    border-radius: ${$ => ($.$size * $.$rem) / 8}px;
+    box-shadow: 0px 0px 5% ${$ => $.$color};
+    background: ${$ => $.$color};
   }
 
   && .progress-ring__wrap:nth-of-type(2) {
-    transform: rotate(${($) => $.$r}deg);
+    transform: rotate(${$ => $.$r}deg);
   }
   && .progress-ring__wrap:nth-of-type(2) .progress-ring__circle {
-    animation-delay: ${($) => $.$time / $.$m}ms;
+    animation-delay: ${$ => $.$time / $.$m}ms;
   }
   && .progress-ring__wrap:nth-of-type(3) {
-    transform: rotate(${($) => $.$r * 2}deg);
+    transform: rotate(${$ => $.$r * 2}deg);
   }
   && .progress-ring__wrap:nth-of-type(3) .progress-ring__circle {
-    animation-delay: ${($) => ($.$time / $.$m) * 2}ms;
+    animation-delay: ${$ => ($.$time / $.$m) * 2}ms;
   }
   && .progress-ring__wrap:nth-of-type(4) {
-    transform: rotate(${($) => $.$r * 3}deg);
+    transform: rotate(${$ => $.$r * 3}deg);
   }
   && .progress-ring__wrap:nth-of-type(4) .progress-ring__circle {
-    animation-delay: ${($) => ($.$time / $.$m) * 3}ms;
+    animation-delay: ${$ => ($.$time / $.$m) * 3}ms;
   }
   && .progress-ring__wrap:nth-of-type(5) {
-    transform: rotate(${($) => $.$r * 4}deg);
+    transform: rotate(${$ => $.$r * 4}deg);
   }
   && .progress-ring__wrap:nth-of-type(5) .progress-ring__circle {
-    animation-delay: ${($) => ($.$time / $.$m) * 4}ms;
+    animation-delay: ${$ => ($.$time / $.$m) * 4}ms;
   }
 `;

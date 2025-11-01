@@ -56,16 +56,16 @@ Baseline group.
 # ProgressBar
 
 - [ ] Done
-- [ ] Variants
-  - [ ] Dots
-  - [ ] Solid (this mixes 2 rectangles, so tweak colors if needed)
-    - [ ] Use `Theme`'s progress bar colors
-- [ ] Use primary color when preferred
+- [x] Variants
+  - [x] Dots
+  - [x] Solid (this mixes 2 rectangles, so tweak colors if needed)
+    - [x] Use `Theme`'s progress bar colors
+- [x] Use primary color when preferred
 
 # ProgressRing
 
 - [x] Done
-- [ ] Use primary color when preferred
+- [x] Use primary color when preferred
 
 # Item
 
