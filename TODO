@@ -59,6 +59,40 @@ Baseline group.
 
 - [x] Done
 
+# PopoverMenu
+
+- [ ] Done
+
+Each item must contain three elements: the icon (use `<span>` for empty), the label, and the ending (usually a shortcut, submenu indicator or `<span>` for empty).
+
+```
+<PopoverMenu>
+  <Item>
+    <Icon native={NativeIcons.INTERNET_EXPLORER}/>
+    <Label>Internet Explorer</Label>
+    <Shortcut>Ctrl+E</Shortcut>
+  </Item>
+  <Item subPopoverMenu>
+    <span></span>
+    <Label>Submenu</Label>
+    <SubPopoverMenuIndicator/>
+  </Item>
+  <SubPopoverMenu>
+    <Item>
+      <span></span>
+      <Label>Item 1</Label>
+      <span></span>
+    </Item>
+  </SubPopoverMenu>
+</PopoverMenu>
+```
+
+# MenuTrigger
+
+Used for triggering a `PopoverMenu` from the direct button child.
+
+- [ ] Done
+
 # Item
 
 Way contextual; skinning and behavior relies on surrounding container (e.g. `PopoverMenu`).
@@ -94,16 +128,6 @@ Way contextual; skinning and behavior relies on surrounding container. It is bas
 - [ ] Done
 
 # VSlider
-
-- [ ] Done
-
-# PopoverMenu
-
-- [ ] Done
-
-# MenuTrigger
-
-Used for triggering a `PopoverMenu` from the direct button child.
 
 - [ ] Done
 
