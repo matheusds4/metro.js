@@ -10,6 +10,7 @@ import { AnchorSkin } from "../skins/AnchorSkin";
 import { ScrollbarSkin } from "../skins/ScrollbarSkin";
 import { SelectionSkin } from "../skins/SelectionSkin";
 import { TableSkin } from "../skins/TableSkin";
+import * as MathUtils from "../utils/MathUtils";
 import * as REMConvert from "../utils/REMConvert";
 import { EasingFunction } from "../enum";
 import { COMMON_DELAY } from "../utils/Constants";
@@ -152,7 +153,7 @@ export function Group(params: {
     };
   }, [params.wheelHorizontal]);
   const last_wheel_timestamp = React.useRef<number>(-1);
-  const last_fast_wheel_timestamp = React.useRef<number>(-1);
+  const wheel_multiplier = React.useRef<number>(2);
   const gsap_wheel_tween = React.useRef<null | gsap.core.Tween>(null);
   const wheel = (e: WheelEvent): void => {
     const div = e.currentTarget as HTMLDivElement;
@@ -161,17 +162,20 @@ export function Group(params: {
       if (e.deltaX) return;
 
       e.preventDefault();
-      let multiplier = 2;
-      if (
-        last_wheel_timestamp.current != -1 &&
-        ((last_wheel_timestamp.current > Date.now() - 600 &&
-          last_wheel_timestamp.current < Date.now() - 20) ||
-          (last_fast_wheel_timestamp.current !== -1 &&
-            last_fast_wheel_timestamp.current > Date.now() - 100))
-      )
-        (multiplier *= 3), (last_fast_wheel_timestamp.current = Date.now());
-      else last_fast_wheel_timestamp.current = -1;
-      const delta = e.deltaY * multiplier;
+      // increase scroll depending on wheel-roll duration
+      if (last_wheel_timestamp.current != -1) {
+        const last_roll_recent = last_wheel_timestamp.current > Date.now() - 250;
+        // const last_roll_was_over_20ms_ago = last_wheel_timestamp.current < Date.now() - 20;
+        if (last_roll_recent) {
+          wheel_multiplier.current *= 1.2;
+          wheel_multiplier.current = MathUtils.clamp(wheel_multiplier.current, 1, 16);
+        } else {
+          wheel_multiplier.current = 2;
+        }
+      } else {
+        wheel_multiplier.current = 2;
+      }
+      const delta = e.deltaY * wheel_multiplier.current;
       let target_scroll = div.scrollLeft + delta;
       target_scroll = Math.min(target_scroll, div.scrollWidth);
       if (gsap_wheel_tween.current) {
