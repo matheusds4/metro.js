@@ -159,13 +159,12 @@ export function Group(params: {
     const div = e.currentTarget as HTMLDivElement;
     // deltaMode == DOM_DELTA_PIXEL
     if (e.deltaMode == 0) {
-      if (e.deltaX) return;
+      if (e.deltaX || e.deltaY == 0) return;
 
       e.preventDefault();
       // increase scroll depending on wheel-roll duration
       if (last_wheel_timestamp.current != -1) {
         const last_roll_recent = last_wheel_timestamp.current > Date.now() - 250;
-        // const last_roll_was_over_20ms_ago = last_wheel_timestamp.current < Date.now() - 20;
         if (last_roll_recent) {
           wheel_multiplier.current *= 1.2;
           wheel_multiplier.current = MathUtils.clamp(wheel_multiplier.current, 1, 16);
