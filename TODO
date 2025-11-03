@@ -155,6 +155,10 @@ Way contextual; skinning and behavior relies on surrounding container. It is bas
 
 - [ ] Done
 
+# TabBar
+
+- [ ] Done
+
 # AppBar
 
 - [ ] Done
@@ -176,4 +180,5 @@ Way contextual; skinning and behavior relies on surrounding container. It is bas
 # Themes
 
 - [ ] Provide more theme variants.
+
 
