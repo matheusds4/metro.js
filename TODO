@@ -42,10 +42,17 @@ Baseline group.
 
 - [x] Done
 - [x] Use an `outline` boolean instead of a variant.
+- [ ] submit parameter (i.e. makes this button submit the enclosing Form)
 
 # TextInput
 
 - [x] Done
+
+# Form
+
+- [ ] Done
+- [ ] submit event
+- [ ] Pressing enter on any single-line text input should submit the form
 
 # FormGroup
 
