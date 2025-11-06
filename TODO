@@ -142,6 +142,7 @@ Way contextual; skinning and behavior relies on surrounding container. It is bas
 # ComboBox
 
 - [ ] Done
+  - [ ] Prevent scrolling on the entire document while a ComboBox is open
 
 # CheckBox
 
