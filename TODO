@@ -100,6 +100,7 @@ Baseline group.
   - [ ] Typing item name (match label)
     - [ ] RTL
   - [ ] Prevent rolling wheel on the entire document while a popover menu is open. (`passive: false` handler)
+    - [ ] Still allow scrolling on opened PopoverMenus
 
 Each item must contain three tags: the icon, the label, and the ending (usually a shortcut or submenu indicator). All of them, except the label, are wrapped in a `span`. For an item representing a submenu, there is an extra tag being the sub-popover-menu.
 
