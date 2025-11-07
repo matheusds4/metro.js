@@ -32,8 +32,10 @@ export function PopoverMenu(params: {
   style?: React.CSSProperties,
   id?: string,
 }): React.ReactNode {
-  // div
+  // divs
   const div = React.useRef<null | HTMLDivElement>(null);
+  const arrow_up = React.useRef<null | HTMLDivElement>(null);
+  const arrow_down = React.useRef<null | HTMLDivElement>(null);
 
   // global handlers
   const global_handlers = React.useRef<PopoverMenuGlobalHandlers>({
@@ -42,6 +44,9 @@ export function PopoverMenu(params: {
     keyDown: null,
     wheel: null,
   });
+
+  // tweens
+  const tweens = React.useRef<gsap.core.Tween[]>([]);
 
   // ?rtl
   const rtl = React.useContext(RTLContext);
@@ -74,6 +79,12 @@ export function PopoverMenu(params: {
 
       // dispose of global handlers if any
       dispose_global_handlers();
+
+      // kill tweens
+      for (const tween of tweens.current) {
+        tween.kill();
+      }
+      tweens.current.length = 0;
     };
   }, []);
 
@@ -152,6 +163,43 @@ export function PopoverMenu(params: {
       register_global_handlers();
     }
 
+    // kill previous tweens
+    for (const tween of tweens.current) {
+      tween.kill();
+    }
+    tweens.current.length = 0;
+
+    // content div
+    const content_div = get_content_div();
+
+    // turn scroll-indicator arrows visible or hidden
+    const k_scroll = content_div.scrollTop;
+    content_div.scrollTop = 10;
+    const arrows_visible = content_div.scrollTop != 0;
+    arrow_up.current!.style.display =
+      arrow_down.current!.style.display = arrows_visible ? "flex" : "";
+    content_div.scrollTop = k_scroll;
+
+    // finally, place the PopoverMenu.
+    place_smooth(params);
+  }
+
+  // placement logic
+  function place_smooth(params: PopoverMenuOpenParams): void {
+    // placement resolution
+    let placement: SimplePlacementType = "bottom";
+
+    // resulting positions
+    let x = 0, y = 0;
+
+    if (params.reference) {
+      // position PopoverMenu after a reference element.
+      fixme();
+    } else {
+      // position PopoverMenu at a given point.
+      fixme();
+    }
+
     fixme();
   }
 
@@ -176,11 +224,22 @@ export function PopoverMenu(params: {
     // remember as closed
     div_el.removeAttribute("data-open");
 
-    // visibility immediately cleared or play a position-alpha tween before?
-    fixme();
-
     // dispose of global handlers
     dispose_global_handlers();
+
+    // kill previous tweens
+    for (const tween of tweens.current) {
+      tween.kill();
+    }
+    tweens.current.length = 0;
+
+    // visibility immediately cleared or play a position-alpha tween before?
+    fixme();
+  }
+
+  // returns content div
+  function get_content_div(): HTMLDivElement {
+    return div.current!.children[1] as HTMLDivElement;
   }
 
   // register global event handlers used by the root
@@ -246,11 +305,11 @@ export function PopoverMenu(params: {
       $borderColor={theme.colors.inputBorder}
       $foreground={theme.colors.foreground}>
 
-      <div className="PopoverMenu-up-arrow"></div>
+      <div className="PopoverMenu-up-arrow" ref={arrow_up}></div>
       <div className="PopoverMenu-content">
         {params.children}
       </div>
-      <div className="PopoverMenu-down-arrow"></div>
+      <div className="PopoverMenu-down-arrow" ref={arrow_down}></div>
     </Div>
   );
 }
