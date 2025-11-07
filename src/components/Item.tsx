@@ -6,6 +6,8 @@ import * as React from "react";
  * inside a `PopoverMenu`.
  */
 export function Item(params: {
+  disabled?: boolean,
+
   children?: React.ReactNode,
   className?: string,
   id?: string,
@@ -17,7 +19,8 @@ export function Item(params: {
         ["Item", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")
       }
       id={params.id}
-      style={params.style}>
+      style={params.style}
+      disabled={params.disabled}>
 
       {params.children}
     </button>
