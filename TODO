@@ -129,7 +129,7 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
 
 Used for triggering a `PopoverMenu` from the direct button child.
 
-- [ ] Done
+- [ ] Done (use the custom event `_PopoverMenu_open` with `CustomEvent<PopoverMenuOpenParams>`)
   - [ ] prefer (SimplePlacementType)
 
 # Item

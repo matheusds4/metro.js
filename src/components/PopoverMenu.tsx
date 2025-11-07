@@ -39,6 +39,29 @@ export function PopoverMenu(params: {
   // ?theme
   const theme = React.useContext(ThemeContext);
 
+  // initialization
+  React.useEffect(() => {
+    const div_el = div.current!;
+
+    // handle external request to open
+    function external_open_request(e: CustomEvent<PopoverMenuOpenParams>): void {
+      open(e.detail);
+    }
+    div_el.addEventListener("_PopoverMenu_open", external_open_request as any);
+
+    // handle external request to close
+    function external_close_request(e: Event): void {
+      close();
+    }
+    div_el.addEventListener("_PopoverMenu_close", external_close_request);
+
+    // cleanup
+    return () => {
+      div_el.removeEventListener("_PopoverMenu_open", external_open_request as any);
+      div_el.removeEventListener("_PopoverMenu_close", external_close_request);
+    };
+  }, []);
+
   // use the given controller
   React.useEffect(() => {
     if (!params.controller) {
@@ -47,12 +70,12 @@ export function PopoverMenu(params: {
     const controller = params.controller!;
     // open signal
     function controller_open(e: CustomEvent<PopoverMenuOpenParams>): void {
-      fixme();
+      open(e.detail);
     }
     controller.addEventListener("openSignal", controller_open);
     // close signal
     function controller_close(e: Event): void {
-      fixme();
+      close();
     }
     controller.addEventListener("closeSignal", controller_close);
 
@@ -62,6 +85,21 @@ export function PopoverMenu(params: {
       controller.removeEventListener("closeSignal", controller_close);
     };
   }, [params.controller]);
+
+  // open logic
+  function open(params: PopoverMenuOpenParams): void {
+    // close all menus
+    for (const menu of document.body.querySelectorAll(".PopoverMenu[data-open='true']")) {
+      menu.dispatchEvent(new Event("_PopoverMenu_close"));
+    }
+
+    fixme();
+  }
+
+  // close logic
+  function close(): void {
+    fixme();
+  }
 
   return (
     <Div
@@ -102,11 +140,8 @@ const Div = styled.div<{
     padding: ${REMConvert.pixels.remPlusUnit(6)} 0;
     min-width: 12rem;
     max-height: 30rem;
-    left: 0;
-    top: 0;
     z-index: ${MAXIMUM_Z_INDEX};
     visibility: hidden;
-    opacity: 0;
   }
 
   && > .PopoverMenu-up-arrow,
