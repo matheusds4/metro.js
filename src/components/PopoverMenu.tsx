@@ -1,7 +1,9 @@
 // third-party
+import assert from "assert";
 import * as React from "react";
 import { styled } from "styled-components";
 import { Color } from "@hydroperx/color";
+import { input } from "@hydroperx/inputaction";
 import gsap from "gsap";
 import * as FloatingUI from "@floating-ui/dom";
 
@@ -33,6 +35,14 @@ export function PopoverMenu(params: {
   // div
   const div = React.useRef<null | HTMLDivElement>(null);
 
+  // global handlers
+  const global_handlers = React.useRef<PopoverMenuGlobalHandlers>({
+    pointerDown: null,
+    inputPressed: null,
+    keyDown: null,
+    wheel: null,
+  });
+
   // ?rtl
   const rtl = React.useContext(RTLContext);
   const rtl_reference = React.useRef(rtl);
@@ -58,11 +68,12 @@ export function PopoverMenu(params: {
 
     // cleanup
     return () => {
+      // dispose of external request handlers
       div_el.removeEventListener("_PopoverMenu_open", external_open_request as any);
-      div_el.removeEventListener("_PopoverMenu_close", external_close_request);
+      div_el.removeEventListener("_PopoverMenu_close", external_close_request as any);
 
       // dispose of global handlers if any
-      fixme();
+      dispose_global_handlers();
     };
   }, []);
 
@@ -114,6 +125,10 @@ export function PopoverMenu(params: {
       possibly_unrelated_parent = possibly_unrelated_parent.parentElement?.parentElement?.parentElement;
     }
 
+    // for this menu to open, parents must be previously opened too.
+    assert(parents.every(p => p.getAttribute("data-open") == "true"),
+      "Cannot open a nested PopoverMenu with a closed parent.");
+
     // close other menus
     for (const menu of document.body.querySelectorAll(".PopoverMenu[data-open='true']")) {
       // do not close parent menus or this menu itself
@@ -130,6 +145,12 @@ export function PopoverMenu(params: {
 
     // make it visible
     div_el.style.visibility = "visible";
+
+    // if this is a root PopoverMenu,
+    // register global event handlers.
+    if (parents.length == 0) {
+      register_global_handlers();
+    }
 
     fixme();
   }
@@ -159,7 +180,54 @@ export function PopoverMenu(params: {
     fixme();
 
     // dispose of global handlers
-    fixme();
+    dispose_global_handlers();
+  }
+
+  // register global event handlers used by the root
+  // PopoverMenu.
+  function register_global_handlers(): void {
+    dispose_global_handlers();
+
+    // handle pointer down anywhere the viewport
+    global_handlers.current.pointerDown = function(): void {
+      fixme();
+    };
+    window.addEventListener("pointerdown", global_handlers.current.pointerDown as any);
+
+    // handle input pressed
+    global_handlers.current.inputPressed = function(e: Event): void {
+      fixme();
+    };
+    input.on("inputPressed", global_handlers.current.inputPressed as any);
+
+    // handle key down
+    global_handlers.current.keyDown = function(e: KeyboardEvent): void {
+      fixme();
+    };
+    window.addEventListener("keydown", global_handlers.current.keyDown as any);
+
+    // handle wheel
+    global_handlers.current.wheel = function(e: WheelEvent): void {
+      fixme();
+    };
+    window.addEventListener("wheel", global_handlers.current.wheel as any);
+  }
+
+  // unregister global event handlers used by the root
+  // PopoverMenu.
+  function dispose_global_handlers(): void {
+    if (global_handlers.current.pointerDown) {
+      window.removeEventListener("pointerdown", global_handlers.current.pointerDown as any);
+    }
+    if (global_handlers.current.inputPressed) {
+      input.off("inputPressed", global_handlers.current.inputPressed as any);
+    }
+    if (global_handlers.current.keyDown) {
+      window.removeEventListener("keydown", global_handlers.current.keyDown as any);
+    }
+    if (global_handlers.current.wheel) {
+      window.removeEventListener("wheel", global_handlers.current.wheel as any);
+    }
   }
 
   return (
@@ -331,4 +399,11 @@ export type PopoverMenuOpenParams = {
    * Reference element to where placement of the popover menu occurs.
    */
   reference?: HTMLElement,
+};
+
+type PopoverMenuGlobalHandlers = {
+  pointerDown: null | Function,
+  inputPressed: null | Function,
+  keyDown: null | Function,
+  wheel: null | Function,
 };
