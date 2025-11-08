@@ -355,7 +355,7 @@ export function PopoverMenu(params: {
 
     // handle wheel
     global_handlers.current.wheel = global_wheel;
-    window.addEventListener("wheel", global_handlers.current.wheel as any);
+    window.addEventListener("wheel", global_handlers.current.wheel as any, { passive: true });
   }
 
   // handle pointer down on the viewport
@@ -544,9 +544,40 @@ export function PopoverMenu(params: {
     key_sequence_last_timestamp.current = Date.now();
   }
 
-  // prevent scrolling outside while PopoverMenu is open
+  // prevent scrolling outside while PopoverMenu is open,
+  // but still allow scrolling inside the PopoverMenus.
   function global_wheel(e: WheelEvent): void {
-    fixme();
+    const div_el = div.current!;
+    if (div_el.getAttribute("data-open") !== "true") {
+      return;
+    }
+
+    // test hover
+    let out = true;
+    if ($(div_el).is(":visible")) {
+      if (div_el.getAttribute("data-hover") == "true") {
+        out = false;
+      }
+
+      if (out) {
+        for (const div1 of Array.from(
+          get_content_div().querySelectorAll(".PopoverMenu")
+        ) as HTMLDivElement[]) {
+          if ($(div1).is(":hidden")) {
+            continue;
+          }
+          // Test hover
+          if (div1.getAttribute("data-hover") == "true") {
+            out = false;
+            break;
+          }
+        }
+      }
+    }
+
+    if (out) {
+      e.preventDefault();
+    }
   }
 
   // unregister global event handlers used by the root
