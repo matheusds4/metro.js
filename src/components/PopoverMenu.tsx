@@ -661,6 +661,7 @@ const Div = styled.div<{
   && > .PopoverMenu-content > .Item {
     display: inline-flex;
     flex-direction: row;
+    align-items: center;
     gap: 0.9rem;
     padding: 0.5rem 0.7rem;
     background: none;
@@ -683,8 +684,8 @@ const Div = styled.div<{
 
   /* icon reserved space for an Item */
   && > .PopoverMenu-content > .Item > span:nth-child(1) {
-    width: ${REMConvert.pixels.remPlusUnit(9)};
-    height: ${REMConvert.pixels.remPlusUnit(9)};
+    width: ${REMConvert.pixels.remPlusUnit(21)};
+    height: ${REMConvert.pixels.remPlusUnit(21)};
   }
 
   /* label reserved space for an Item */
@@ -697,22 +698,24 @@ const Div = styled.div<{
     flex-grow: 4;
     font-size: 0.8rem;
     opacity: 0.6;
-    min-width: ${REMConvert.pixels.remPlusUnit(9)};
-    min-height: ${REMConvert.pixels.remPlusUnit(9)};
+    min-width: ${REMConvert.pixels.remPlusUnit(20)};
+    min-height: ${REMConvert.pixels.remPlusUnit(20)};
   }
   &&:not(.rtl) > .PopoverMenu-content > .Item > span:nth-child(3) {
-    text-align: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
     margin-left: 2rem;
   }
   &&.rtl > .PopoverMenu-content > .Item > span:nth-child(3) {
-    text-align: left;
+    justify-content: start;
     margin-right: 2rem;
   }
 
   /* Indicator */
   && > .PopoverMenu-content > .Item > span:nth-child(3) > .Indicator {
-    width: ${REMConvert.pixels.remPlusUnit(9)};
-    height: ${REMConvert.pixels.remPlusUnit(9)};
+    width: ${REMConvert.pixels.remPlusUnit(20)};
+    height: ${REMConvert.pixels.remPlusUnit(20)};
   }
 
   /* Separator */

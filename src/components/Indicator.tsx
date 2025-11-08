@@ -19,10 +19,10 @@ import { RTLContext } from "../layout/RTL";
  *     <span></span>
  *     <Label>More</Label>
  *     <span><Indicator/></span>
- *     <PopoverMenu>
- *         ...
- *     </PopoverMenu>
  * </Item>
+ * <PopoverMenu>
+ *     ...
+ * </PopoverMenu>
  * <Item>
  *     <span></span>
  *     <Label>Enable me (1)</Label>
@@ -88,11 +88,11 @@ export function Indicator(params: {
 
       {
         indicator_type == "popoverMenu" ?
-          <Icon type={rtl ? NativeIcons.ARROW_LEFT : NativeIcons.ARROW_RIGHT} size={params.size ?? 9}/> :
+          <Icon type={rtl ? NativeIcons.ARROW_LEFT : NativeIcons.ARROW_RIGHT} size={params.size ?? 20}/> :
         indicator_type == "checked" ?
-          <Icon type={NativeIcons.CHECKED} size={params.size ?? 9}/> :
+          <Icon type={NativeIcons.CHECKED} size={params.size ?? 20}/> :
         indicator_type == "option" ?
-          <Icon type={NativeIcons.BULLET} size={params.size ?? 9}/> :
+          <Icon type={NativeIcons.BULLET} size={params.size ?? 20}/> :
           undefined
       }
     </div>

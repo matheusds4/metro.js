@@ -56,14 +56,14 @@ function App() {
                 <span></span>
                 <Label>Submenu</Label>
                 <span><Indicator/></span>
-                <PopoverMenu>
-                  <Item>
-                    <span></span>
-                    <Label>Item 1</Label>
-                    <span></span>
-                  </Item>
-                </PopoverMenu>
               </Item>
+              <PopoverMenu>
+                <Item>
+                  <span></span>
+                  <Label>Item 1</Label>
+                  <span></span>
+                </Item>
+              </PopoverMenu>
             </PopoverMenu>
           </MenuTrigger>
         </VGroup>

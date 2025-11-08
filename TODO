@@ -70,36 +70,8 @@ Baseline group.
 # PopoverMenu
 
 - [x] Done
-  - [x] Skin `&&`
-  - [x] Skin Items
-  - [x] Skin Indicator
-  - [x] Skin Separator
-  - [x] PopoverMenuController (provide optional `controller=` ref)
-    - [x] .open() method
-    - [x] .close() method (closes the menu and its submenus)
-  - [x] Open logic
-  - [x] Close logic
-  - [x] Hovering a submenu representation's item should open the submenu (without focusing any of its items) and close the previously open siblings.
-  - [x] Clicking outside the open popover menu should close it and other open submenus.
-  - [x] Clicking a submenu Item should open its PopoverMenu (the submenu)
-  - [x] Escape key (closes the innermost popover menu)
-    - [x] Focus submenu-representing item back if the case
-  - [x] Open submenu representation items should be highlighted as focused. (`data-open='true'`)
-    - [x] Skin them
-  - [x] Arrow navigation
-    - [x] Left/right (close/open submenu)
-      - [x] If closing submenu, focus the submenu representation's item.
-      - [x] If opening submenu, focus its first item.
-      - [x] RTL
-    - [x] Up/down
-      - Up
-        - [x] If none of the items in the innermost menu are focused, focus the last one.
-      - Down
-        - [x] If none of the items in the innermost menu are focused, focus the first one.
-  - [x] Typing item name (match label)
-    - [x] RTL
-  - [x] Prevent rolling wheel on the entire document while a popover menu is open. (`passive: false` handler)
-    - [x] Still allow scrolling on opened PopoverMenus
+- [ ] Close popover menus when clicking a non-submenu Item
+- [ ] Fix handling/detection of submenu PopoverMenus (they should follow the Item tag, not be inside it (idx. 3, len = 4))
 
 Each item must contain three tags: the icon, the label, and the ending (usually a shortcut or submenu indicator). All of them, except the label, are wrapped in a `span`. For an item representing a submenu, there is an extra tag being the sub-popover-menu.
 
@@ -115,14 +87,14 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
     <span></span>
     <Label>Submenu</Label>
     <span><Indicator/></span>
-    <PopoverMenu>
-      <Item>
-        <span></span>
-        <Label>Item 1</Label>
-        <span></span>
-      </Item>
-    </PopoverMenu>
   </Item>
+  <PopoverMenu>
+    <Item>
+      <span></span>
+      <Label>Item 1</Label>
+      <span></span>
+    </Item>
+  </PopoverMenu>
 </PopoverMenu>
 ```
 
