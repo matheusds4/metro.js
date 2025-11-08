@@ -290,9 +290,6 @@ export function ComboBox(params: {
 
     // emit `change`
     change_handler_sync.current?.(new_value);
-
-    // focus button
-    combobox.current!.focus();
   }
 
   // closes the ComboBox
@@ -323,6 +320,9 @@ export function ComboBox(params: {
 
         // forget AbortController
         effect_aborter.current = null;
+
+        // focus ComboBox
+        combobox.current!.focus();
       });
   }
 
@@ -527,7 +527,7 @@ export function ComboBox(params: {
         </div>
 
         <div className="ComboBox-button-arrow">
-          <Icon type={NativeIcons.ARROW_DOWN} size={params.big ? 18 : params.medium ? 14 : 10.5}/>
+          <Icon type={NativeIcons.ARROW_DOWN} size={params.big ? 20 : params.medium ? 18 : 16}/>
         </div>
       </ComboBoxButton>
       <ComboBoxDropdown
@@ -596,10 +596,10 @@ const ComboBoxButton = styled.button<{
   }
 
   &&.ComboBox-big {
-    font-size: 2.7rem;
+    font-size: 3.3rem;
   }
   &&.ComboBox-medium {
-    font-size: 1.9rem;
+    font-size: 2.5rem;
   }
 
   &&.ComboBox-big:hover:not(:disabled),
@@ -619,7 +619,12 @@ const ComboBoxButton = styled.button<{
   && .ComboBox-button-inner {
     display: inline-flex;
     flex-direction: row;
+    flex-grow: 2;
     gap: 0.9rem;
+  }
+  &&.ComboBox-big .ComboBox-button-inner,
+  &&.ComboBox-medium .ComboBox-button-inner {
+    flex-grow: unset;
   }
   &&.rtl .ComboBox-button-inner {
     flex-direction: row-reverse;
@@ -627,7 +632,6 @@ const ComboBoxButton = styled.button<{
 
   && .ComboBox-button-arrow {
     display: inline-flex;
-    flex-grow: 2;
     flex-direction: row;
     opacity: 0.7;
   }
@@ -699,7 +703,7 @@ const ComboBoxDropdown = styled.div<{
     flex-direction: row-reverse;
   }
   &&.ComboBox-big .ComboBox-list > .Option,
-  &&.ComboBox-medum .ComboBox-list > .Option {
+  &&.ComboBox-medium .ComboBox-list > .Option {
     font-size: 1.5rem;
     font-weight: lighter;
   }

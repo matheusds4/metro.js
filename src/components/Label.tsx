@@ -521,7 +521,7 @@ const H1Label = styled.label<LabelCSSProps>`
       ? `color: ${$.$theme.colors.warning};`
       : ""}
     font-weight: ${$ => $.$bold ? "bold" : "lighter"};
-    font-size: 2.7rem;
+    font-size: 3.3rem;
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
@@ -541,7 +541,7 @@ const H1 = styled.h1<LabelCSSProps>`
       ? `color: ${$.$theme.colors.warning};`
       : ""}
     font-weight: ${$ => $.$bold ? "bold" : "lighter"};
-    font-size: 2.7rem;
+    font-size: 3.3rem;
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
@@ -564,7 +564,7 @@ const H2Label = styled.label<LabelCSSProps>`
       ? `color: ${$.$theme.colors.warning};`
       : ""}
     font-weight: ${$ => $.$bold ? "bold" : "lighter"};
-    font-size: 2.3rem;
+    font-size: 2.5rem;
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
@@ -585,7 +585,7 @@ const H2 = styled.h2<LabelCSSProps>`
       ? `color: ${$.$theme.colors.warning};`
       : ""}
     font-weight: ${$ => $.$bold ? "bold" : "lighter"};
-    font-size: 2.3rem;
+    font-size: 2.5rem;
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
@@ -606,7 +606,7 @@ const H3Label = styled.label<LabelCSSProps>`
     ${$ => $.$warning
       ? `color: ${$.$theme.colors.warning};`
       : ""}
-    font-size: 1.9rem;
+    font-size: 2rem;
     font-weight: lighter;
     margin: 0.67rem 0;
     ${$ => $.$sizing}
@@ -627,7 +627,7 @@ const H3 = styled.h3<LabelCSSProps>`
     ${$ => $.$warning
       ? `color: ${$.$theme.colors.warning};`
       : ""}
-    font-size: 1.9rem;
+    font-size: 2rem;
     font-weight: lighter;
     margin: 0.67rem 0;
     ${$ => $.$sizing}
@@ -650,8 +650,8 @@ const H4Label = styled.label<LabelCSSProps>`
     ${$ => $.$warning
       ? `color: ${$.$theme.colors.warning};`
       : ""}
-    font-size: 1.3rem;
-    font-weight: bold;
+    font-size: 1.7rem;
+    font-weight: lighter;
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
@@ -671,8 +671,8 @@ const H4 = styled.h4<LabelCSSProps>`
     ${$ => $.$warning
       ? `color: ${$.$theme.colors.warning};`
       : ""}
-    font-size: 1.3rem;
-    font-weight: bold;
+    font-size: 1.7rem;
+    font-weight: lighter;
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}

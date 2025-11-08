@@ -33,27 +33,34 @@ export function enhance({ background, color }: {
       : (Color(r).isLight()
         ? darken(r, 0.25)
         : r);
+    r = a.isDark()
+      ? (Color(r).isDark()
+        ? lighten(r, 0.25)
+        : r)
+      : (Color(r).isLight()
+        ? darken(r, 0.25)
+        : r);
     return r;
   }
   let r = (
     a.isDark()
       ? (b.isDark()
         ? lighten(b, 0.25)
-        : b)
+        : b.toString())
       : (b.isLight()
         ? darken(b, 0.25)
-        : b)
-  ).toString();
+        : b.toString())
+  );
   r = (
     a.isDark()
       ? (Color(r).isDark()
         ? lighten(r, 0.25)
-        : r)
+        : r.toString())
       : (Color(r).isLight()
         ? darken(r, 0.25)
-        : r)
-  ).toString();
-  return b.toString();
+        : r.toString())
+  );
+  return r;
 }
 
 /**

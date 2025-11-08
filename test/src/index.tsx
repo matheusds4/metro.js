@@ -32,21 +32,33 @@ function App() {
   return (
     <ThemeProvider theme={ThemePresets.dark}>
       <RTLProvider rtl={false}>
-        <Root
-          full
-          solid
-          selection={false}
-          style={{
-            overflowY: "auto",
-          }}>
-          <VGroup padding={10}>
-            <ComboBox default="foo">
-              <Option value="foo">foo</Option>
-              <Option value="bar">bar</Option>
-              <Option value="qux">qux</Option>
-            </ComboBox>
-          </VGroup>
-        </Root>
+        <Primary prefer>
+          <Root
+            full
+            solid
+            selection={false}
+            style={{
+              overflowY: "auto",
+            }}>
+            <VGroup padding={10}>
+              <ComboBox default="foo">
+                <Option value="foo">foo</Option>
+                <Option value="bar">bar</Option>
+                <Option value="qux">qux</Option>
+              </ComboBox>
+              <ComboBox default="foo" big>
+                <Option value="foo">foo</Option>
+                <Option value="bar">bar</Option>
+                <Option value="qux">qux</Option>
+              </ComboBox>
+              <ComboBox default="foo" medium>
+                <Option value="foo">foo</Option>
+                <Option value="bar">bar</Option>
+                <Option value="qux">qux</Option>
+              </ComboBox>
+            </VGroup>
+          </Root>
+        </Primary>
       </RTLProvider>
     </ThemeProvider>
   );

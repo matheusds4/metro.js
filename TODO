@@ -115,7 +115,7 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
   - [x] Prevent scrolling on the entire document while a ComboBox is open
   - [x] Typing Option
   - [x] When displaying the selected option as the ComboBox main display itself, strip icons (`.Icon`) off.
-  - [ ] Fix little jump at the end of the ComboBox open transition.
+  - [ ] Fix little border-ish-jump at the end of the ComboBox open transition.
   - [ ] Convert position/width/height to rem after transition
   - [ ] Re-decide big/medium font size (guess big should be bigger?)
 - [ ] Future: Virtual list support (e.g. support displaying a loading indicator either at the start or end of the dropdown and add/eliminate options as appropriate maintaining correct V-scroll)
