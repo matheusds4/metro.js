@@ -70,6 +70,7 @@ Baseline group.
 # PopoverMenu
 
 - [x] Done
+- [ ] Prevent hover focusing an Item after pressing down/up for at most 1 second recent
 - [ ] Convert position/max-width/height to rem after transition
 - [ ] Observe dynamically added items to optionally resize the PopoverMenu.
 
@@ -101,19 +102,7 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
 # ComboBox
 
 - [x] Done
-  - [x] Skinning
-    - [x] ComboBoxButton
-    - [x] ComboBoxDropdown
-  - [x] Use PrimaryContext for the selected Option and the ComboBox button (might need enhancing the primary color for the dropdown background)
-  - [x] Open logic
-  - [x] Close logic
-  - [x] Click = open
-  - [x] Escape while open = close
-  - [x] Click outside while open = close
-  - [x] Arrow navigation (up/down) among Options
-  - [x] Prevent scrolling on the entire document while a ComboBox is open
-  - [x] Typing Option
-  - [x] When displaying the selected option as the ComboBox main display itself, strip icons (`.Icon`) off.
+  - [ ] Prevent hover focusing an Option after pressing down/up for at most 1 second recent
   - [ ] Fix little border-ish-jump at the end of the ComboBox open transition.
   - [ ] Convert position/width/height to rem after transition
 - [ ] Future: Virtual list support (e.g. support displaying a loading indicator either at the start or end of the dropdown and add/eliminate options as appropriate maintaining correct V-scroll)
