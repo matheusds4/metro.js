@@ -105,10 +105,14 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
     - [x] ComboBoxButton
     - [x] ComboBoxDropdown
   - [x] Use PrimaryContext for the selected Option and the ComboBox button (might need enhancing the primary color for the dropdown background)
+  - [x] Open logic
+  - [x] Close logic
   - [ ] Click = open
   - [ ] Escape while open = close
   - [ ] Click outside while open = close
+  - [ ] Arrow navigation (up/down) among Options
   - [ ] Prevent scrolling on the entire document while a ComboBox is open
+  - [ ] Typing Option
   - [x] When displaying the selected option as the ComboBox main display itself, strip icons (`.Icon`) off.
   - [ ] Fix little jump at the end of the ComboBox open transition.
   - [ ] Convert size to rem after transition

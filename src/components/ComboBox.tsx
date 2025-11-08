@@ -72,6 +72,9 @@ export function ComboBox(params: {
   // handlers
   const change_handler = React.useRef<undefined | ((value: string) => void)>(undefined);
 
+  // is open?
+  const is_open = React.useRef(false);
+
   // scroll-indicator arrows visible?
   const [arrows_visible, set_arrows_visible] = React.useState(false);
 
@@ -79,6 +82,9 @@ export function ComboBox(params: {
   const [value_html, set_value_html] = React.useState("");
   const value_sync = React.useRef(params.default ?? "");
   const changed = React.useRef(false);
+
+  // disabled sync
+  const disabled_sync = React.useRef(params.disabled ?? false);
 
   // handler sync
   const change_handler_sync = React.useRef<null | ((value: string) => void)>(params.change);
@@ -132,7 +138,7 @@ export function ComboBox(params: {
         reflect_timeout = -1;
 
         // item list div
-        const item_list_div = getItemListDiv();
+        const item_list_div = get_item_list_div();
         const children = Array.from(item_list_div.children) as HTMLElement[];
 
         // set the item[data-selected] attribute
@@ -192,6 +198,134 @@ export function ComboBox(params: {
     change_handler_sync.current = params.change;
   }, [params.change]);
 
+  // sync `disabled` parameter
+  React.useEffect(() => {
+    disabled_sync.current = params.disabled ?? false;
+  }, [params.disabled]);
+
+  // opens the ComboBox
+  function open(): void {
+    if (is_open.current || disabled_sync.current) {
+      return;
+    }
+
+    // for now, don't allow aborting active effect.
+    if (effect_aborter.current) {
+      return;
+    }
+
+    // list div
+    const item_list_div = get_item_list_div();
+    const children = Array.from(item_list_div.children) as HTMLElement[];
+
+    // find the selected entry
+    let selected_option = (children.find(e => e.getAttribute("data-value") == value_sync.current) ?? null) as null | HTMLElement;
+
+    if (selected_option) {
+      // set the item[data-selected] attribute
+      for (const option of children) {
+        option.removeAttribute("data-selected");
+      }
+      selected_option.setAttribute("data-selected", "true");
+    }
+
+    // update cooldown
+    ComboBoxStatic.cooldown = Date.now();
+
+    // register global handlers (like typing and click-outside)
+    register_global_handlers();
+
+    // mutate internal change handler
+    ComboBoxStatic.change = trigger_change;
+
+    // mutate internal close handler
+    ComboBoxStatic.close = close;
+
+    // turn visible
+    is_open.current = true;
+    dropdown.current!.style.visibility = "visible";
+
+    // temporary display change
+    let prev_display = dropdown.current!.style.display;
+    if (prev_display == "none") {
+      dropdown.current!.style.display = "inline-block";
+    }
+
+    // set up dropdown width
+    dropdown.current!.style.width = combobox.current!.getBoundingClientRect().width + "px";
+
+    // place dropdown (1)
+    ComboBoxPlacement.position(combobox.current!, dropdown.current!);
+
+    // turn scroll-indicator arrows visible or hidden
+    set_arrows_visible(item_list_div.scrollHeight > item_list_div.clientHeight);
+
+    // place dropdown (2) (after setting up the arrows)
+    ComboBoxPlacement.position(combobox.current!, dropdown.current!);
+
+    // restore display
+    dropdown.current!.style.display = prev_display;
+
+    // scroll
+    ComboBoxPlacement.scrollDropdownAlignSelected(combobox.current!, item_list_div);
+
+    // run effect
+    effect_aborter.current = new ComboBoxEffect(combobox.current!, item_list_div)
+      .open(() => {
+        effect_aborter.current = null;
+
+        // focus selected option
+        selected_option?.focus();
+      });
+  }
+
+  // trigger value change.
+  function trigger_change(new_value: string): void {
+    // set value
+    value_sync.current = new_value;
+    changed.current = true;
+
+    // reflect selected option
+    combobox.current!.dispatchEvent(new Event("_ComboBox_reflect"));
+
+    // emit `change`
+    change_handler_sync.current?.(new_value);
+
+    // focus button
+    combobox.current!.focus();
+  }
+
+  // closes the ComboBox
+  function close(): void {
+    if (!is_open.current || disabled_sync.current) {
+      return;
+    }
+
+    // for now, don't allow aborting active effect.
+    if (effect_aborter.current) {
+      return;
+    }
+
+    // dispose of global handlers (like typing and click-outside)
+    dispose_global_handlers();
+
+    // unassign internal change handler
+    ComboBoxStatic.change = null;
+
+    // unassign internal close handler
+    ComboBoxStatic.close = null;
+
+    // run effect
+    effect_aborter.current = new ComboBoxEffect(combobox.current!, get_item_list_div())
+      .close(() => {
+        // remember as closed
+        is_open.current = false;
+
+        // forget AbortController
+        effect_aborter.current = null;
+      });
+  }
+
   // returns the HTML of an element stripping Icons off.
   function extract_compact_html(element: HTMLElement): string {
     const n = element.cloneNode(true) as HTMLElement;
@@ -239,7 +373,7 @@ export function ComboBox(params: {
   }
 
   // returns the div directly containing the Options.
-  function getItemListDiv(): HTMLDivElement {
+  function get_item_list_div(): HTMLDivElement {
     return dropdown.current!.children[1] as HTMLDivElement;
   }
 
@@ -462,8 +596,7 @@ const ComboBoxDropdown = styled.div<{
   && .ComboBox-list > .Option:focus {
     background: ${$ => ColorUtils.contrast($.$option_background, 0.3)};
   }
-  && .ComboBox-list > .Option:active,
-  && .ComboBox-list > .Option[data-selected="true"] {
+  && .ComboBox-list > .Option:active {
     background: ${$ => ColorUtils.contrast($.$option_background, 0.5)};
   }
   && .ComboBox-list > .Option[data-selected="true"] {
