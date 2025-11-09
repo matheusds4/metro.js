@@ -1,5 +1,5 @@
 // third-party
-import { useContext, useRef, useState, useEffect, Ref } from "react";
+import React from "react";
 import { styled } from "styled-components";
 import { Color } from "@hydroperx/color";
 import extend from "extend";
@@ -94,7 +94,7 @@ export function TextInput(params: {
   id?: string;
   style?: React.CSSProperties;
   className?: string;
-  ref?: Ref<HTMLTextAreaElement | HTMLInputElement | null>;
+  ref?: React.Ref<HTMLTextAreaElement | HTMLInputElement | null>;
 
   /**
    * Change event.
@@ -109,29 +109,29 @@ export function TextInput(params: {
   mouseOut?: React.MouseEventHandler<HTMLElement>;
   mouseUp?: React.MouseEventHandler<HTMLElement>;
   wheel?: React.WheelEventHandler<HTMLElement>;
-}) {
-  // Use the theme context
-  const theme = useContext(ThemeContext);
+}): React.ReactNode {
+  // ?theme
+  const theme = React.useContext(ThemeContext);
 
-  // Locale direction
-  const rtl = useContext(RTLContext);
+  // ?rtl
+  const rtl = React.useContext(RTLContext);
 
-  // Value tracker
-  const value = useRef<string>(params.default ?? "");
-  const any_change = useRef<boolean>(false);
+  // bindings
+  const element = React.useRef<null | HTMLElement>(null);
 
-  // Re-render trigger (in case the default value changes)
-  const [, set_refresh_trigger] = useState<number[]>([]);
+  // value tracker
+  const value = React.useRef<string>(params.default ?? "");
+  const any_change = React.useRef<boolean>(false);
 
-  // Icon
+  // icon
   const icon: string | null =
     params.icon ?? (params.search ? "search" : null);
   const iconSize = 15;
 
-  // Colors
+  // colors
   const dark = Color(theme.colors.inputBackground).isDark();
 
-  // CSS
+  // css
   const css = `
     && {
       background: ${theme.colors.inputBackground};
@@ -144,7 +144,7 @@ export function TextInput(params: {
       background-size: ${REMConvert.pixels.remPlusUnit(iconSize)};
       background-repeat: no-repeat;
       text-align: ${rtl ? "right" : "left"};
-      ${params.minWidth !== undefined ? "min-width: " + REMConvert.pixels.remPlusUnit(params.minWidth) + ";" : "min-width: 5rem;"}
+      ${params.minWidth !== undefined ? "min-width: " + REMConvert.pixels.remPlusUnit(params.minWidth) + ";" : "min-width: 3rem;"}
       ${params.minHeight !== undefined ? "min-height: " + REMConvert.pixels.remPlusUnit(params.minHeight) + ";" : ""}
       ${params.maxWidth !== undefined ? "max-width: " + REMConvert.pixels.remPlusUnit(params.maxWidth) + ";" : ""}
       ${params.maxHeight !== undefined ? "max-height: " + REMConvert.pixels.remPlusUnit(params.maxHeight) + ";" : ""}
@@ -174,15 +174,28 @@ export function TextInput(params: {
       background-size: ${REMConvert.pixels.remPlusUnit(15)};
       background-repeat: no-repeat;
     }`;
-  
+
+  // put initial tag value
+  React.useEffect(() => {
+    reflect_value();
+  }, [params.multiline]);
+ 
   // watch for the default value
-  useEffect(() => {
+  React.useEffect(() => {
     if (!any_change.current && value.current != (params.default ?? "")) {
       value.current = params.default ?? "";
-      // rerender component
-      set_refresh_trigger([Math.random(), Math.random(), Math.random()]);
+      reflect_value();
     }
   }, [params.default]);
+
+  // reflects synchronized value
+  function reflect_value(): void {
+    if (params.multiline) {
+      (element.current! as HTMLTextAreaElement).value = value.current;
+    } else {
+      (element.current! as HTMLInputElement).value = value.current;
+    }
+  }
 
   // render
   return params.multiline ? (
@@ -191,7 +204,15 @@ export function TextInput(params: {
       className={params.className}
       $css={css}
       style={params.style}
-      ref={params.ref as Ref<HTMLTextAreaElement>}
+      ref={obj => {
+        element.current = obj;
+        const p = params.ref as React.Ref<HTMLTextAreaElement>;
+        if (typeof p == "function") {
+          p(obj);
+        } else if (p) {
+          p.current = obj;
+        }
+      }}
       placeholder={params.placeholder}
       onChange={event => {
         const new_value = (event.target as HTMLTextAreaElement).value;
@@ -212,9 +233,8 @@ export function TextInput(params: {
       autoComplete={params.autoComplete}
       rows={params.rows}
       cols={params.columns}
-      dir={rtl ? "rtl" : "ltr"}
-    >
-      {value.current}
+      dir={rtl ? "rtl" : "ltr"}>
+
     </TextArea>
   ) : (
     <Input
@@ -222,7 +242,15 @@ export function TextInput(params: {
       className={params.className}
       $css={css}
       style={params.style}
-      ref={params.ref as Ref<HTMLInputElement>}
+      ref={obj => {
+        element.current = obj;
+        const p = params.ref as React.Ref<HTMLInputElement>;
+        if (typeof p == "function") {
+          p(obj);
+        } else if (p) {
+          p.current = obj;
+        }
+      }}
       type={
         params.email
           ? "email"
@@ -237,7 +265,6 @@ export function TextInput(params: {
                   : "text"
       }
       placeholder={params.placeholder}
-      value={value.current}
       onChange={event => {
         const new_value = (event.target as HTMLInputElement).value;
         value.current = new_value;

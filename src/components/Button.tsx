@@ -261,6 +261,7 @@ export function Button(params: ButtonParams): React.ReactNode {
             params.ref!.current = obj;
           }
         }}
+        id={params.id}
         className={["Button", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
         style={newStyle}
         type={params.type ?? "button"}
@@ -356,6 +357,7 @@ export type ButtonParams = {
   style?: React.CSSProperties;
   className?: string;
   children?: React.ReactNode;
+  id?: string;
   ref?: React.Ref<HTMLButtonElement | null>;
 
   focus?: React.FocusEventHandler<HTMLButtonElement>;
@@ -858,7 +860,9 @@ export function CircleButton(params: CircleButtonParams) {
             params.ref!.current = obj;
           }
         }}
+        id={params.id}
         className={["Button", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+        type={params.type ?? "button"}
         disabled={params.disabled}
         autoFocus={params.autoFocus}
         style={params.style}
@@ -921,6 +925,11 @@ export type CircleButtonParams = {
   native?: NativeIcon;
 
   /**
+   * Button type.
+   */
+  type?: ButtonType;
+
+  /**
    * Whether the icon is initially filled or not.
    */
   filled?: boolean;
@@ -942,6 +951,7 @@ export type CircleButtonParams = {
   autoFocus?: boolean;
 
   style?: React.CSSProperties;
+  id?: string;
   className?: string;
   ref?: React.Ref<HTMLButtonElement | null>;
 
@@ -1031,8 +1041,10 @@ export function ArrowButton(params: ArrowButtonParams) {
         d == "up" ? "fullArrowUp" : "fullArrowDown"
       }
       ref={params.ref}
+      id={params.id}
       className={params.className}
       disabled={params.disabled ?? false}
+      type={params.type}
       autoFocus={params.autoFocus ?? false}
       style={params.style}
       size={params.size}
@@ -1064,6 +1076,7 @@ export function ArrowButton(params: ArrowButtonParams) {
 export type ArrowButtonParams = {
   direction: ArrowButtonDirection;
   size?: number;
+  type?: ButtonType;
   /**
    * Tooltip text.
    *
@@ -1079,6 +1092,7 @@ export type ArrowButtonParams = {
   autoFocus?: boolean;
 
   style?: React.CSSProperties;
+  id?: string;
   className?: string;
   ref?: React.Ref<HTMLButtonElement | null>;
 

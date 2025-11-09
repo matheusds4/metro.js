@@ -1,0 +1,73 @@
+// register Metro design fonts
+import "@hydroperx/metrodesign/fonts";
+
+// third-party
+import { createRoot } from "react-dom/client";
+import * as React from "react";
+import {
+  Root,
+  Group,
+  HGroup,
+  VGroup,
+  Button,
+  Label,
+  Icon,
+  Form,
+  FormGroup,
+  TextInput,
+} from "@hydroperx/metrodesign/components";
+import { RTLProvider } from "@hydroperx/metrodesign/layout";
+import {
+  Primary,
+  ThemePresets,
+  ThemeProvider,
+  type Theme,
+} from "@hydroperx/metrodesign/theme";
+
+/**
+ * The test.
+ */
+function App() {
+  const [checked, set_checked] = React.useState<boolean>(false);
+
+  return (
+    <ThemeProvider theme={ThemePresets.dark}>
+      <RTLProvider rtl={false}>
+        <Primary prefer={false}>
+          <Root
+            full
+            solid
+            selection={false}
+            style={{
+              overflowY: "auto",
+            }}>
+            <VGroup padding={10}>
+              <Form submit={()=>{alert("submitted!")}}>
+                <VGroup maxWidth={750} gap={10}>
+                  <VGroup gap={10}>
+                    <Label variant="heading">sign in</Label>
+                    <TextInput id="email" email placeholder="E-mail" default=""/>
+                    <TextInput id="password" password placeholder="Password" default=""/>
+                  </VGroup>
+                  <Group>
+                    <Button variant="anchor">forgot my password</Button>
+                  </Group>
+                  <VGroup horizontalAlign="right">
+                    <HGroup gap={10}>
+                      <Button type="submit" outline>Sign up</Button>
+                      <Button type="submit" outline variant="primary">Sign in</Button>
+                    </HGroup>
+                  </VGroup>
+                </VGroup>
+              </Form>
+            </VGroup>
+          </Root>
+        </Primary>
+      </RTLProvider>
+    </ThemeProvider>
+  );
+}
+
+// Render App
+const root = createRoot(document.getElementById("root")!);
+root.render(<App />);

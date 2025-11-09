@@ -43,17 +43,15 @@ Baseline group.
 - [x] Done
 - [x] Use an `outline` boolean instead of a variant.
 - [x] tooltip must close and not open while a next-sibling PopoverMenu is open.
-- [ ] submit parameter (i.e. makes this button submit the enclosing Form)
 
 # TextInput
 
 - [x] Done
-- [ ] Pressing enter on any single-line text input should submit the enclosing form
 
 # Form
 
-- [ ] Done
-- [ ] submit event
+- [x] Done
+- [x] submit event
 
 # FormGroup
 
