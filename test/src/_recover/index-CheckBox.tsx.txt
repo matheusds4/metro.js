@@ -12,6 +12,8 @@ import {
   Button,
   Label,
   Icon,
+  CheckBox,
+  FormGroup,
 } from "@hydroperx/metrodesign/components";
 import { RTLProvider } from "@hydroperx/metrodesign/layout";
 import {
@@ -39,6 +41,10 @@ function App() {
               overflowY: "auto",
             }}>
             <VGroup padding={10}>
+              <FormGroup>
+                <Label bold for="c1">{checked ? "On" : "Off"}</Label>
+                <CheckBox id="c1" default={false} change={v => {set_checked(v)}}/>
+              </FormGroup>
             </VGroup>
           </Root>
         </Primary>

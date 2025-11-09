@@ -1,12 +1,16 @@
+// third-party
 import * as React from "react";
 import { styled } from "styled-components";
 import { Color } from "@hydroperx/color";
 import Draggable from "@hydroperx/draggable";
+
+// local
 import { RTLContext } from "../layout/RTL";
 import { ThemeContext, PrimaryContext, Theme } from "../theme/Theme";
 import { REMObserver } from "../utils/REMObserver";
 import * as REMConvert from "../utils/REMConvert";
 import * as ColorUtils from "../utils/ColorUtils";
+import * as MathUtils from "../utils/MathUtils";
 
 /**
  * Checkbox component.
@@ -29,10 +33,10 @@ export function CheckBox(params: CheckBoxParams) {
   const carret_ref = React.useRef<HTMLDivElement | null>(null);
   const carret_touched = React.useRef<boolean>(false);
 
-  const [value, set_value] = React.useState<boolean>(!!params.default);
-  const value_ref = React.useRef<boolean>(value);
+  const changed = React.useRef<boolean>(false);
+  const value_ref = React.useRef<boolean>(!!params.default);
   let [checked_horizontal_pos, set_checked_horizontal_pos] = React.useState<number>(
-    value ? 0 : 100,
+    rtl ? (value_ref.current ? 100 : 0) : (value_ref.current ? 0 : 100),
   ); // percent
   const rem = React.useRef<number>(16);
 
@@ -78,17 +82,20 @@ export function CheckBox(params: CheckBoxParams) {
     };
   }, []);
 
-  // observe value
-  React.useEffect(() => {
-    value_ref.current = value;
-    update_positions();
-  }, [value]);
-
-  // reflect/observe ?rtl
+  // sync ?rtl and positions
   React.useEffect(() => {
     rtl_ref.current = rtl;
     update_positions();
   }, [rtl]);
+
+  // sync default value
+  React.useEffect(() => {
+    if (!changed.current) {
+      value_ref.current = !!params.default;
+      button_ref.current!.setAttribute("data-value", value_ref.current.toString());
+      update_positions();
+    }
+  }, [params.default]);
 
   // carret drag-n-drop
   React.useEffect(() => {
@@ -111,38 +118,39 @@ export function CheckBox(params: CheckBoxParams) {
       onDrag(_, x) {
         x /= rem.current;
 
-        // Position checked rectangle
-        set_checked_horizontal_pos(100 - (x / (rightmost_carret_pos-leftmost_carret_pos))*100);
+        // position checked rectangle
+        set_checked_horizontal_pos(MathUtils.clamp(Math.round(100 - (x / (rightmost_carret_pos-leftmost_carret_pos))*100), 0, 100));
 
-        // Reset top property set by Draggable
+        // reset top property set by Draggable
         carret_ref.current!.style.top = "";
       },
       onDragEnd(_, x) {
         x /= rem.current;
 
-        // Set new value
+        // set new value
         value_ref.current = x >= center_carret_pos;
         if (rtl_ref.current) {
           value_ref.current = !value_ref.current;
         }
-        set_value(value_ref.current);
+        changed.current = true;
+        button_ref.current!.setAttribute("data-value", value_ref.current.toString());
         update_positions();
 
-        // Reset top property set by Draggable
+        // reset top property set by Draggable
         carret_ref.current!.style.top = "";
 
-        // Trigger event
+        // trigger event
         params.change?.(value_ref.current);
 
-        // Undo flags
+        // undo flags
         window.setTimeout(() => {
           dragging.current = false;
           carret_touched.current = false;
-        }, 17);
+        }, 75);
       },
     });
 
-    // Cleanup
+    // cleanup
     return () => {
       draggable.current?.destroy();
       draggable.current = null;
@@ -165,7 +173,9 @@ export function CheckBox(params: CheckBoxParams) {
 
       // set new value
       value_ref.current = !value_ref.current;
-      set_value(value_ref.current);
+      button_ref.current!.setAttribute("data-value", value_ref.current.toString());
+      changed.current = true;
+      update_positions();
 
       // trigger event
       params.change?.(value_ref.current);
@@ -184,7 +194,9 @@ export function CheckBox(params: CheckBoxParams) {
 
     // set new value
     value_ref.current = !value_ref.current;
-    set_value(value_ref.current);
+    button_ref.current!.setAttribute("data-value", value_ref.current.toString());
+    changed.current = true;
+    update_positions();
 
     // trigger event
     params.change?.(value_ref.current);
@@ -200,7 +212,7 @@ export function CheckBox(params: CheckBoxParams) {
     const carret_left = !rtl_ref.current ? (value ? 100 : 0) : value ? 0 : 100;
     carret_ref.current!.style.left = (carret_left/100 * (rightmost_carret_pos - leftmost_carret_pos)) + "rem";
     // position checked rectangle
-    set_checked_horizontal_pos(value ? 0 : 100);
+    set_checked_horizontal_pos(rtl_ref.current ? (value ? 100 : 0) : (value ? 0 : 100));
   }
 
   return (
@@ -214,7 +226,7 @@ export function CheckBox(params: CheckBoxParams) {
         }
       }}
       id={params.id}
-      data-value={value.toString()}
+      data-value={value_ref.current.toString()}
       disabled={params.disabled}
       style={params.style}
       className={["CheckBox", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
@@ -323,7 +335,7 @@ const Button = styled.button<{
   && .CheckBox-checked-rect {
     position: absolute;
     ${$ => (!$.$rtl ? "left" : "right")}: 0;
-    ${$ => (!$.$rtl ? "right" : "left")}: ${$ => $.$checked_horizontal_pos}%;
+    ${$ => (!$.$rtl ? "right" : "width")}: ${$ => $.$checked_horizontal_pos}%;
     top: 0;
     bottom: 0;
     transition: left 110ms ease-out, right 110ms ease-out;
