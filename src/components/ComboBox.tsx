@@ -620,10 +620,10 @@ const ComboBoxButton = styled.button<{
   }
 
   &&.ComboBox-big {
-    font-size: 3.3rem;
+    font-size: 4.5rem;
   }
   &&.ComboBox-medium {
-    font-size: 2.5rem;
+    font-size: 3.2rem;
   }
 
   &&.ComboBox-big:hover:not(:disabled),
