@@ -83,9 +83,13 @@ import * as REMConvert from "../utils/REMConvert";
  */
 export type IconParams = {
   /**
-   * Icon ID. For a library native icon, use a `NativeIcons` constant.
+   * Icon ID.
    */
   type?: string;
+  /**
+   * Identifies an icon included in the Metro design library.
+   */
+  native?: NativeIcon,
   size?: number;
   style?: React.CSSProperties;
   id?: string,
@@ -118,84 +122,91 @@ export const IconMap = {
 };
 
 /**
- * Metro library's native icon constants.
+ * Metro library's native icon enumeration.
  */
-export const NativeIcons = {
-  BULLET: "bullet",
-  CHECKED: "checked",
-  ARROW_LEFT: "arrowLeft",
-  ARROW_RIGHT: "arrowRight",
-  ARROW_UP: "arrowUp",
-  ARROW_DOWN: "arrowDown",
-  FULLARROW_LEFT: "fullArrowLeft",
-  FULLARROW_RIGHT: "fullArrowRight",
-  FULLARROW_UP: "fullArrowUp",
-  FULLARROW_DOWN: "fullArrowDown",
-  SEARCH: "search",
-  CLEAR: "clear",
-  GAMES: "games",
-  INTERNET_EXPLORER: "internetExplorer",
-  VIDEO: "video",
-  STORE: "store",
-  SETTINGS: "settings",
-  MAIL: "mail",
-  USER: "user",
-  SECURITY: "security",
-  CALCULATOR: "calculator",
-  CAMERA: "camera",
-  BLUETOOTH: "bluetooth",
-  NEWS: "news",
-  BING: "bing",
-  OPERA: "opera",
-  CHROME: "chrome",
-  FIREFOX: "firefox",
-  MSEDGE: "msedge",
-  LAPIS: "lapis",
-  IDEA: "idea",
-  HELP: "help",
-  HELP_CIRCLE: "helpCircle",
-  NEW: "new",
-};
+export type NativeIcon =
+  | "bullet"
+  | "checked"
+  | "arrowLeft"
+  | "arrowRight"
+  | "arrowUp"
+  | "arrowDown"
+  | "fullArrowLeft"
+  | "fullArrowRight"
+  | "fullArrowUp"
+  | "fullArrowDown"
+  | "search"
+  | "clear"
+  | "games"
+  | "internetExplorer"
+  | "video"
+  | "store"
+  | "settings"
+  | "mail"
+  | "user"
+  | "security"
+  | "calculator"
+  | "camera"
+  | "bluetooth"
+  | "news"
+  | "bing"
+  | "opera"
+  | "chrome"
+  | "firefox"
+  | "msedge"
+  | "lapis"
+  | "idea"
+  | "help"
+  | "helpCircle"
+  | "new";
+
+/**
+ * Used for type inference for a `NativeIcon` identity
+ * in case a context type isn't directly typed as `NativeIcon`.
+ */
+export function nativeIcon(icon: NativeIcon): NativeIcon {
+  return icon;
+}
 
 // Initial icon map
 const iconMap = new Map<string, { black: any; white: any }>();
 
 // Initial registers
 IconMap.registerMap(new Map([
-  [NativeIcons.BULLET, { black: bullet_black, white: bullet_white }],
-  [NativeIcons.CHECKED, { black: checked_black, white: checked_white }],
-  [NativeIcons.ARROW_LEFT, { black: arrow_left_black, white: arrow_left_white }],
-  [NativeIcons.ARROW_RIGHT, { black: arrow_right_black, white: arrow_right_white }],
-  [NativeIcons.ARROW_UP, { black: arrow_up_black, white: arrow_up_white }],
-  [NativeIcons.ARROW_DOWN, { black: arrow_down_black, white: arrow_down_white }],
-  [NativeIcons.FULLARROW_LEFT, { black: fullarrow_left_black, white: fullarrow_left_white }],
-  [NativeIcons.FULLARROW_RIGHT, { black: fullarrow_right_black, white: fullarrow_right_white }],
-  [NativeIcons.FULLARROW_UP, { black: fullarrow_up_black, white: fullarrow_up_white }],
-  [NativeIcons.FULLARROW_DOWN, { black: fullarrow_down_black, white: fullarrow_down_white }],
-  [NativeIcons.SEARCH, { black: search_black, white: search_white }],
-  [NativeIcons.CLEAR, { black: clear_black, white: clear_white }],
-  [NativeIcons.GAMES, { black: games_black, white: games_white }],
-  [NativeIcons.INTERNET_EXPLORER, { black: ie_black, white: ie_white }],
-  [NativeIcons.VIDEO, { black: video_black, white: video_white }],
-  [NativeIcons.STORE, { black: store_black, white: store_white }],
-  [NativeIcons.SETTINGS, { black: settings_black, white: settings_white }],
-  [NativeIcons.MAIL, { black: mail_black, white: mail_white }],
-  [NativeIcons.USER, { black: user_black, white: user_white }],
-  [NativeIcons.SECURITY, { black: security_black, white: security_white }],
-  [NativeIcons.CALCULATOR, { black: calc_black, white: calc_white }],
-  [NativeIcons.CAMERA, { black: camera_black, white: camera_white }],
-  [NativeIcons.BLUETOOTH, { black: bluetooth_black, white: bluetooth_white }],
-  [NativeIcons.NEWS, { black: news_black, white: news_white }],
-  [NativeIcons.BING, { black: bing_black, white: bing_white }],
-  [NativeIcons.OPERA, { black: opera_black, white: opera_white }],
-  [NativeIcons.CHROME, { black: chrome_black, white: chrome_white }],
-  [NativeIcons.FIREFOX, { black: firefox_black, white: firefox_white }],
-  [NativeIcons.MSEDGE, { black: msedge_black, white: msedge_white }],
-  [NativeIcons.LAPIS, { black: lapis_black, white: lapis_white }],
-  [NativeIcons.IDEA, { black: idea_black, white: idea_white }],
-  [NativeIcons.HELP, { black: help_black, white: help_white }],
-  [NativeIcons.HELP_CIRCLE, { black: help_circle_black, white: help_circle_white }],
-  [NativeIcons.NEW, { black: new_black, white: new_white }],
+  [nativeIcon("bullet"), { black: bullet_black, white: bullet_white }],
+  [nativeIcon("checked"), { black: checked_black, white: checked_white }],
+  [nativeIcon("arrowLeft"), { black: arrow_left_black, white: arrow_left_white }],
+  [nativeIcon("arrowRight"), { black: arrow_right_black, white: arrow_right_white }],
+  [nativeIcon("arrowUp"), { black: arrow_up_black, white: arrow_up_white }],
+  [nativeIcon("arrowDown"), { black: arrow_down_black, white: arrow_down_white }],
+  [nativeIcon("fullArrowLeft"), { black: fullarrow_left_black, white: fullarrow_left_white }],
+  [nativeIcon("fullArrowRight"), { black: fullarrow_right_black, white: fullarrow_right_white }],
+  [nativeIcon("fullArrowUp"), { black: fullarrow_up_black, white: fullarrow_up_white }],
+  [nativeIcon("fullArrowDown"), { black: fullarrow_down_black, white: fullarrow_down_white }],
+  [nativeIcon("search"), { black: search_black, white: search_white }],
+  [nativeIcon("clear"), { black: clear_black, white: clear_white }],
+  [nativeIcon("games"), { black: games_black, white: games_white }],
+  [nativeIcon("internetExplorer"), { black: ie_black, white: ie_white }],
+  [nativeIcon("video"), { black: video_black, white: video_white }],
+  [nativeIcon("store"), { black: store_black, white: store_white }],
+  [nativeIcon("settings"), { black: settings_black, white: settings_white }],
+  [nativeIcon("mail"), { black: mail_black, white: mail_white }],
+  [nativeIcon("user"), { black: user_black, white: user_white }],
+  [nativeIcon("security"), { black: security_black, white: security_white }],
+  [nativeIcon("calculator"), { black: calc_black, white: calc_white }],
+  [nativeIcon("camera"), { black: camera_black, white: camera_white }],
+  [nativeIcon("bluetooth"), { black: bluetooth_black, white: bluetooth_white }],
+  [nativeIcon("news"), { black: news_black, white: news_white }],
+  [nativeIcon("bing"), { black: bing_black, white: bing_white }],
+  [nativeIcon("opera"), { black: opera_black, white: opera_white }],
+  [nativeIcon("chrome"), { black: chrome_black, white: chrome_white }],
+  [nativeIcon("firefox"), { black: firefox_black, white: firefox_white }],
+  [nativeIcon("msedge"), { black: msedge_black, white: msedge_white }],
+  [nativeIcon("lapis"), { black: lapis_black, white: lapis_white }],
+  [nativeIcon("idea"), { black: idea_black, white: idea_white }],
+  [nativeIcon("help"), { black: help_black, white: help_white }],
+  [nativeIcon("helpCircle"), { black: help_circle_black, white: help_circle_white }],
+  [nativeIcon("new"), { black: new_black, white: new_white }],
 ]));
 
 const Img = styled.img<{
@@ -219,8 +230,8 @@ export function Icon(params: IconParams) {
   const color_ref = React.useRef<string>("white");
 
   // icon type
-  assert(params.type, "Icon type must be specified.");
-  const type = React.useRef(params.type);
+  assert(!!params.type || !!params.native, "Icon type must be specified.");
+  const type = React.useRef(params.type ?? nativeIcon(params.native!));
 
   // compute size
   const computed_size =
@@ -245,12 +256,19 @@ export function Icon(params: IconParams) {
     };
   }, []);
 
+  // sync icon type
   React.useEffect(() => {
-    type.current = params.type!;
-  }, [params.type]);
+    type.current = params.type ?? nativeIcon(params.native!);
 
-  const m = iconMap.get(params.type);
-  assert(m !== undefined, "Icon is not defined: " + params.type);
+    // update source
+    const m = iconMap.get(type.current);
+    assert(m !== undefined, "Icon is not defined: " + type.current);
+    ref.current!.src = (m as any)[color_ref.current!];
+
+  }, [params.type, params.native]);
+
+  const m = iconMap.get(type.current);
+  assert(m !== undefined, "Icon is not defined: " + type.current);
   return (
     <Img
       ref={ref}

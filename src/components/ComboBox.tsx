@@ -11,7 +11,7 @@ import * as ComboBoxPlacement from "./combobox/ComboBoxPlacement";
 import { ComboBoxStatic } from "./combobox/ComboBoxStatic";
 import { ComboBoxEffect } from "./combobox/ComboBoxEffect";
 import { RTLContext } from "../layout/RTL";
-import { Icon, NativeIcons } from "./Icon";
+import { Icon } from "./Icon";
 import { Theme, ThemeContext, PrimaryContext } from "../theme/Theme";
 import * as ColorUtils from "../utils/ColorUtils";
 import { focusPrevSibling, focusNextSibling } from "../utils/FocusUtils";
@@ -551,7 +551,7 @@ export function ComboBox(params: {
         </div>
 
         <div className="ComboBox-button-arrow">
-          <Icon type={NativeIcons.ARROW_DOWN} size={params.big ? 20 : params.medium ? 18 : 16}/>
+          <Icon native="arrowDown" size={params.big ? 20 : params.medium ? 18 : 16}/>
         </div>
       </ComboBoxButton>
       <ComboBoxDropdown
@@ -568,11 +568,11 @@ export function ComboBox(params: {
         $selected_foreground_color={selected_foreground_color}>
 
         <div className="ComboBox-up-arrow">
-          <Icon type={NativeIcons.ARROW_UP} size={7.5}/>
+          <Icon native="arrowUp" size={7.5}/>
         </div>
         <div className="ComboBox-list">{params.children}</div>
         <div className="ComboBox-down-arrow">
-          <Icon type={NativeIcons.ARROW_DOWN} size={7.5}/>
+          <Icon native="arrowDown" size={7.5}/>
         </div>
       </ComboBoxDropdown>
     </>

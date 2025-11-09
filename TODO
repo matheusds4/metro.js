@@ -78,7 +78,7 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
 ```
 <PopoverMenu>
   <Item>
-    <span><Icon type={NativeIcons.INTERNET_EXPLORER}/></span>
+    <span><Icon native="internetExplorer"/></span>
     <Label>Internet Explorer</Label>
     <span>Ctrl+E</span>
   </Item>

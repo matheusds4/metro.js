@@ -2,7 +2,7 @@
 import React from "react";
 
 // local
-import { Icon, NativeIcons } from "./Icon";
+import { Icon } from "./Icon";
 import { RTLContext } from "../layout/RTL";
 
 /**
@@ -88,11 +88,11 @@ export function Indicator(params: {
 
       {
         indicator_type == "popoverMenu" ?
-          <Icon type={rtl ? NativeIcons.ARROW_LEFT : NativeIcons.ARROW_RIGHT} size={params.size ?? 20}/> :
+          <Icon native={rtl ? "arrowLeft" : "arrowRight"} size={params.size ?? 20}/> :
         indicator_type == "checked" ?
-          <Icon type={NativeIcons.CHECKED} size={params.size ?? 20}/> :
+          <Icon native="checked" size={params.size ?? 20}/> :
         indicator_type == "option" ?
-          <Icon type={NativeIcons.BULLET} size={params.size ?? 20}/> :
+          <Icon native="bullet" size={params.size ?? 20}/> :
           undefined
       }
     </div>

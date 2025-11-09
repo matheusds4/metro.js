@@ -12,7 +12,6 @@ import {
   Button,
   Label,
   Icon,
-  NativeIcons,
   ProgressBar,
   ProgressRing,
   PopoverMenu,
@@ -48,18 +47,18 @@ function App() {
               <Button outline>click me</Button>
               <PopoverMenu>
                 <Item>
-                  <span><Icon type={NativeIcons.INTERNET_EXPLORER}/></span>
+                  <span><Icon native="internetExplorer"/></span>
                   <Label>Internet Explorer</Label>
                   <span><Indicator state="none"/></span>
                 </Item>
                 <Item>
-                  <span><Icon type={NativeIcons.BING}/></span>
+                  <span><Icon native="bing"/></span>
                   <Label>Bing</Label>
                   <span>Ctrl+B</span>
                 </Item>
                 <Separator/>
                 <Item>
-                  <span><Icon type={NativeIcons.FIREFOX}/></span>
+                  <span><Icon native="firefox"/></span>
                   <Label>Firefox</Label>
                   <span>Ctrl+F</span>
                 </Item>

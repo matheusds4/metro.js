@@ -9,7 +9,7 @@ import { Color } from "@hydroperx/color";
 import * as REMConvert from "../utils/REMConvert";
 import { MAXIMUM_Z_INDEX } from "../utils/Constants";
 import * as ColorUtils from "../utils/ColorUtils";
-import { Icon, NativeIcons } from "./Icon";
+import { Icon, NativeIcon } from "./Icon";
 import { RTLContext } from "../layout/RTL";
 import { PrimaryContext, Theme, ThemeContext } from "../theme/Theme";
 import {
@@ -637,9 +637,9 @@ const TooltipDiv = styled.div<{
 `;
 
 /**
- * Represents a circle bordered icon button.
+ * Represents a circle button containing an icon.
  */
-export function CircleIconButton(params: CircleIconButtonParams) {
+export function CircleButton(params: CircleButtonParams) {
   // Take the theme context
   const theme = useContext(ThemeContext);
 
@@ -734,7 +734,7 @@ export function CircleIconButton(params: CircleIconButtonParams) {
 
   return (
     <>
-      <CircleIconButtonButton
+      <CircleButtonButton
         ref={params.ref}
         className={params.className}
         disabled={params.disabled}
@@ -769,11 +769,11 @@ export function CircleIconButton(params: CircleIconButtonParams) {
         onTouchCancel={params.touchCancel}
       >
         <Icon
-          type={params.icon}
+          type={params.icon ?? params.native}
           size={size - (size <= 16 ? 0 : 16)}
           style={iconStyle}
         />
-      </CircleIconButtonButton>
+      </CircleButtonButton>
 
       {tooltip === undefined ? undefined : (
         <TooltipDiv
@@ -790,8 +790,13 @@ export function CircleIconButton(params: CircleIconButtonParams) {
   );
 }
 
-export type CircleIconButtonParams = {
-  icon: string;
+export type CircleButtonParams = {
+  icon?: string;
+
+  /**
+   * Native icon.
+   */
+  native?: NativeIcon;
 
   /**
    * Whether the icon is initially filled or not.
@@ -842,7 +847,7 @@ export type CircleIconButtonParams = {
   touchCancel?: React.TouchEventHandler<HTMLButtonElement>;
 };
 
-const CircleIconButtonButton = styled.button<{
+const CircleButtonButton = styled.button<{
   $normal_color: string;
   $hover_color: string;
   $active_color: string;
@@ -897,11 +902,11 @@ export function ArrowButton(params: ArrowButtonParams) {
   const d = params.direction;
 
   return (
-    <CircleIconButton
-      icon={
-        d == "left" ? NativeIcons.FULLARROW_LEFT :
-        d == "right" ? NativeIcons.FULLARROW_RIGHT :
-        d == "up" ? NativeIcons.FULLARROW_UP : NativeIcons.FULLARROW_DOWN
+    <CircleButton
+      native={
+        d == "left" ? "fullArrowLeft" :
+        d == "right" ? "fullArrowRight" :
+        d == "up" ? "fullArrowUp" : "fullArrowDown"
       }
       ref={params.ref}
       className={params.className}
