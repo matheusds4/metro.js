@@ -1,7 +1,12 @@
 # Core tiles
 
-- [ ] While dragging a tile, enable overflow clipping at the groupTiles div.
-  - [ ] When drag ends, still leave overflow clipping active for around 750 ms.
+- [ ] `.direction` getter/setter
+  - [ ] changes the layout and re-detect past DOM nodes.
+- [ ] `.detect()`
+  - [ ] Contributes a newly-added DOM tile, or detects moving X/Y and resizing.
+  - [ ] Or contributes a newly-added DOM group, or detects label change.
+- [ ] `.remove()`
+  - [ ] Removes a tile (by its DOM node) or group after a transition. Returns a promise which fulfills after the transition is done.
 
 ## Group label
 
@@ -9,4 +14,25 @@
 
 ## Tile drag-n-drop
 
+- [ ] Touch start
+  - [ ] Trigger click
+  - [ ] Trigger check
+  - [ ] Trigger drag-n-drop (long-held)
+- [ ] Mouse down
+  - [ ] Trigger click
+  - [ ] Trigger check
+  - [ ] Trigger drag-n-drop (after short-delta)
+
+More:
+
+- [ ] While dragging a tile, enable overflow clipping at the groupTiles div.
+  - [ ] When drag ends, still leave overflow clipping active for around 750 ms.
+
 ## Group drag-n-drop
+
+- [ ] Label > touch start
+  - [ ] Edit
+  - [ ] Trigger drag-n-drop (long-held)
+- [ ] Label > mouse down
+  - [ ] Edit
+  - [ ] Trigger drag-n-drop (after short-delta)
