@@ -4,6 +4,7 @@
   - [ ] changes the layout and re-detect past DOM nodes.
 - [ ] `.detect()`
   - [ ] Contributes a newly-added DOM tile, or detects moving X/Y, resizing and group transfer (look at parent).
+    - [ ] If the tile was previously detected for a different layout limit/direction, then disregard whether X/Y has changed or not.
   - [ ] Or contributes a newly-added DOM group, or detects label change.
 - [ ] `.remove()`
   - [ ] Removes a tile (by its DOM node) or group after a transition. Returns a promise which fulfills after the transition is done. The end user has to manually remove the DOM node.
