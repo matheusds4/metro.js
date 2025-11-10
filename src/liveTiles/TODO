@@ -6,7 +6,7 @@
   - [ ] Contributes a newly-added DOM tile, or detects moving X/Y and resizing.
   - [ ] Or contributes a newly-added DOM group, or detects label change.
 - [ ] `.remove()`
-  - [ ] Removes a tile (by its DOM node) or group after a transition. Returns a promise which fulfills after the transition is done.
+  - [ ] Removes a tile (by its DOM node) or group after a transition. Returns a promise which fulfills after the transition is done. The end user has to manually remove the DOM node.
 
 ## Group label
 
@@ -27,6 +27,7 @@ More:
 
 - [ ] While dragging a tile, enable overflow clipping at the groupTiles div.
   - [ ] When drag ends, still leave overflow clipping active for around 750 ms.
+- [ ] When a group gets empty after drag end, remove it.
 
 ## Group drag-n-drop
 
