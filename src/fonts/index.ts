@@ -9,6 +9,5 @@ import "@fontsource/noto-sans/400.css";
 import "@fontsource/noto-sans/500.css";
 import "@fontsource/noto-sans/700.css";
 
-// courier prime
-import "@fontsource/courier-prime/400.css";
-import "@fontsource/courier-prime/700.css";
+// nimbus mono
+import "@hydroperx/nimbusmono/400.css";
