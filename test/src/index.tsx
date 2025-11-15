@@ -30,7 +30,7 @@ function App() {
 
   return (
     <ThemeProvider theme={ThemePresets.dark}>
-      <RTLProvider rtl={false}>
+      <RTLProvider rtl={true}>
         <Primary prefer={false}>
           <Root
             full

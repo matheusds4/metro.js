@@ -263,6 +263,9 @@ export function HSlider(params: {
 
     rtl_ref.current = rtl;
 
+    // update slider positions
+    put_slider_position();
+
   }, [rtl]);
 
   // sets value and rounds it to an integer
@@ -326,10 +329,8 @@ export function HSlider(params: {
 
     if (rtl_ref.current) {
       thumb_div.current!.style.right = mapped + "%";
-      thumb_div.current!.style.left = "0";
     } else {
       thumb_div.current!.style.left = mapped + "%";
-      thumb_div.current!.style.right = "0";
     }
   }
 
@@ -338,18 +339,16 @@ export function HSlider(params: {
     if (typeof start_ref !== "undefined") {
       if (value.current < start_ref.current!) {
         value.current = params.start!;
-        put_slider_position();
         change_handler.current?.(value.current);
       } else if (value.current > end_ref.current!) {
         value.current = params.end!;
-        put_slider_position();
         change_handler.current?.(value.current);
       }
     } else if (!stops_ref.current!.some(v => v.value == value.current)) {
       value.current = stops_ref.current![0].value;
-      put_slider_position();
       change_handler.current?.(value.current);
     }
+    put_slider_position();
   }
 
   // returns the display label for the selected value.
