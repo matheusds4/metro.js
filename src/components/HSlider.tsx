@@ -497,7 +497,9 @@ class DND {
   private m_global_pointerMove: null | ((e: PointerEvent) => void) = null;
   private m_global_pointerUp: null | ((e: PointerEvent) => void) = null;
   private m_global_pointerCancel: null | ((e: PointerEvent) => void) = null;
+  private m_global_wheel: null | ((e: WheelEvent) => void) = null;
   private m_activePointerId: number = -1;
+  private m_dragStart: [number, number] = [0, 0];
 
   // new DND()
   public constructor(
@@ -540,6 +542,10 @@ class DND {
       window.removeEventListener("pointercancel", this.m_global_pointerCancel);
       this.m_global_pointerCancel = null;
     }
+    if (this.m_global_wheel) {
+      window.removeEventListener("wheel", this.m_global_wheel);
+      this.m_global_wheel = null;
+    }
   }
 
   // destroy drag-n-drop
@@ -553,9 +559,6 @@ class DND {
       return;
     }
 
-    // remember pointer ID
-    this.m_activePointerId = e.pointerId;
-
     // register global pointer move event
     this.m_global_pointerMove = this.drag_move.bind(this);
     window.addEventListener("pointermove", this.m_global_pointerMove);
@@ -568,12 +571,26 @@ class DND {
     this.m_global_pointerCancel = this.drag_stop.bind(this);
     window.addEventListener("pointercancel", this.m_global_pointerCancel);
 
+    // register global wheel event
+    this.m_global_wheel = (e: WheelEvent): void => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    window.addEventListener("wheel", this.m_global_wheel, { passive: false });
+
     // handle drag start
     this.drag_start(e);
   }
 
   // drag start
   private drag_start(e: PointerEvent): void {
+    // remember pointer ID
+    this.m_activePointerId = e.pointerId;
+
+    // remember drag start
+    this.m_dragStart = [e.clientX, e.clientY];
+
+    // update position
     this.update_position(e);
   }
 
@@ -583,6 +600,7 @@ class DND {
       return;
     }
 
+    // update position
     this.update_position(e);
   }
 
@@ -611,6 +629,10 @@ class DND {
     if (this.m_global_pointerCancel) {
       window.removeEventListener("pointercancel", this.m_global_pointerCancel);
       this.m_global_pointerCancel = null;
+    }
+    if (this.m_global_wheel) {
+      window.removeEventListener("wheel", this.m_global_wheel);
+      this.m_global_wheel = null;
     }
 
     // update slider position

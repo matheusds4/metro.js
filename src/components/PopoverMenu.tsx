@@ -600,6 +600,7 @@ export function PopoverMenu(params: {
 
     if (out) {
       e.preventDefault();
+      e.stopPropagation();
     }
   }
 

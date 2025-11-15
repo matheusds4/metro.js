@@ -496,6 +496,7 @@ export function ComboBox(params: {
     }
 
     e.preventDefault();
+    e.stopPropagation();
   }
 
   // unregister global event handlers used by the ComboBox.
