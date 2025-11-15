@@ -14,9 +14,10 @@ import { RTLContext } from "../layout/RTL";
 import { Icon } from "./Icon";
 import { Theme, ThemeContext, PrimaryContext } from "../theme/Theme";
 import * as ColorUtils from "../utils/ColorUtils";
+import * as EscapableUtils from "../utils/EscapableUtils";
 import { focusPrevSibling, focusNextSibling } from "../utils/FocusUtils";
 import * as StringUtils from "../utils/StringUtils";
-import { MAXIMUM_Z_INDEX  } from "../utils/Constants";
+import { ESCAPABLE, MAXIMUM_Z_INDEX  } from "../utils/Constants";
 import * as REMConvert from "../utils/REMConvert";
 import { REMObserver } from "../utils/REMObserver";
 
@@ -395,7 +396,9 @@ export function ComboBox(params: {
 
     // handle escape
     if (input.justPressed("escape")) {
-      close();
+      if (EscapableUtils.escapable(dropdown.current!)) {
+        close();
+      }
       return;
     }
 
@@ -559,6 +562,7 @@ export function ComboBox(params: {
       <ComboBoxDropdown
         ref={dropdown}
         className={[
+          ESCAPABLE,
           ...(params.big ? ["ComboBox-big"] : []),
           ...(params.medium ? ["ComboBox-medium"] : []),
           ...[arrows_visible ? ["arrows-visible"] : []],

@@ -14,13 +14,14 @@ import { Icon } from "./Icon";
 import { RTLContext } from "../layout/RTL";
 import { Theme, ThemeContext } from "../theme/Theme";
 import * as ColorUtils from "../utils/ColorUtils";
+import * as EscapableUtils from "../utils/EscapableUtils";
 import { focusPrevSibling, focusNextSibling } from "../utils/FocusUtils";
 import * as MathUtils from "../utils/MathUtils";
 import { fitViewport, SimplePlacementType } from "../utils/PlacementUtils";
 import * as StringUtils from "../utils/StringUtils";
 import * as REMConvert from "../utils/REMConvert";
 import { REMObserver } from "../utils/REMObserver";
-import { COMMON_DELAY, MAXIMUM_Z_INDEX } from "../utils/Constants";
+import { COMMON_DELAY, ESCAPABLE, MAXIMUM_Z_INDEX } from "../utils/Constants";
 
 /**
  * Either a popover menu or a context menu.
@@ -425,6 +426,10 @@ export function PopoverMenu(params: {
 
     // handle escape
     if (input.justPressed("escape")) {
+      if (!EscapableUtils.escapable(div.current!)) {
+        return;
+      }
+
       // close innermost menu
 
       // just root open?
@@ -626,6 +631,7 @@ export function PopoverMenu(params: {
       className={
         [
           "PopoverMenu",
+          ESCAPABLE,
           ...(rtl ? ["rtl"] : []),
           ...(params.className ?? "").split(" ").filter(p => p != ""),
         ].join(" ")

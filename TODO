@@ -116,10 +116,7 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
 
 # BlackoutModal
 
-- [ ] Done
-  - [ ] z index = maximum
-  - [ ] Always visible (e.g., it should be present in DOM only when opened; clickOutside should destroy it from the DOM)
-  - [ ] clickOutside event
+- [x] Done
 
 # DatePicker
 
@@ -164,3 +161,8 @@ Way contextual; skinning and behavior relies on surrounding container. It is bas
 
 - [ ] Provide more theme presets. (Maybe, for light and dark, provide different primary colors (affecting also sliders).)
 - [ ] Provide a ThemePreset enumeration and allow converting it into a theme preset `Theme` object. (Useful for theme reuse across apps based on internal data.)
+
+# Documentation
+
+- [ ] ESCAPABLE class name
+- [ ] BUTTON_NAVIGABLE class name

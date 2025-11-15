@@ -10,6 +10,12 @@ export const MAXIMUM_Z_INDEX: string = "1999999999";
 export const BUTTON_NAVIGABLE = "button-navigable";
 
 /**
+ * Reserved cascading class name for containers that may be
+ * escaped by the `escape` input action.
+ */
+export const ESCAPABLE = "escapable";
+
+/**
  * Most common transition duration.
  */
 export const COMMON_DELAY = 200;

@@ -23,3 +23,4 @@ export * from "./MobileGroup";
 export * from "./HSlider";
 export * from "./VSlider";
 export * from "./SliderStop";
+export * from "./BlackoutModal";
