@@ -117,20 +117,18 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
   - [ ] Drag-n-drop: move
     - [ ] Update value.
     - [ ] changed = true
+    - [ ] Position thumb in %
     - [ ] *Put slider position* (except for the thumb)
     - [ ] Update value display div's position
     - [ ] Trigger `change` event (if really changed)
   - [ ] Drag-n-drop: stop
     - [ ] Hide value display div.
     - [ ] changed = true
-    - [ ] set_cast_value() for start..end
-    - [ ] For start..end, convert left to %.
-    - [ ] For stops, snap on drag stop.
+    - [ ] Update value
+      - [ ] set_cast_value() for start..end
+      - [ ] For stops, snap on drag stop.
     - [ ] *Put slider position*
     - [ ] Trigger `change` event (if really changed)
-  - [ ] Pointer down anywhere other than the thumb should jump-set value to that point (?closest to a stop?).
-    - [ ] changed = true
-    - [ ] set_cast_value()
   - [x] Arrow keys
     - [x] Move by stop, or between start..end
 
