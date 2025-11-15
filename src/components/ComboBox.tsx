@@ -542,6 +542,7 @@ export function ComboBox(params: {
         disabled={params.disabled}
         onClick={open}
         $background={theme.colors.inputBackground}
+        $background_behind={theme.colors.background}
         $border={theme.colors.inputBorder}
         $foreground={selected_foreground_color}>
 
@@ -582,12 +583,13 @@ export function ComboBox(params: {
 // style sheet
 const ComboBoxButton = styled.button<{
   $background: string,
+  $background_behind: string,
   $border: string,
   $foreground: string,
 }> `
   && {
     background: ${$ => $.$background};
-    border: 0.15rem solid ${$ => $.$border};
+    border: 0.15rem solid ${$ => ColorUtils.alphaZeroIfFar({ background: $.$background_behind, color: $.$border })};
     color: ${$ => $.$foreground};
     display: flex;
     flex-direction: row;

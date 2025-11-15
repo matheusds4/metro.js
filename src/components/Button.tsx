@@ -682,7 +682,7 @@ const TooltipDiv = styled.div<{
 }>`
   && {
     background: ${($) => $.$theme.colors.inputBackground};
-    border: 0.15rem solid ${($) => $.$theme.colors.inputBorder};
+    border: 0.15rem solid ${($) => ColorUtils.alphaZeroIfFar({ background: $.$theme.colors.background, color: $.$theme.colors.inputBorder })};
     color: ${$ => $.$theme.colors.foreground};
     display: inline-block;
     visibility: ${($) => ($.$tooltip_visible ? "visible" : "hidden")};

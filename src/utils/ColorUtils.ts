@@ -51,6 +51,16 @@ export function enhance({ background, color }: {
 }
 
 /**
+ * Color alpha=0 if backgrund is far different.
+ */
+export function alphaZeroIfFar({ background, color }: {
+  background: any,
+  color: any,
+}): string {
+  return like(background, color) ? color : Color(color).alpha(0).toString();
+}
+
+/**
  * Forced darkening of a color.
  */
 export function darken(a: any, ratio: number): string {

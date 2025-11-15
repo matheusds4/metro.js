@@ -112,13 +112,20 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
   - [ ] Value display (position like a tooltip over the thumb (pref. top), but with a more substantial offset)
   - [x] Thumb should have a little larger size for nice drag-n-drop, with invisible ends. (Visible = .significant)
   - [ ] Snap thumb depending on the stops (if specified) on drag stop.
-  - [ ] Click anywhere other than the thumb should jump-set value to that point.
+  - [ ] Pointer down anywhere other than the thumb should jump-set value to that point.
   - [ ] Arrow keys
     - [ ] Move by stop, or between start..end
 
 # VSlider
 
 - [ ] Done
+
+# BlackoutModal
+
+- [ ] Done
+  - [ ] z index = maximum
+  - [ ] Always visible (e.g., it should be present in DOM only when opened; clickOutside should destroy it from the DOM)
+  - [ ] clickOutside event
 
 # DatePicker
 

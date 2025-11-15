@@ -94,11 +94,13 @@ export function HSlider(params: {
   return (
     <>
       <HSliderButton
+        id={params.id}
         className={[
           "HSlider",
           ...(rtl ? ["rtl"] : []),
           ...(params.className ?? "").split(" ").filter(c => c != "")
         ].join(" ")}
+        style={params.style}
         ref={obj => {
           button.current = obj;
           if (typeof params.ref == "function") {
@@ -118,6 +120,7 @@ export function HSlider(params: {
         className={[
           ...(rtl ? ["rtl"] : []),
         ].join(" ")}
+        $bg_behind={theme.colors.background}
         $bg={theme.colors.inputBackground}
         $border={theme.colors.inputBorder}
         $foreground={theme.colors.foreground}>
@@ -170,11 +173,12 @@ const HSlider_thumb_div = styled.div<{
 const ValueDisplayDiv = styled.div<{
   $border: string,
   $bg: string,
+  $bg_behind: string,
   $foreground: string,
 }>`
   && {
     background: ${$ => $.$bg};
-    border: 0.15rem solid ${$ => $.$border};
+    border: 0.15rem solid ${$ => ColorUtils.alphaZeroIfFar({ background: $.$bg_behind, color: $.$border })};
     color: ${$ => $.$foreground};
     display: inline-block;
     visibility: hidden;

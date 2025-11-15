@@ -7,7 +7,8 @@ import extend from "extend";
 // local
 import { IconMap } from "./Icon";
 import { RTLContext } from "../layout/RTL";
-import { ThemeContext } from "../theme";
+import { ThemeContext } from "../theme/Theme";
+import * as ColorUtils from "../utils/ColorUtils";
 import * as REMConvert from "../utils/REMConvert";
 
 /**
@@ -135,7 +136,7 @@ export function TextInput(params: {
   const css = `
     && {
       background: ${theme.colors.inputBackground};
-      border: 0.15rem solid  ${theme.colors.inputBorder};
+      border: 0.15rem solid  ${ColorUtils.alphaZeroIfFar({ background: theme.colors.background, color: theme.colors.inputBorder })};
       color: ${theme.colors.foreground};
       padding: ${REMConvert.pixels.remPlusUnit(6.45)} 0.7rem;
       ${icon === null || params.multiline ? "" : `${rtl ? "padding-left" : "padding-right"}: ${REMConvert.pixels.remPlusUnit(iconSize + 3)};`}

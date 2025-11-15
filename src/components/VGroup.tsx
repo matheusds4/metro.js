@@ -10,6 +10,7 @@ import { ScrollbarSkin } from "../skins/ScrollbarSkin";
 import { SelectionSkin } from "../skins/SelectionSkin";
 import { TableSkin } from "../skins/TableSkin";
 import * as REMConvert from "../utils/REMConvert";
+import * as ColorUtils from "../utils/ColorUtils";
 import { EasingFunction, Alignment } from "../enum";
 import { COMMON_DELAY } from "../utils/Constants";
 
@@ -332,7 +333,7 @@ const _Div = styled.div<{
 
   &&.input {
     background: ${$ => $.$theme.colors.inputBackground};
-    border: 0.15rem solid  ${$ => $.$theme.colors.inputBorder};
+    border: 0.15rem solid  ${$ => ColorUtils.alphaZeroIfFar({ background: $.$theme.colors.background, color: $.$theme.colors.inputBorder })};
   }
 
   ${$ => AnchorSkin($.$theme)}
