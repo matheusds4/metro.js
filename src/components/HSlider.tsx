@@ -723,7 +723,7 @@ class DND {
     if (this.stops.current) {
       const stops = this.stops.current!;
       const ratio = percent / 100;
-      const i = Math.round(ratio * (stops.length - 1));
+      const i = MathUtils.clamp(Math.round(ratio * (stops.length - 1)), 0, stops.length - 1);
       this.value.current = stops[i].value;
     // cast to start..end range
     } else {
