@@ -20,13 +20,23 @@ import * as ColorUtils from "../utils/ColorUtils";
  * - `start` and `end`, or
  * - `stops`
  * 
- * @throws If `stops` is empty.
+ * @throws If both `start+end` and `stops` were specified.
+ * @throws If `stops` is specified and empty.
+ * @throws If `start > end`.
  */
 export function HSlider(params: {
   default: number,
+  /**
+   * Start (inclusive).
+   */
   start?: number,
+  /**
+   * End (inclusive).
+   */
   end?: number,
   stops?: SliderStop[],
+
+  disabled?: boolean,
 
   id?: string,
   className?: string,
@@ -41,6 +51,7 @@ export function HSlider(params: {
   assert(typeof params.start !== "undefined" ? typeof params.end !== "undefined" : true, "If slider start is specified, end must also be specified.");
   assert(typeof params.end !== "undefined" ? typeof params.start !== "undefined" : true, "If slider end is specified, start must also be specified.");
   assert(typeof params.start !== "undefined" ? !params.stops : !!params.stops, "One of slider start+end or stops must be specified.");
+  assert(typeof params.start !== "undefined" ? params.start! <= params.end! : true, "Slider start must be <= end.");
   assert(!!params.stops ? params.stops.length != 0 : true, "Slider stops must be non-empty.");
 
   // basics
@@ -49,7 +60,11 @@ export function HSlider(params: {
   const thumb_div = React.useRef<null | HTMLDivElement>(null);
   const thumb_significant_div = React.useRef<null | HTMLDivElement>(null);
   const val_display_div = React.useRef<null | HTMLDivElement>(null);
+  const start_ref = React.useRef<undefined | number>(params.start);
+  const end_ref = React.useRef<undefined | number>(params.end);
   const stops_ref = React.useRef<undefined | SliderStop[]>(params.stops);
+  const disabled_ref = React.useRef<boolean>(!!params.disabled);
+  const change_handler = React.useRef<undefined | ((value: any) => void)>(params.change);
   const value = React.useRef<number>(params.default);
   const changed = React.useRef<boolean>(false);
   const theme = React.useContext(ThemeContext);
@@ -57,26 +72,89 @@ export function HSlider(params: {
   const rtl = React.useContext(RTLContext);
 
   // colors
-  const non_past_bg = theme.colors.progressBarBackground;
-  const past_bg = primary ? theme.colors.primary : theme.colors.progressBarForeground;
+  const non_past_bg = theme.colors.sliderBackground;
+  const past_bg = primary ? theme.colors.primary : theme.colors.sliderPastBackground;
 
   // sync default
   React.useEffect(() => {
+
     if (!changed.current) {
       value.current = params.default ?? 0;
-      reflect();
+
+      // make sure value is in range and exact
+      fix_value_range();
+
+      put_slider_position();
+
+      // trigger change
+      change_handler.current?.(value.current);
     }
+
   }, [params.default]);
+
+  // sync start/end
+  React.useEffect(() => {
+
+    start_ref.current = params.start;
+    end_ref.current = params.end;
+
+    // make sure value is in range and exact
+    fix_value_range();
+
+    // update label
+    val_display_div.current!.innerText = get_display_label();
+
+  }, [params.start, params.end]);
 
   // sync stops
   React.useEffect(() => {
+
     stops_ref.current = params.stops;
+
+    // make sure value is in range and exact
+    fix_value_range();
+
+    // update label
     val_display_div.current!.innerText = get_display_label();
+
   }, [params.stops]);
 
+  // sync disabled
+  React.useEffect(() => {
+
+    disabled_ref.current = !!params.disabled;
+
+  }, [params.disabled]);
+
+  // sync `change` handler
+  React.useEffect(() => {
+
+    change_handler.current = params.change;
+
+  }, [params.change]);
+
   // position everything right.
-  function reflect(): void {
+  function put_slider_position(): void {
     fixme();
+  }
+
+  // make sure value is in range and exact
+  function fix_value_range(): void {
+    if (typeof start_ref !== "undefined") {
+      if (value.current < start_ref.current!) {
+        value.current = params.start!;
+        put_slider_position();
+        change_handler.current?.(value.current);
+      } else if (value.current > end_ref.current!) {
+        value.current = params.end!;
+        put_slider_position();
+        change_handler.current?.(value.current);
+      }
+    } else if (!stops_ref.current!.some(v => v.value == value.current)) {
+      value.current = stops_ref.current![0].value;
+      put_slider_position();
+      change_handler.current?.(value.current);
+    }
   }
 
   // returns the display label for the selected value.
@@ -109,6 +187,7 @@ export function HSlider(params: {
             params.ref!.current = obj;
           }
         }}
+        disabled={params.disabled}
         $bg={non_past_bg}>
         <HSlider_past_div ref={past_div} $bg={past_bg}/>
         <HSlider_thumb_div ref={thumb_div} $bg={theme.colors.foreground}>
@@ -139,6 +218,10 @@ const HSliderButton = styled.button<{
     background: ${$ => $.$bg};
     border: none;
     outline: none;
+  }
+
+  &&:disabled {
+    opacity: 0.5;
   }
 `;
 

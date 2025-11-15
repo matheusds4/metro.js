@@ -109,10 +109,13 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
 # HSlider
 
 - [ ] Done
-  - [ ] Value display (position like a tooltip over the thumb (pref. top), but with a more substantial offset)
+  - [ ] Value display (position like a tooltip over the thumb (pref. top), but with a more substantial offset) while...
+    - [ ] ... hovering the thumb
+    - [ ] ... dragging the thumb (i.e. pointer not hovering the thumb)
   - [x] Thumb should have a little larger size for nice drag-n-drop, with invisible ends. (Visible = .significant)
+  - [ ] Drag-n-drop
   - [ ] Snap thumb depending on the stops (if specified) on drag stop.
-  - [ ] Pointer down anywhere other than the thumb should jump-set value to that point.
+  - [ ] Pointer down anywhere other than the thumb should jump-set value to that point (?closest to a stop?).
   - [ ] Arrow keys
     - [ ] Move by stop, or between start..end
 
@@ -168,4 +171,4 @@ Way contextual; skinning and behavior relies on surrounding container. It is bas
 
 # Themes
 
-- [ ] Provide more theme presets.
+- [ ] Provide more theme presets. (Maybe, for light and dark, provide different primary colors (affecting also sliders).)

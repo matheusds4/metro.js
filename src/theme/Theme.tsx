@@ -37,6 +37,16 @@ export type Theme = {
     progressBarForeground: string;
 
     /**
+     * Slider background.
+     */
+    sliderBackground: string;
+
+    /**
+     * Slider's past background.
+     */
+    sliderPastBackground: string;
+
+    /**
      * Anchor link color.
      */
     anchor: string;
@@ -106,6 +116,9 @@ const light: Theme = {
     progressBarBackground: "#777",
     progressBarForeground: "#000",
 
+    sliderBackground: "#777",
+    sliderPastBackground: "#3a00c8",
+
     anchor: "#b700f3",
 
     scrollBarTrack: "#E9E9E9",
@@ -139,6 +152,9 @@ const dark: Theme = {
     progressBarBackground: "#555",
     progressBarForeground: "#fff",
 
+    sliderBackground: "#555",
+    sliderPastBackground: "#3a00c8",
+
     anchor: "#695C97",
 
     scrollBarTrack: "rgba(0,0,0,0)",
@@ -169,6 +185,7 @@ purple.colors.background = purple.colors.primary = "#180053";
 const green = structuredClone(dark);
 green.colors.background = "#3F8700";
 green.colors.primary = "#4F970E";
+green.colors.sliderPastBackground = green.colors.primary;
 green.colors.anchor = "#ef7127";
 
 /**
