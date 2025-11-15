@@ -113,11 +113,20 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
     - [ ] ... hovering the thumb
     - [ ] ... dragging the thumb (i.e. pointer not hovering the thumb)
   - [x] Thumb should have a little larger size for nice drag-n-drop, with invisible ends. (Visible = .significant)
-  - [ ] Drag-n-drop
+  - [ ] Drag-n-drop: start
+    - [ ] Show value display div.
+  - [ ] Drag-n-drop: move
+    - [ ] Update value.
+    - [ ] changed = true
+    - [ ] *Put slider position* (except for the thumb)
+    - [ ] Trigger `change` event (if really changed)
+  - [ ] Drag-n-drop: stop
     - [ ] changed = true
     - [ ] set_cast_value() for start..end
-    - [ ] For start..end, convert left to % on drag stop.
+    - [ ] For start..end, convert left to %.
     - [ ] For stops, snap on drag stop.
+    - [ ] *Put slider position*
+    - [ ] Trigger `change` event
   - [ ] Pointer down anywhere other than the thumb should jump-set value to that point (?closest to a stop?).
     - [ ] changed = true
     - [ ] set_cast_value()

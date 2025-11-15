@@ -236,7 +236,7 @@ export function HSlider(params: {
   }
 
   // position everything right.
-  function put_slider_position(): void {
+  function put_slider_position(thumb: boolean = true): void {
     const v = value.current!;
     let percent = 0;
 
@@ -260,24 +260,29 @@ export function HSlider(params: {
     past_div.current!.style.left = "";
     past_div.current!.style.width = "";
 
-    thumb_div.current!.style.left = "";
-    thumb_div.current!.style.right = "";
+    if (thumb) {
+      thumb_div.current!.style.left = "";
+      thumb_div.current!.style.right = "";
+    }
 
     const sig = (
-      thumb_div.current!.offsetWidth -
-      thumb_significant_div.current!.offsetWidth/2
-    ) / rem.current;
+      (thumb_significant_div.current!.offsetWidth/2
+    ) / ScaleUtils.getScale(button.current!).x) / rem.current;
 
     if (rtl_ref.current) {
       past_div.current!.style.right = "0";
       past_div.current!.style.width = percent + "%";
 
-      thumb_div.current!.style.right = "calc(" + percent + "% - " + sig + "rem)";
+      if (thumb) {
+        thumb_div.current!.style.right = "calc(" + percent + "% - " + sig + "rem)";
+      }
     } else {
       past_div.current!.style.left = "0";
       past_div.current!.style.width = percent + "%";
 
-      thumb_div.current!.style.left = "calc(" + percent + "% - " + sig + "rem)";
+      if (thumb) {
+        thumb_div.current!.style.left = "calc(" + percent + "% - " + sig + "rem)";
+      }
     }
   }
 
@@ -382,7 +387,7 @@ export function HSlider(params: {
 
       // limit drag-n-drop
       limit(x: number, y: number, x0: number, y0: number): { x: number, y: number } {
-        const button_offsetParent_scale = ScaleUtils.getScale(button.current!.offsetParent! as HTMLElement);
+        const button_offsetParent_scale = ScaleUtils.getScale(button.current!);
         const min_x = ((-(thumb_div.current!.offsetWidth - thumb_significant_div.current!.offsetWidth))/2) / button_offsetParent_scale.x;
         const max_x = (button.current!.clientWidth - (thumb_div.current!.offsetWidth - thumb_significant_div.current!.offsetWidth/2)) / button_offsetParent_scale.x;
         return { x: MathUtils.clamp(x, min_x, max_x), y: y0 };
@@ -396,17 +401,17 @@ export function HSlider(params: {
 
   // thumb drag start
   function thumb_dragStart(element: Element, x: number, y: number, event: Event): void {
-    fixme();
+    // fixme();
   }
 
   // thumb drag
   function thumb_drag(element: Element, x: number, y: number, event: Event): void {
-    fixme();
+    // fixme();
   }
 
   // thumb dragEnd
   function thumb_dragEnd(element: Element, x: number, y: number, event: Event): void {
-    fixme();
+    // fixme();
   }
 
   return (

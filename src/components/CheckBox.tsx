@@ -35,9 +35,6 @@ export function CheckBox(params: CheckBoxParams) {
 
   const changed = React.useRef<boolean>(false);
   const value_ref = React.useRef<boolean>(!!params.default);
-  // let [checked_horizontal_pos, set_checked_horizontal_pos] = React.useState<number>(
-  //  rtl ? (value_ref.current ? 100 : 0) : (value_ref.current ? 0 : 100),
-  // ); // percent
   const rem = React.useRef<number>(16);
 
   // misc.
