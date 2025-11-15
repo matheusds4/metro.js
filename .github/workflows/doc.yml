@@ -31,7 +31,11 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm i
-      - name:
+      - name: Delete default docs directory
+        run: |
+          git rm --cached -r docs
+          rm -rf docs
+      - name: Generate docs
         run: npm run doc
       - name: Git commit report
         run: |

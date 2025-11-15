@@ -6,6 +6,3 @@
 
 # ignore NPM lockfile
 /package-lock.json
-
-# ignore API documentation
-/docs
