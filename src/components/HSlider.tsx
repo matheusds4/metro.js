@@ -449,7 +449,9 @@ const HSlider_past_div = styled.div<{
   $bg: string;
 }> `
   && {
-    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
     background: ${$ => $.$bg};
   }
 `;
@@ -458,13 +460,10 @@ const HSlider_thumb_div = styled.div<{
   $bg: string;
 }> `
   && {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
     position: absolute;
     width: 1.3rem;
     top: 0;
-    height: 100%;
+    bottom: 0;
     background: ${$ => $.$bg};
   }
 `;
