@@ -109,6 +109,8 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
 # HSlider
 
 - [ ] Done
+  - [ ] Arrow keys
+    - [ ] Move by stop, or between start..end
 
 # VSlider
 

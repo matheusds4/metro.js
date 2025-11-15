@@ -22,3 +22,4 @@ export * from "./DesktopGroup";
 export * from "./MobileGroup";
 export * from "./HSlider";
 export * from "./VSlider";
+export * from "./SliderStop";
