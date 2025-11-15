@@ -116,6 +116,7 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
   - [ ] Drag-n-drop
     - [ ] changed = true
     - [ ] set_cast_value() for start..end
+    - [ ] For start..end, convert left to % on drag stop.
     - [ ] For stops, snap on drag stop.
   - [ ] Pointer down anywhere other than the thumb should jump-set value to that point (?closest to a stop?).
     - [ ] changed = true

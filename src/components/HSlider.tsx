@@ -258,7 +258,6 @@ export function HSlider(params: {
     // - thumb_div (count thumb_significant_div)
 
     past_div.current!.style.left = "";
-    past_div.current!.style.right = "";
     past_div.current!.style.width = "";
 
     thumb_div.current!.style.left = "";
@@ -276,7 +275,7 @@ export function HSlider(params: {
       thumb_div.current!.style.right = "calc(" + percent + "% - " + sig + "rem)";
     } else {
       past_div.current!.style.left = "0";
-      past_div.current!.style.right = percent + "%";
+      past_div.current!.style.width = percent + "%";
 
       thumb_div.current!.style.left = "calc(" + percent + "% - " + sig + "rem)";
     }
@@ -379,12 +378,13 @@ export function HSlider(params: {
     }
     draggable.current = new Draggable(thumb_div.current!, {
       cascadingUnit: "rem",
+      setPosition: false,
 
       // limit drag-n-drop
       limit(x: number, y: number, x0: number, y0: number): { x: number, y: number } {
         const button_offsetParent_scale = ScaleUtils.getScale(button.current!.offsetParent! as HTMLElement);
-        const min_x = -((thumb_significant_div.current!.offsetLeft - thumb_div.current!.offsetLeft) / button_offsetParent_scale.x);
-        const max_x = Math.abs(min_x);
+        const min_x = ((-(thumb_div.current!.offsetWidth - thumb_significant_div.current!.offsetWidth))/2) / button_offsetParent_scale.x;
+        const max_x = (button.current!.clientWidth - (thumb_div.current!.offsetWidth - thumb_significant_div.current!.offsetWidth/2)) / button_offsetParent_scale.x;
         return { x: MathUtils.clamp(x, min_x, max_x), y: y0 };
       },
 
@@ -396,17 +396,17 @@ export function HSlider(params: {
 
   // thumb drag start
   function thumb_dragStart(element: Element, x: number, y: number, event: Event): void {
-    // fixme();
+    fixme();
   }
 
   // thumb drag
   function thumb_drag(element: Element, x: number, y: number, event: Event): void {
-    // fixme();
+    fixme();
   }
 
   // thumb dragEnd
   function thumb_dragEnd(element: Element, x: number, y: number, event: Event): void {
-    // fixme();
+    fixme();
   }
 
   return (
@@ -458,10 +458,13 @@ const HSliderButton = styled.button<{
 }> `
   && {
     position: relative;
-    height: 0.5rem;
+    height: 1rem;
     background: ${$ => $.$bg};
     border: none;
     outline: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
   }
 
   &&:focus:not(:disabled) {
@@ -492,11 +495,12 @@ const HSlider_thumb_div = styled.div<{
     justify-content: center;
     position: absolute;
     width: 2.5rem;
+    top: 0;
     height: 100%;
   }
 
   && > .significant {
-    width: 1.5rem;
+    width: 1.3rem;
     height: 100%;
     background: ${$ => $.$bg};
   }
