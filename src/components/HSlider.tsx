@@ -116,6 +116,7 @@ export function HSlider(params: {
       thumb_div.current!,
       val_display_div.current!,
       put_slider_position,
+      put_past_position,
       put_thumb_position,
       set_cast_value,
       get_display_label,
@@ -247,7 +248,7 @@ export function HSlider(params: {
   }
 
   // position everything right.
-  function put_slider_position(thumb: boolean = true): void {
+  function put_slider_position(): void {
     const v = value.current!;
     let percent = 0;
 
@@ -264,10 +265,12 @@ export function HSlider(params: {
       percent = ((v - start) / (end - start)) * 100;
     }
 
-    // position/redimension things up
-    // - past_div
-    // - thumb_div
+    put_past_position(percent);
+    put_thumb_position(percent);
+  }
 
+  // position only the past
+  function put_past_position(percent: number): void {
     past_div.current!.style.left = "";
     past_div.current!.style.width = "";
 
@@ -278,8 +281,6 @@ export function HSlider(params: {
       past_div.current!.style.left = "0";
       past_div.current!.style.width = percent + "%";
     }
-
-    put_thumb_position(percent);
   }
 
   // position only the thumb
@@ -553,7 +554,8 @@ class DND {
     private button: HTMLButtonElement,
     private thumb_div: HTMLDivElement,
     private val_display_div: HTMLDivElement,
-    private put_slider_position: (thumb?: boolean) => void,
+    private put_slider_position: () => void,
+    private put_past_position: (percent: number) => void,
     private put_thumb_position: (percent: number) => void,
     private set_cast_value: (value: number) => void,
     private get_display_label: () => string,
@@ -720,6 +722,7 @@ class DND {
     }
 
     // position thumb in %
+    this.put_past_position(percent);
     this.put_thumb_position(percent);
 
     // update value
@@ -737,9 +740,6 @@ class DND {
       this.set_cast_value(((end - start) * (percent / 100)) + start);
       this.value.current = MathUtils.clamp(this.value.current, start, end);
     }
-
-    // put slider position (except for the thumb)
-    this.put_slider_position(false);
 
     // show value display div
     this.show_value_display();
