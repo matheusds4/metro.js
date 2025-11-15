@@ -22,6 +22,7 @@ import * as ColorUtils from "../utils/ColorUtils";
  * 
  * @throws If both `start+end` and `stops` were specified.
  * @throws If `stops` is specified and empty.
+ * @throws If `stops` is specified and is not sequential in ascending order.
  * @throws If `start > end`.
  */
 export function HSlider(params: {
@@ -53,6 +54,15 @@ export function HSlider(params: {
   assert(typeof params.start !== "undefined" ? !params.stops : !!params.stops, "One of slider start+end or stops must be specified.");
   assert(typeof params.start !== "undefined" ? params.start! <= params.end! : true, "Slider start must be <= end.");
   assert(!!params.stops ? params.stops.length != 0 : true, "Slider stops must be non-empty.");
+
+  // if stops are specified, then make sure they are sequential
+  // in ascending order.
+  if (params.stops) {
+    const s = params.stops!;
+    for (let i = 1; i < s.length; i++) {
+      assert(s[i] > s[i - 1], "Slider stops must be sequential in ascending order.");
+    }
+  }
 
   // basics
   const button = React.useRef<null | HTMLButtonElement>(null);
@@ -135,7 +145,19 @@ export function HSlider(params: {
 
   // position everything right.
   function put_slider_position(): void {
-    fixme();
+    const v = value.current!;
+    let percent = 0;
+
+    // position based on stops
+    if (typeof start_ref.current == "undefined") {
+      const stops_list = stops_ref.current!;
+      fixme();
+    // position based on start..end (inclusive) range
+    } else {
+      const start = start_ref.current!;
+      const end = end_ref.current!;
+      fixme();
+    }
   }
 
   // make sure value is in range and exact
