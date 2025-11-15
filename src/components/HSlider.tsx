@@ -22,7 +22,7 @@ import * as ColorUtils from "../utils/ColorUtils";
  * 
  * @throws If both `start+end` and `stops` were specified.
  * @throws If `stops` is specified and empty.
- * @throws If `stops` is specified and is not sequential in ascending order.
+ * @throws If `stops` is specified and is not succeeding in ascending order.
  * @throws If `start > end`.
  */
 export function HSlider(params: {
@@ -60,7 +60,7 @@ export function HSlider(params: {
   if (params.stops) {
     const s = params.stops!;
     for (let i = 1; i < s.length; i++) {
-      assert(s[i] > s[i - 1], "Slider stops must be sequential in ascending order.");
+      assert(s[i].value > s[i - 1].value, "Slider stops must be succeeding in ascending order.");
     }
   }
 
@@ -80,6 +80,10 @@ export function HSlider(params: {
   const theme = React.useContext(ThemeContext);
   const primary = React.useContext(PrimaryContext);
   const rtl = React.useContext(RTLContext);
+  const rtl_ref = React.useRef(rtl);
+
+  // drag things
+  const draggable = React.useRef<null | Draggable>(null);
 
   // colors
   const non_past_bg = theme.colors.sliderBackground;
@@ -143,21 +147,33 @@ export function HSlider(params: {
 
   }, [params.change]);
 
+  // sync ?rtl
+  React.useEffect(() => {
+
+    rtl_ref.current = rtl;
+
+  }, [rtl]);
+
   // position everything right.
   function put_slider_position(): void {
     const v = value.current!;
     let percent = 0;
 
-    // position based on stops
+    // determine percent based on stops
     if (typeof start_ref.current == "undefined") {
       const stops = stops_ref.current!;
-      fixme();
-    // position based on start..end (inclusive) range
+      const min = stops[0].value;
+      const max = stops[stops.length - 1].value;
+      percent = ((v - min) / (max - min)) * 100;
+    // determine percent based on start..end (inclusive) range
     } else {
       const start = start_ref.current!;
       const end = end_ref.current!;
-      fixme();
+      percent = ((v - start) / (end - start)) * 100;
     }
+
+    // position/redimension things up
+    fixme();
   }
 
   // make sure value is in range and exact
