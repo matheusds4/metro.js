@@ -119,6 +119,8 @@ export function HSlider(params: {
       put_thumb_position,
       set_cast_value,
       get_display_label,
+      show_value_display,
+      hide_value_display,
       changed,
       change_handler,
       value,
@@ -327,6 +329,28 @@ export function HSlider(params: {
     return label;
   }
 
+  // show the value display
+  function show_value_display(): void {
+    val_display_div.current!.style.visibility = "visible";
+    val_display_div.current!.innerText = get_display_label();
+    FloatingUI.computePosition(thumb_div.current!, val_display_div.current!, {
+      placement: "top",
+      middleware: [
+        FloatingUI.offset(16),
+        FloatingUI.flip(),
+        FloatingUI.shift(),
+      ],
+    }).then(r => {
+      val_display_div.current!.style.left = r.x + "px";
+      val_display_div.current!.style.top = r.y + "px";
+    });
+  }
+
+  // hide the value display
+  function hide_value_display(): void {
+    val_display_div.current!.style.visibility = "";
+  }
+
   // handle global input pressed
   function global_input_pressed(): void {
     const left = input.justPressed("navigateLeft");
@@ -408,6 +432,16 @@ export function HSlider(params: {
         disabled={params.disabled}
         onFocus={button_focus}
         onBlur={button_blur}
+        onMouseOver={e => {
+          // show the value display
+          show_value_display();
+        }}
+        onMouseOut={e => {
+          // hide the value display if not dragging
+          if (!dnd.current!.dragging) {
+            hide_value_display();
+          }
+        }}
         $bg={non_past_bg}
         $focus_dashes={theme.colors.focusDashes}>
         <HSlider_past_div ref={past_div} $bg={past_bg}/>
@@ -518,6 +552,8 @@ class DND {
     private put_thumb_position: (percent: number) => void,
     private set_cast_value: (value: number) => void,
     private get_display_label: () => string,
+    private show_value_display: () => void,
+    private hide_value_display: () => void,
     private changed: React.RefObject<boolean>,
     private change_handler: React.RefObject<undefined | ((value: any) => void)>,
     private value: React.RefObject<number>,
@@ -565,6 +601,11 @@ class DND {
   // destroy drag-n-drop
   public destroy(): void {
     this.disable();
+  }
+
+  // whether dragging or not.
+  public get dragging(): boolean {
+    return this.m_activePointerId != -1;
   }
 
   // pointer down on the button
@@ -680,7 +721,10 @@ class DND {
     //
     // snap to a stop
     if (this.stops.current) {
-      fixme();
+      const stops = this.stops.current!;
+      const ratio = percent / 100;
+      const i = Math.round(ratio * (stops.length - 1));
+      this.value.current = stops[i].value;
     // cast to start..end range
     } else {
       const start = this.start.current!;
@@ -693,19 +737,7 @@ class DND {
     this.put_slider_position(false);
 
     // show value display div
-    this.val_display_div.style.visibility = "hidden";
-    this.val_display_div.innerText = this.get_display_label();
-    FloatingUI.computePosition(this.thumb_div, this.val_display_div, {
-      placement: "top",
-      middleware: [
-        FloatingUI.offset(16),
-        FloatingUI.flip(),
-        FloatingUI.shift(),
-      ],
-    }).then(r => {
-      this.val_display_div.style.left = r.x + "px";
-      this.val_display_div.style.top = r.y + "px";
-    });
+    this.show_value_display();
 
     // trigger `change` event
     if (this.value.current != old_value) {

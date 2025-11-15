@@ -108,30 +108,8 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
 
 # HSlider
 
-- [ ] Done
-  - [ ] Value display (position like a tooltip over the thumb (pref. top), but with a more substantial offset) while...
-    - [ ] ... hovering the thumb
-    - [x] ... dragging the thumb (i.e. pointer not hovering the thumb)
-  - [x] (DND) drag-n-drop start
-    - [x] update_position()
-  - [x] (DND) drag-n-drop move
-    - [x] update_position()
-  - [x] (DND) drag-n-drop stop
-    - [x] Hide value display div.
-    - [x] *Put slider position*
-  - [ ] (DND) update_position()
-    - [x] changed = true
-    - [x] Position thumb in %
-    - [ ] Update value
-      - [ ] set_cast_value() for start..end
-      - [ ] For stops, set `value.current` to a snapped stop.
-    - [x] *Put slider position* (except for the thumb)
-    - [x] Show value display div
-    - [x] Update value display div's text
-    - [x] Update value display div's position
-    - [x] Trigger `change` event (if really changed)
-  - [x] Arrow keys
-    - [x] Move by stop, or between start..end
+- [x] Done
+  - [ ] Fix any bugs by testing
 
 # VSlider
 
