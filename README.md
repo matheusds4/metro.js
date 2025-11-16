@@ -20,6 +20,12 @@ Modern Metro design library for React.js, with look and feel close to Windows 8.
 - Components
   - [PopoverMenu](./docs/components/popover-menu.md)
 
+## Examples
+
+We're a bit undocumented yet, but you can check these sources for ideas on general component usage:
+
+- [test/src/_recover](./test/src/_recover)
+
 ## License
 
 Apache 2.0
