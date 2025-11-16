@@ -185,7 +185,7 @@ const dark: Theme = {
 const gray = structuredClone(dark);
 gray.colors.background = "#7c7c7c";
 gray.colors.anchor = "#66de0d";
-gray.colors.anchor = "#00e4ff";
+gray.colors.anchor = "#bebebe";
 
 // red
 const red = structuredClone(dark);

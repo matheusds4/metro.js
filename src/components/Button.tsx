@@ -392,7 +392,7 @@ const NoneButton = styled.button<ButtonCSSProps>`
   && {
     background: none;
     color: ${($) => $.$color as string};
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 1.7rem;
     border: none;
     border-radius: 0;
   }
@@ -461,7 +461,7 @@ const AnchorButton = styled.button<ButtonCSSProps>`
   && {
     background: none;
     color: ${($) => $.$color as string};
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 1.7rem;
     border: none;
     border-radius: 0;
   }
@@ -491,7 +491,7 @@ const SecondaryButton = styled.button<ButtonCSSProps>`
     background: ${($) => $.$theme.colors.secondary};
     color: ${($) => $.$theme.colors.foreground};
     font-weight: 600;
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 1.7rem;
     border: none;
     border-radius: 0;
   }
@@ -522,7 +522,7 @@ const PrimaryButton = styled.button<ButtonCSSProps>`
     background: ${($) => $.$theme.colors.primary};
     color: ${($) => $.$theme.colors.primaryForeground};
     font-weight: 600;
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 1.7rem;
     border: none;
     border-radius: 0;
   }
@@ -553,7 +553,7 @@ const DangerButton = styled.button<ButtonCSSProps>`
     background: ${($) => $.$theme.colors.danger};
     color: ${($) => $.$theme.colors.dangerForeground};
     font-weight: 600;
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 1.7rem;
     border: none;
     border-radius: 0;
   }
@@ -584,7 +584,7 @@ const OutlineButton = styled.button<ButtonCSSProps>`
     background: none;
     color: ${($) => $.$color as string};
     font-weight: 600;
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 1.7rem;
     border: 0.16rem solid ${($) => $.$color as string};
     border-radius: 0;
   }
@@ -615,7 +615,7 @@ const OutlinePrimaryButton = styled.button<ButtonCSSProps>`
     background: ${($) => $.$bg};
     color: ${($) => $.$color as string};
     font-weight: 600;
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 1.7rem;
     border: 0.16rem solid ${($) => $.$color as string};
     border-radius: 0;
   }
@@ -645,7 +645,7 @@ const TransparentButton = styled.button<ButtonCSSProps>`
   && {
     background: ${($) => Color($.$theme.colors.foreground).alpha(0.4).toString()};
     color: ${($) => $.$theme.colors.foreground};
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 1.7rem;
     border: none;
     border-radius: 0;
   }
