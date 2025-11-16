@@ -11,6 +11,8 @@ import { AnchorSkin } from "../skins/AnchorSkin";
 import { ScrollbarSkin } from "../skins/ScrollbarSkin";
 import { SelectionSkin } from "../skins/SelectionSkin";
 import { TableSkin } from "../skins/TableSkin";
+import { EnhancedWheel } from "../utils/EnhancedWheel";
+import * as MathUtils from "../utils/MathUtils";
 import * as REMConvert from "../utils/REMConvert";
 
 /**
@@ -52,6 +54,17 @@ export function Root(params: {
   maxWidth?: number,
   maxHeight?: number,
 
+  /**
+   * Enables horizontal scrolling through the mouse wheel.
+   */
+  wheelHorizontal?: boolean,
+
+  /**
+   * For vertically-scrollable groups, makes vertical scrolling through
+   * the mouse wheel more faster and smoother.
+   */
+  wheelVertical?: boolean,
+
   contextMenu?: React.MouseEventHandler<HTMLDivElement>,
   click?: React.MouseEventHandler<HTMLDivElement>,
   mouseOver?: React.MouseEventHandler<HTMLDivElement>,
@@ -76,13 +89,44 @@ export function Root(params: {
 
   wheel?: React.WheelEventHandler<HTMLDivElement>,
 }) {
-  // Contexts
+  // refs
+  const div_ref = React.useRef<null | HTMLDivElement>(null);
+
+  // contexts
   const theme = React.useContext(ThemeContext);
 
-  // Enable or disable selection
+  // enable or disable selection
   const userSelect = typeof params.selection == "undefined" ? "inherit" : params.selection ? "auto" : "none";
 
-  // Layout
+  // Handle mouse wheel (horizontal)
+  React.useEffect(() => {
+    const div_el = div_ref.current!;
+    let enhanced_wheel = null;
+    if (params.wheelHorizontal) {
+      enhanced_wheel = new EnhancedWheel(div_el, "horizontal");
+    }
+    return () => {
+      if (enhanced_wheel) {
+        enhanced_wheel.destroy();
+      }
+    };
+  }, [params.wheelHorizontal]);
+
+  // Handle mouse wheel (vertical)
+  React.useEffect(() => {
+    const div_el = div_ref.current!;
+    let enhanced_wheel = null;
+    if (params.wheelVertical) {
+      enhanced_wheel = new EnhancedWheel(div_el, "vertical");
+    }
+    return () => {
+      if (enhanced_wheel) {
+        enhanced_wheel.destroy();
+      }
+    };
+  }, [params.wheelVertical]);
+
+  // layout
   return (
     <_Div
       id={params.id}
@@ -94,7 +138,14 @@ export function Root(params: {
           ...[params.className ? [params.className] : []]
         ].join(" ")
       }
-      ref={params.ref}
+      ref={obj => {
+        div_ref.current = obj;
+        if (typeof params.ref == "function") {
+          params.ref(obj);
+        } else if (params.ref) {
+          params.ref!.current = obj;
+        }
+      }}
       style={params.style}
       $theme={theme}
       $margin={params.margin}
@@ -157,6 +208,8 @@ const _Div = styled.div<{
   $theme: Theme,
   $userSelect: string,
 }> `
+  color: ${$ => $.$theme.colors.foreground};
+
   && {
     ${($) => $.$margin !== undefined ? "margin: " + REMConvert.pixels.remPlusUnit($.$margin) + ";" : ""}
     ${($) => $.$marginLeft !== undefined ? "margin-left: " + REMConvert.pixels.remPlusUnit($.$marginLeft) + ";" : ""}

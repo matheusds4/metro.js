@@ -36,7 +36,8 @@ function App() {
             selection={false}
             style={{
               overflowY: "auto",
-            }}>
+            }}
+            wheelVertical>
             <VGroup padding={10} gap={10}>
             </VGroup>
           </Root>

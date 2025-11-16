@@ -10,7 +10,9 @@ import { ScrollbarSkin } from "../skins/ScrollbarSkin";
 import { SelectionSkin } from "../skins/SelectionSkin";
 import { TableSkin } from "../skins/TableSkin";
 import * as REMConvert from "../utils/REMConvert";
+import { EnhancedWheel } from "../utils/EnhancedWheel";
 import * as ColorUtils from "../utils/ColorUtils";
+import * as MathUtils from "../utils/MathUtils";
 import { EasingFunction, Alignment } from "../enum";
 import { COMMON_DELAY } from "../utils/Constants";
 
@@ -111,6 +113,12 @@ export function VGroup(params: {
    */
   easeOpacity?: EasingFunction,
 
+  /**
+   * For vertically-scrollable groups, makes vertical scrolling through
+   * the mouse wheel more faster and smoother.
+   */
+  wheelVertical?: boolean,
+
   contextMenu?: React.MouseEventHandler<HTMLDivElement>,
   click?: React.MouseEventHandler<HTMLDivElement>,
   mouseOver?: React.MouseEventHandler<HTMLDivElement>,
@@ -135,6 +143,9 @@ export function VGroup(params: {
 
   wheel?: React.WheelEventHandler<HTMLDivElement>,
 }) {
+  // refs
+  const div_ref = React.useRef<null| HTMLDivElement>(null);
+
   // Contexts
   const theme = React.useContext(ThemeContext);
 
@@ -187,6 +198,20 @@ export function VGroup(params: {
       "opacity " + COMMON_DELAY + "ms " + params.easePosition
   }
 
+  // Handle mouse wheel (vertical)
+  React.useEffect(() => {
+    const div_el = div_ref.current!;
+    let enhanced_wheel = null;
+    if (params.wheelVertical) {
+      enhanced_wheel = new EnhancedWheel(div_el, "vertical");
+    }
+    return () => {
+      if (enhanced_wheel) {
+        enhanced_wheel.destroy();
+      }
+    };
+  }, [params.wheelVertical]);
+
   // Layout
   return (
     <_Div
@@ -201,7 +226,14 @@ export function VGroup(params: {
           ...[(params.className ?? "").split(" ").filter(c => c != "")],
         ].join(" ")
       }
-      ref={params.ref}
+      ref={obj => {
+        div_ref.current = obj;
+        if (typeof params.ref == "function") {
+          params.ref(obj);
+        } else if (params.ref) {
+          params.ref!.current = obj;
+        }
+      }}
       style={params.style}
       $theme={theme}
       $margin={params.margin}

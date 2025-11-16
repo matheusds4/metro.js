@@ -429,7 +429,7 @@ const BigButton = styled.button<ButtonCSSProps>`
     padding: 0.3rem 0.6rem;
     border: none;
     border-radius: 0;
-    font-size: 1.8rem;
+    font-size: 4.5rem;
     font-weight: lighter;
   }
 

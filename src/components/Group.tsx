@@ -1,8 +1,6 @@
 // third-party
 import * as React from "react";
 import { styled } from "styled-components";
-import gsap from "gsap";
-import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 
 // local
 import { Theme, ThemeContext } from "../theme/Theme";
@@ -10,6 +8,7 @@ import { AnchorSkin } from "../skins/AnchorSkin";
 import { ScrollbarSkin } from "../skins/ScrollbarSkin";
 import { SelectionSkin } from "../skins/SelectionSkin";
 import { TableSkin } from "../skins/TableSkin";
+import { EnhancedWheel } from "../utils/EnhancedWheel";
 import * as ColorUtils from "../utils/ColorUtils";
 import * as MathUtils from "../utils/MathUtils";
 import * as REMConvert from "../utils/REMConvert";
@@ -82,6 +81,12 @@ export function Group(params: {
    */
   wheelHorizontal?: boolean,
 
+  /**
+   * For vertically-scrollable groups, makes vertical scrolling through
+   * the mouse wheel more faster and smoother.
+   */
+  wheelVertical?: boolean,
+
   contextMenu?: React.MouseEventHandler<HTMLDivElement>,
   click?: React.MouseEventHandler<HTMLDivElement>,
   mouseOver?: React.MouseEventHandler<HTMLDivElement>,
@@ -139,61 +144,33 @@ export function Group(params: {
       "opacity " + COMMON_DELAY + "ms " + params.easePosition
   }
 
-  // Handle mouse wheel
-  React.useEffect(() => {
-    const div_el = div.current!;
-    let added_handler = false;
-    if (params.wheelHorizontal) {
-      div_el.addEventListener("wheel", wheel, { passive: false });
-      added_handler = true;
-    }
-    return () => {
-      if (added_handler) {
-        div_el.removeEventListener("wheel", wheel);
+  // Handle mouse wheel (horizontal)
+    React.useEffect(() => {
+      const div_el = div.current!;
+      let enhanced_wheel = null;
+      if (params.wheelHorizontal) {
+        enhanced_wheel = new EnhancedWheel(div_el, "horizontal");
       }
-    };
-  }, [params.wheelHorizontal]);
-  const last_wheel_timestamp = React.useRef<number>(-1);
-  const wheel_multiplier = React.useRef<number>(2);
-  const gsap_wheel_tween = React.useRef<null | gsap.core.Tween>(null);
-  const wheel = (e: WheelEvent): void => {
-    const div = e.currentTarget as HTMLDivElement;
-    // deltaMode == DOM_DELTA_PIXEL
-    if (e.deltaMode == 0) {
-      if (e.deltaX || e.deltaY == 0) return;
-
-      e.preventDefault();
-      // increase scroll depending on wheel-roll duration
-      if (last_wheel_timestamp.current != -1) {
-        const last_roll_recent = last_wheel_timestamp.current > Date.now() - 250;
-        if (last_roll_recent) {
-          wheel_multiplier.current *= 1.2;
-          wheel_multiplier.current = MathUtils.clamp(wheel_multiplier.current, 1, 16);
-        } else {
-          wheel_multiplier.current = 2;
+      return () => {
+        if (enhanced_wheel) {
+          enhanced_wheel.destroy();
         }
-      } else {
-        wheel_multiplier.current = 2;
+      };
+    }, [params.wheelHorizontal]);
+  
+    // Handle mouse wheel (vertical)
+    React.useEffect(() => {
+      const div_el = div.current!;
+      let enhanced_wheel = null;
+      if (params.wheelVertical) {
+        enhanced_wheel = new EnhancedWheel(div_el, "vertical");
       }
-      const delta = e.deltaY * wheel_multiplier.current;
-      let target_scroll = div.scrollLeft + delta;
-      target_scroll = MathUtils.clamp(target_scroll, 0, div.scrollWidth);
-      if (gsap_wheel_tween.current) {
-        gsap_wheel_tween.current!.kill();
-        gsap_wheel_tween.current = null;
-      }
-      gsap.registerPlugin(ScrollToPlugin);
-      gsap_wheel_tween.current = gsap.to(div, {
-        scrollLeft: target_scroll,
-        duration: 0.3,
-        ease: "power1.out",
-      });
-      gsap_wheel_tween.current!.then(() => {
-        gsap_wheel_tween.current = null;
-      });
-      last_wheel_timestamp.current = Date.now();
-    }
-  };
+      return () => {
+        if (enhanced_wheel) {
+          enhanced_wheel.destroy();
+        }
+      };
+    }, [params.wheelVertical]);
 
   // Layout
   return (
