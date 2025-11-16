@@ -122,27 +122,6 @@ Way contextual; skinning and behavior relies on surrounding container. It is bas
 
 - [ ] Done
 
-# Themes
-
-- [ ] Provide more theme presets. (Maybe, for light and dark, provide different primary colors (affecting also sliders).)
-  - [x] Light (with purple accent)
-  - [x] Dark (with purple accent)
-  - [x] Gray (with purple accent)
-  - [x] Red
-  - [x] Green
-  - [x] Blue
-  - [x] Purple
-  - [x] Pink
-  - [x] Orange
-  - [x] Yellow
-  - [x] Brown
-  - [x] Cyan
-  - [ ] Gray with X accent
-  - [ ] Light with X accent
-  - [ ] Dark with X accent
-- [ ] Provide a ThemePreset enumeration and allow converting it into a theme preset `Theme` object. (Useful for theme reuse across apps based on internal data.)
-  - [ ] Parameter: Theme accent (applies to gray, light and dark)
-
 # Documentation
 
 - [ ] ESCAPABLE class name

@@ -251,21 +251,78 @@ cyan.colors.primary = "#00d1c7";
 cyan.colors.anchor = "#d741ed";
 
 /**
- * Theme presets.
+ * A theme color used in the presets.
+ */
+export type ThemeColor =
+  | "light"
+  | "dark"
+  | "gray"
+  | "red"
+  | "green"
+  | "blue"
+  | "purple"
+  | "pink"
+  | "orange"
+  | "yellow"
+  | "brown"
+  | "cyan"
+  ;
+
+const __map__ = new Map<ThemeColor, Theme>([
+  ["light", light],
+  ["dark", dark],
+  ["gray", gray],
+  ["red", red],
+  ["green", green],
+  ["blue", blue],
+  ["purple", purple],
+  ["pink", pink],
+  ["orange", orange],
+  ["yellow", yellow],
+  ["brown", brown],
+  ["cyan", cyan],
+]);
+
+/**
+ * Theme preset utilities.
  */
 export const ThemePresets = {
-  light,
-  dark,
-  gray,
-  red,
-  green,
-  blue,
-  purple,
-  pink,
-  orange,
-  yellow,
-  brown,
-  cyan,
+  /**
+   * Returns the available colors that may be
+   * used in the `ThemePresets.get()` method.
+   *
+   * Note that if you are trying to enumerate all possible theme
+   * presets, do not forget about handling the accent.
+   */
+  available(): { color: ThemeColor, hex: string }[] {
+    return Array.from(__map__.entries().map(([color, theme]) => ({
+      color,
+      hex: Color(theme.colors.primary).hex().toString(),
+    })));
+  },
+
+  /**
+   * Returns a `Theme` object matching the given colors.
+   * 
+   * @param accent Applicable when `preset` is one of {
+   * `light`, `dark`, `gray` }. Ignored if equals one
+   * of { `light`, `dark`, `gray` }.
+   */
+  get(preset: ThemeColor, accent: null | ThemeColor = null): Theme {
+    if (accent
+    && ["light", "dark", "gray"].includes(preset)
+    && !["light", "dark", "gray"].includes(accent!)) {
+      const result = structuredClone(__map__.get(preset)!);
+      const accent_preset = __map__.get(accent!)!;
+
+      // assign primary color
+      result.colors.sliderPastBackground =
+      result.colors.primary = accent_preset.colors.primary;
+
+      return result;
+    }
+    return structuredClone(__map__.get(preset)!);
+  },
 };
 
 /**
