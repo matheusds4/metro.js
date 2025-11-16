@@ -79,6 +79,10 @@ import open_envelope_white from "../icons/open-envelope-white.png";
 import open_envelope_black from "../icons/open-envelope-black.png";
 import notification_envelope_white from "../icons/notification-envelope-white.png";
 import notification_envelope_black from "../icons/notification-envelope-black.png";
+import outline_star_white from "../icons/outline-star-white.png";
+import outline_star_black from "../icons/outline-star-black.png";
+import filled_star_white from "../icons/filled-star-white.png";
+import filled_star_black from "../icons/filled-star-black.png";
 
 // third-party
 import { Color, ColorObserver } from "@hydroperx/color";
@@ -179,7 +183,9 @@ export type NativeIcon =
   | "openEnvelope"
   | "markAsRead"
   | "notificationEnvelope"
-  | "markAsUnread";
+  | "markAsUnread"
+  | "starOutline"
+  | "starFill";
 
 /**
  * Used for type inference for a `NativeIcon` identity
@@ -256,6 +262,9 @@ IconMap.registerMap(new Map([
   // mark as unread / notification envelope
   [TypedNativeIcon("notificationEnvelope"), { black: notification_envelope_black, white: notification_envelope_white }],
   [TypedNativeIcon("markAsUnread"), { black: notification_envelope_black, white: notification_envelope_white }],
+
+  [TypedNativeIcon("starOutline"), { black: outline_star_black, white: outline_star_white }],
+  [TypedNativeIcon("starFill"), { black: filled_star_black, white: filled_star_white }],
 ]));
 
 const Img = styled.img<{

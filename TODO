@@ -122,17 +122,6 @@ Way contextual; skinning and behavior relies on surrounding container. It is bas
 
 - [ ] Done
 
-# Icons
-
-- [x] Trash
-- [x] Menu (hamburguer icon)
-- [x] Shutdown
-- [x] Seen
-- [x] Mark as read / open envelope
-- [x] Mark as unread / notification envelope
-- [ ] Outline star
-- [ ] Filled star
-
 # Themes
 
 - [ ] Provide more theme presets. (Maybe, for light and dark, provide different primary colors (affecting also sliders).)
