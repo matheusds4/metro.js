@@ -498,12 +498,13 @@ export function VSlider(params: {
         }}
         $bg={non_past_bg}
         $focus_dashes={theme.colors.focusDashes}>
-        <VSlider_past_div ref={past_div} $bg={past_bg}/>
-        <VSlider_thumb_div ref={thumb_div} $bg={theme.colors.foreground}/>
+        <VSlider_past_div className="VSlider-past" ref={past_div} $bg={past_bg}/>
+        <VSlider_thumb_div className="VSlider-thumb" ref={thumb_div} $bg={theme.colors.foreground}/>
       </VSliderButton>
       <ValueDisplayDiv
         ref={val_display_div}
         className={[
+          "VSlider-value-display",
           ...(rtl_ref.current ? ["rtl"] : []),
         ].join(" ")}
         $bg_behind={theme.colors.background}

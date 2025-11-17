@@ -130,10 +130,22 @@ export const IconMap = {
   unregister(type: string): void {
     iconMap.delete(type);
   },
-  get(type: string, color: "white" | "black") {
+  get(type: string, color: "white" | "black"): any {
     const m = iconMap.get(type);
     assert(m !== undefined, "Icon is not defined: " + type);
     return m[color];
+  },
+  /**
+   * Returns the icon map.
+   */
+  snapshot(): Map<string, { black: any; white: any }> {
+    return new Map(iconMap.entries().map(p => structuredClone(p)));
+  },
+  /**
+   * Clears icon map.
+   */
+  clear(): void {
+    iconMap.clear();
   },
 };
 
@@ -202,7 +214,7 @@ export function TypedNativeIcon(icon: NativeIcon): NativeIcon {
   return icon;
 }
 
-// Initial icon map
+// icon map
 const iconMap = new Map<string, { black: any; white: any }>();
 
 // Initial registers

@@ -93,7 +93,7 @@ export function ProgressRing(params: {
     <Div
       ref={ref}
       style={newStyle}
-      className={params.className}
+      className={["ProgressRing", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
       id={params.id}
       $size={size}
       $time={time}

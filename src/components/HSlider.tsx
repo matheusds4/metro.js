@@ -483,12 +483,13 @@ export function HSlider(params: {
         }}
         $bg={non_past_bg}
         $focus_dashes={theme.colors.focusDashes}>
-        <HSlider_past_div ref={past_div} $bg={past_bg}/>
-        <HSlider_thumb_div ref={thumb_div} $bg={theme.colors.foreground}/>
+        <HSlider_past_div className="HSlider-past" ref={past_div} $bg={past_bg}/>
+        <HSlider_thumb_div className="HSlider-thumb" ref={thumb_div} $bg={theme.colors.foreground}/>
       </HSliderButton>
       <ValueDisplayDiv
         ref={val_display_div}
         className={[
+          "HSlider-value-display",
           ...(rtl ? ["rtl"] : []),
         ].join(" ")}
         $bg_behind={theme.colors.background}

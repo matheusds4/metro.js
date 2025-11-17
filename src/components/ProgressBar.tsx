@@ -164,7 +164,7 @@ export function ProgressBar(params: {
           ref={div_ref}
           $size={size}
           $color={color}
-          className={params.className}
+          className={["ProgressBar", "dots", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
           style={params.style}
           id={params.id}>
 
@@ -196,7 +196,7 @@ export function ProgressBar(params: {
         <ProgressBar_solid_div
           ref={div_ref}
           $bg={unloaded_bg}
-          className={params.className}
+          className={["ProgressBar", "solid", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
           style={params.style}
           id={params.id}>
           <ProgressBar_solid_loaded_div $bg={loaded_bg} $width={w}/>

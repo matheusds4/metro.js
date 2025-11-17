@@ -254,12 +254,18 @@ export function Button(params: ButtonParams): React.ReactNode {
           }
         }}
         id={params.id}
-        className={["Button", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+        className={[
+          "Button",
+          params.variant ?? "secondary",
+          ...(params.outline ? ["outline"] : []),
+          ...(params.className ?? "").split(" ").filter(c => c != "")
+        ].join(" ")}
+        data-chosen={!!params.chosen}
+
         style={newStyle}
         type={params.type ?? "button"}
         disabled={params.disabled ?? false}
         autoFocus={params.autoFocus ?? false}
-        data-chosen={!!params.chosen}
         $color={color}
         $bg={bg}
         $hover_bg={hover_bg}
@@ -292,6 +298,7 @@ export function Button(params: ButtonParams): React.ReactNode {
       </Button>
       {tooltip === undefined ? undefined : (
         <TooltipDiv
+          className="Tooltip"
           ref={tooltip_el}
           $theme={theme}
           $tooltip_visible={tooltip_visible}
@@ -857,7 +864,12 @@ export function CircleButton(params: CircleButtonParams) {
           }
         }}
         id={params.id}
-        className={["Button", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+        className={[
+          "Button",
+          "CircleButton",
+          ...(params.filled ? ["CircleButton-filled"] : []),
+          ...(params.className ?? "").split(" ").filter(c => c != "")
+        ].join(" ")}
         type={params.type ?? "button"}
         disabled={params.disabled}
         autoFocus={params.autoFocus}
@@ -899,6 +911,7 @@ export function CircleButton(params: CircleButtonParams) {
 
       {tooltip === undefined ? undefined : (
         <TooltipDiv
+          className="Tooltip"
           ref={tooltip_el}
           $theme={theme}
           $tooltip_visible={tooltip_visible}

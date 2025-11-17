@@ -151,6 +151,7 @@ export function Label(params: {
   const tooltip_rendered =
     tooltip === undefined ? undefined : (
       <TooltipDiv
+        className="Tooltip"
         ref={tooltip_el}
         $theme={theme}
         $tooltip_visible={tooltip_visible}
@@ -176,7 +177,7 @@ export function Label(params: {
               id={params.id}
               onPointerEnter={pointerEnter as any}
               onPointerLeave={pointerLeave as any}
-              className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+              className={["Label", "normal", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
               style={newStyle}
               htmlFor={params.for}
               $primary={primary}
@@ -199,7 +200,7 @@ export function Label(params: {
             id={params.id}
             onPointerEnter={pointerEnter as any}
             onPointerLeave={pointerLeave as any}
-            className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+            className={["Label", "normal", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
             style={newStyle}
             $primary={primary}
             $error={params.error}
@@ -223,7 +224,7 @@ export function Label(params: {
               id={params.id}
               onPointerEnter={pointerEnter as any}
               onPointerLeave={pointerLeave as any}
-              className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+              className={["Label", "heading", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
               style={newStyle}
               htmlFor={params.for}
               $primary={primary}
@@ -246,7 +247,7 @@ export function Label(params: {
             id={params.id}
             onPointerEnter={pointerEnter as any}
             onPointerLeave={pointerLeave as any}
-            className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+            className={["Label", "heading", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
             style={newStyle}
             $primary={primary}
             $error={params.error}
@@ -270,7 +271,7 @@ export function Label(params: {
               id={params.id}
               onPointerEnter={pointerEnter as any}
               onPointerLeave={pointerLeave as any}
-              className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+              className={["Label", "subheading", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
               style={newStyle}
               htmlFor={params.for}
               $primary={primary}
@@ -293,7 +294,7 @@ export function Label(params: {
             id={params.id}
             onPointerEnter={pointerEnter as any}
             onPointerLeave={pointerLeave as any}
-            className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+            className={["Label", "subheading", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
             style={newStyle}
             $primary={primary}
             $error={params.error}
@@ -317,7 +318,7 @@ export function Label(params: {
               id={params.id}
               onPointerEnter={pointerEnter as any}
               onPointerLeave={pointerLeave as any}
-              className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+              className={["Label", "subsubheading", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
               style={newStyle}
               htmlFor={params.for}
               $primary={primary}
@@ -340,7 +341,7 @@ export function Label(params: {
             id={params.id}
             onPointerEnter={pointerEnter as any}
             onPointerLeave={pointerLeave as any}
-            className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+            className={["Label", "subsubheading", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
             style={newStyle}
             $primary={primary}
             $error={params.error}
@@ -364,7 +365,7 @@ export function Label(params: {
               id={params.id}
               onPointerEnter={pointerEnter as any}
               onPointerLeave={pointerLeave as any}
-              className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+              className={["Label", "subsubsubheading", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
               style={newStyle}
               htmlFor={params.for}
               $primary={primary}
@@ -387,7 +388,7 @@ export function Label(params: {
             id={params.id}
             onPointerEnter={pointerEnter as any}
             onPointerLeave={pointerLeave as any}
-            className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+            className={["Label", "subsubsubheading", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
             style={newStyle}
             $primary={primary}
             $error={params.error}
@@ -411,7 +412,7 @@ export function Label(params: {
               id={params.id}
               onPointerEnter={pointerEnter as any}
               onPointerLeave={pointerLeave as any}
-              className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+              className={["Label", "legend", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
               style={newStyle}
               htmlFor={params.for}
               $primary={primary}
@@ -434,7 +435,7 @@ export function Label(params: {
             id={params.id}
             onPointerEnter={pointerEnter as any}
             onPointerLeave={pointerLeave as any}
-            className={["Label", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+            className={["Label", "legend", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
             style={newStyle}
             $primary={primary}
             $error={params.error}

@@ -565,6 +565,7 @@ export function ComboBox(params: {
       <ComboBoxDropdown
         ref={dropdown}
         className={[
+          "ComboBox-dropdown",
           ESCAPABLE,
           ...(params.big ? ["ComboBox-big"] : []),
           ...(params.medium ? ["ComboBox-medium"] : []),

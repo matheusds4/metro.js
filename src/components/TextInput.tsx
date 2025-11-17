@@ -202,7 +202,10 @@ export function TextInput(params: {
   return params.multiline ? (
     <TextArea
       id={params.id}
-      className={params.className}
+      className={[
+        "TextInput",
+        ...(params.className ?? "").split(" ").filter(c => c != ""),
+      ].join(" ")}
       $css={css}
       style={params.style}
       ref={obj => {
@@ -240,7 +243,10 @@ export function TextInput(params: {
   ) : (
     <Input
       id={params.id}
-      className={params.className}
+      className={[
+        "TextInput",
+        ...(params.className ?? "").split(" ").filter(c => c != ""),
+      ].join(" ")}
       $css={css}
       style={params.style}
       ref={obj => {

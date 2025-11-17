@@ -29,6 +29,9 @@ export function MenuTrigger(params: {
    */
   prefer?: SimplePlacementType,
 
+  id?: string,
+  className?: string,
+  style?: React.CSSProperties,
   children?: React.ReactNode,
 }): React.ReactNode {
   // prefer sync
@@ -83,7 +86,12 @@ export function MenuTrigger(params: {
   }, [params.prefer]);
 
   return (
-    <div ref={div}>
+    <div
+      className={["MenuTrigger", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
+      id={params.id}
+      ref={div}
+      style={params.style}>
+
       {params.children}
     </div>
   );
