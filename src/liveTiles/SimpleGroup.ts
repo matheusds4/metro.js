@@ -504,8 +504,11 @@ export class SimpleGroup {
     conflicts: for (const conflicting_id of conflicting_tiles) {
       const conflicting_tile = this.tiles.get(conflicting_id)!;
 
-      // intersection side (target intersects X side of conflicting tile)
-      const side = target_tile.intersectsSideOf(conflicting_tile)!;
+      // skip *dirty* conflicting tile if the later code shifted
+      // it indirectly (during recursion).
+      if (!conflicting_tile.intersects(target_tile)) {
+        continue;
+      }
 
       // normally shift occurs only in one axis, but
       // if it's cheap to shift at the other axis,
@@ -513,41 +516,47 @@ export class SimpleGroup {
 
       // horizontal-layout: cheap shift
       if (
-        this.isHorizontal && (side == "left" || side == "right")
+        this.isHorizontal
           && target_tile.width == conflicting_tile.width
           && target_tile.height == conflicting_tile.height
           && target_tile.y == conflicting_tile.y
       ) {
-        let cheap_space: null | SimpleTile = null;
-        if (side == "left") {
-          cheap_space = new SimpleTile(target_tile.x + target_tile.width, target_tile.y, conflicting_tile.width, conflicting_tile.height);
-        } else {
-          cheap_space = new SimpleTile(target_tile.x - target_tile.width, target_tile.y, conflicting_tile.width, conflicting_tile.height);
+        let cheap_space = new SimpleTile(target_tile.x + target_tile.width, target_tile.y, conflicting_tile.width, conflicting_tile.height);
+        if (cheap_space!.x >= 0 && this.getIntersectingTiles(cheap_space!, targetId).length == 0) {
+          conflicting_tile.x = cheap_space!.x;
+          conflicting_tile.y = cheap_space!.y;
+          continue conflicts;
         }
-        if (cheap_space!.x >= 0 && this.getIntersectingTiles(cheap_space!, "").length == 0) {
+        cheap_space = new SimpleTile(target_tile.x - target_tile.width, target_tile.y, conflicting_tile.width, conflicting_tile.height);
+        if (cheap_space!.x >= 0 && this.getIntersectingTiles(cheap_space!, targetId).length == 0) {
           conflicting_tile.x = cheap_space!.x;
           conflicting_tile.y = cheap_space!.y;
           continue conflicts;
         }
       // vertical-layout: cheap shift
-      } else if (
-        (side == "top" || side == "bottom")
-          && target_tile.width == conflicting_tile.width
-          && target_tile.height == conflicting_tile.height
-          && target_tile.x == conflicting_tile.x
+      } else if (target_tile.width == conflicting_tile.width
+        && target_tile.height == conflicting_tile.height
+        && target_tile.x == conflicting_tile.x
       ) {
-        let cheap_space: null | SimpleTile = null;
-        if (side == "top") {
-          cheap_space = new SimpleTile(target_tile.x, target_tile.y + target_tile.height, conflicting_tile.width, conflicting_tile.height);
-        } else {
-          cheap_space = new SimpleTile(target_tile.x, target_tile.y - target_tile.height, conflicting_tile.width, conflicting_tile.height);
+        let cheap_space = new SimpleTile(target_tile.x, target_tile.y + target_tile.height, conflicting_tile.width, conflicting_tile.height);
+        if (cheap_space!.y >= 0 && this.getIntersectingTiles(cheap_space!, targetId).length == 0) {
+          conflicting_tile.x = cheap_space!.x;
+          conflicting_tile.y = cheap_space!.y;
+          continue conflicts;
         }
-        if (cheap_space!.x >= 0 && this.getIntersectingTiles(cheap_space!, "").length == 0) {
+        cheap_space = new SimpleTile(target_tile.x, target_tile.y - target_tile.height, conflicting_tile.width, conflicting_tile.height);
+        if (cheap_space!.y >= 0 && this.getIntersectingTiles(cheap_space!, targetId).length == 0) {
           conflicting_tile.x = cheap_space!.x;
           conflicting_tile.y = cheap_space!.y;
           continue conflicts;
         }
       }
+
+      // in case shift direction is undetermined and
+      // tiles fully cover one another in the same shift axis,
+      // this tells to try shifting to the opposite direction.
+      let tryOpposite = false;
+      let snapshot: null | Map<string, SimpleTile> = null;
 
       if (!shiftDirection) {
         if (this.isHorizontal) {
@@ -555,6 +564,10 @@ export class SimpleGroup {
         } else {
           shiftDirection = side == "left" ? "rightward" : "leftward";
         }
+
+        // assign `tryOpposite` and `snapshot` if fully one
+        // tile fully covers the other in the same shift axis.
+        fixme();
       }
 
       switch (shiftDirection!) {
@@ -617,6 +630,19 @@ export class SimpleGroup {
 
       // shift other conflicting tiles like a snail.
       if (!this.resolveConflicts(conflicting_id, shiftDirection!)) {
+        // try opposite direction
+        if (tryOpposite) {
+          this.restoreSnapshot(snapshot!);
+          return this.resolveConflicts(
+            targetId,
+            shiftDirection! == "upward" ?
+              "downward" :
+            shiftDirection! == "downward" ?
+              "upward" :
+              shiftDirection! == "leftward" ?
+              "rightward" :
+              "leftward");
+        }
         return false;
       }
     }
