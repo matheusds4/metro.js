@@ -49,7 +49,7 @@ export class SimpleTile {
     );
   }
 
-  intersection(other: SimpleTile): null | SimpleTile {
+  public intersection(other: SimpleTile): null | SimpleTile {
     const { x: ax1, y: ay1 } = this;
     const ax2 = this.x + this.width;
     const ay2 = this.y + this.height;
@@ -104,6 +104,40 @@ export class SimpleTile {
         return "bottom";
       }
     }
+  }
+
+  /**
+   * Checks whether this tile is more above `other`.
+   */
+  public isMoreAbove(other: SimpleTile): boolean {
+    const aCenterY = this.y + this.height / 2;
+    const bCenterY = other.y + other.height / 2;
+
+    return aCenterY < bCenterY;
+  }
+
+  /**
+   * Checks whether this tile is more below `other`.
+   */
+  public isMoreBelow(other: SimpleTile): boolean {
+    return other.isMoreAbove(this);
+  }
+
+  /**
+   * Checks whether this tile is more left to `other`.
+   */
+  public isMoreLeft(other: SimpleTile): boolean {
+    const aCenterX = this.x + this.width / 2;
+    const bCenterX = other.x + other.width / 2;
+
+    return aCenterX < bCenterX;
+  }
+
+  /**
+   * Checks whether this tile is more right to `other`.
+   */
+  public isMoreRight(other: SimpleTile): boolean {
+    return other.isMoreLeft(this);
   }
 
   /**
@@ -584,20 +618,37 @@ export class SimpleGroup {
 
       // in case shift direction is undetermined and
       // tiles fully cover one another in the same shift axis,
-      // this tells to try shifting to the opposite direction.
+      // this tells to try shifting to the opposite direction
+      // later.
       let tryOpposite = false;
       let snapshot: null | Map<string, SimpleTile> = null;
 
       if (!shiftDirection) {
         if (this.isHorizontal) {
-          shiftDirection = side == "top" ? "downward" : "upward";
+          shiftDirection =
+            target_tile.isMoreAbove(conflicting_tile) ?
+              "downward" :
+            target_tile.isMoreBelow(conflicting_tile) ?
+              "upward" :
+              null;
+          if (shiftDirection === null) {
+            shiftDirection = "upward";
+            tryOpposite = true;
+            snapshot = this.snapshot();
+          }
         } else {
-          shiftDirection = side == "left" ? "rightward" : "leftward";
+          shiftDirection =
+            target_tile.isMoreLeft(conflicting_tile) ?
+              "rightward" :
+            target_tile.isMoreRight(conflicting_tile) ?
+              "leftward" :
+              null;
+          if (shiftDirection === null) {
+            shiftDirection = "leftward";
+            tryOpposite = true;
+            snapshot = this.snapshot();
+          }
         }
-
-        // assign `tryOpposite` and `snapshot` if fully one
-        // tile fully covers the other in the same shift axis.
-        fixme();
       }
 
       switch (shiftDirection!) {
