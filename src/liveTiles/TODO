@@ -9,8 +9,6 @@
 Tiles:
 
 - [ ] Contributes a newly-added DOM tile, or detects moving X/Y, resizing and group transfer (look at parent).
-  - [ ] Update tile's forDirection & forLimit
-  - [ ] If the tile was previously detected for a different layout limit (width/height)/direction, then disregard whether X/Y has changed or not.
 - [ ] ... or, given a removed DOM tile, remove tile from state (both SimpleGroup and CoreGroup's tiles), remove parent group if empty and rearrange groups.
   - *This is usually called on React.js effect cleanup.*
 - [ ] Attach mouse down/click/touch down/touch end handlers for click, check and drag-n-drop events
@@ -32,7 +30,9 @@ Groups:
 
 Implementation should be split into two layout classes: HorizontalLayout and VerticalLayout, which are created as throwaway objects.
 
+- [ ] Layout.rearrangeGroup(): Hide overflow of the groupTiles div while tweening off view.
 - [ ] Re-assigns group label's `height` style
+- [ ] Trigger bulk change event if the case
 
 ## Group label
 
@@ -42,6 +42,7 @@ Implementation should be split into two layout classes: HorizontalLayout and Ver
 
 Trick to use: Draggable needs to drag the tileDND element, not the tile itself. For this, simply dispatch virtual `mousedown` and `touchdown` (with the same device ID as the tile's touch) events with corresponding coordinates and touch collections (touches/targetTouches/changedTouches).
 
+- [ ] Make tile invisible while dragging (and tileDND visible)
 - [ ] Touch start
   - [ ] Trigger click
   - [ ] Trigger check

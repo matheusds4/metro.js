@@ -2,6 +2,7 @@
 import assert from "assert";
 import { TypedEventTarget } from "@hydroperx/event";
 import Draggable from "@hydroperx/draggable";
+import { gsap } from "gsap/gsap-core";
 
 // local
 import { Layout } from "./layouts/Layout";
@@ -479,9 +480,6 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
 
   // reset SimpleGroups and perform a rearrangement.
   private _re_add_tiles(): void {
-    // gather moved tiles
-    const movedTiles: { id: string, x: number, y: number }[] = [];
-
     // re-assign SimpleGroups
     for (const group of this._groups) {
       // backup tiles
@@ -497,31 +495,11 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
       for (const [tileId] of group.tiles) {
         const backup = backups.get(tileId)!;
         group.simple.addTile(tileId, backup.x, backup.y, backup.width, backup.height);
-        const newTile = group.simple.tiles.get(tileId)!;
-        // collect moved tile
-        if (!(backup.x == newTile.x && backup.y == newTile.y)) {
-          movedTiles.push({
-            id: tileId,
-            x: newTile.x,
-            y: newTile.y,
-          });
-        }
       }
     }
 
     // rearrange
     this.rearrange();
-
-    // trigger bulk change event with any tile moves
-    const bulkChange: BulkChange = {
-      moves: movedTiles,
-      groupTransfers: [],
-      groupRemovals: [],
-      groupCreation: null,
-    };
-    this.dispatchEvent(new CustomEvent("bulkChange", {
-      detail: bulkChange,
-    }));
   }
 }
 
@@ -616,9 +594,9 @@ export type CoreEventMap = {
  */
 export type BulkChange = {
   /**
-   * Moves (in response to actions like drag-n-drop or direction change).
+   * Moved tiles (in response to actions like drag-n-drop or direction change).
    */
-  moves: { id: string, x: number, y: number }[],
+  movedTiles: { id: string, x: number, y: number }[],
   /**
    * Group transfers (tiles moving to other groups,
    * in response to actions like drag-n-drop).
@@ -692,27 +670,19 @@ export class CoreGroup {
  * @hidden
  */
 export class CoreTile {
+  /**
+   * DOM button.
+   */
   public dom: null | HTMLButtonElement;
-  /**
-   * The layout direction this tile was last
-   * detected for.
-   */
-  public forDirection: CoreDirection;
-  /**
-   * The layout group width/height this tile was last
-   * detected for.
-   */
-  public forLimit: number;
+
+  // tween
+  public tween: null | gsap.core.Tween = null;
 
   //
   public constructor(params: {
     dom: null | HTMLButtonElement,
-    forDirection: CoreDirection,
-    forLimit: number,
   }) {
     this.dom = params.dom;
-    this.forDirection = params.forDirection;
-    this.forLimit = params.forLimit;
   }
 }
 

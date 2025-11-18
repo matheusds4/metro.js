@@ -312,6 +312,10 @@ export class SimpleGroup {
     const tile = this.tiles.get(id);
     assert(!!tile, "Tile '" + id + "' not found.");
     const snapshot = this.snapshot();
+    // equal? then do nothing.
+    if (tile!.x == x && tile!.y == y) {
+      return true;
+    }
     tile!.x = x;
     tile!.y = y;
     
@@ -340,6 +344,10 @@ export class SimpleGroup {
     const tile = this.tiles.get(id);
     assert(!!tile, "Tile '" + id + "' not found.");
     const snapshot = this.snapshot();
+    // equal? then do nothing.
+    if (tile!.width == width && tile!.height == height) {
+      return true;
+    }
     tile!.width = width;
     tile!.height = height;
     if (this.resolveConflicts(id)) {
