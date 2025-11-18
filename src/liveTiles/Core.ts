@@ -211,8 +211,9 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
       this._container.remove();
     }
 
-    // destroy the unique tileDND Draggable
+    // destroy draggables
     this._dnd.tileDNDDraggable?.destroy();
+    this._dnd.groupDraggable?.destroy();
 
     // discard deferred rearrangement
     if (this._rearrange_timeout != -1) {

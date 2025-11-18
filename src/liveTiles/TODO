@@ -65,6 +65,8 @@ More:
 
 ## Group drag-n-drop
 
+Group drag-n-drop mimmicks tiles a bit in how the Draggable instance is created, with some subtle differences.
+
 - [ ] Label > touch start
   - [ ] Edit
   - [ ] Trigger drag-n-drop (long-held)

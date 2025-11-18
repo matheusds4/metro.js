@@ -11,6 +11,9 @@ export class DND {
   // TileDND is a direct child of the Core's container.
   public tileDNDDraggable: null | Draggable = null;
 
+  // unique group Draggable.
+  public groupDraggable: null | Draggable = null;
+
   //
   public constructor() {
     //
