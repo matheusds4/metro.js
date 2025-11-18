@@ -17,6 +17,7 @@ Groups:
 - [ ] Contributes a newly-added DOM group, or detects label change.
 - [ ] ... or, given a removed DOM group, remove group from state and rearrange groups.
   - *This is usually called on React.js effect cleanup.*
+- [ ] Group indices are based in DOM order among sibling `Group`s (e.g. disregard `TileDND`).
 
 ## Group label
 
@@ -28,10 +29,12 @@ Groups:
   - [ ] Trigger click
   - [ ] Trigger check
   - [ ] Trigger drag-n-drop (long-held)
+    - [ ] Trigger events
 - [ ] Mouse down
   - [ ] Trigger click
   - [ ] Trigger check
   - [ ] Trigger drag-n-drop (after short-delta)
+    - [ ] Trigger events
 
 More:
 
@@ -44,6 +47,8 @@ More:
 - [ ] Label > touch start
   - [ ] Edit
   - [ ] Trigger drag-n-drop (long-held)
+    - [ ] Trigger events
 - [ ] Label > mouse down
   - [ ] Edit
   - [ ] Trigger drag-n-drop (after short-delta)
+    - [ ] Trigger events
