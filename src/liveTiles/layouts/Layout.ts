@@ -50,6 +50,9 @@ export abstract class Layout {
       yREM: number
     }[] = [];
 
+    // group tile-list div
+    const group_tiles_div = group.dom ? group.dom!.getElementsByClassName(this.$._class_names.groupTiles)[0] as HTMLElement : null;
+
     for (const [tileId, tile] of group.tiles) {
       const pos = group.tilePosition(tileId);
       const simple = group.simple.tiles.get(tileId)!;
@@ -90,11 +93,23 @@ export abstract class Layout {
           to_tween_y_late.push({ tile: { id: tileId, core: tile, simple }, button: tile.dom!, heightREM: h_rem, yREM: y_rem });
         // change either only X or only Y
         } else {
-          tile.tween = gsap.to(tile.dom!, {
+          const tween = gsap.to(tile.dom!, {
             x: x_rem + "rem",
             y: y_rem + "rem",
             duration: 0.18
           });
+          tile.tween = tween;
+          tween!.then(() => {
+            const i = this.$._tile_tweens.indexOf(tween);
+            if (i != -1) {
+              this.$._tile_tweens.splice(i, 1);
+            }
+            if (this.$._tile_tweens.length == 0) {
+              group_tiles_div!.style.overflow = "";
+            }
+          });
+          group_tiles_div!.style.overflow = "hidden";
+          this.$._tile_tweens.push(tween);
         }
       }
     }
@@ -102,7 +117,7 @@ export abstract class Layout {
     // tween Y from off view
     const middle = tile_list_height_rem / 2;
     for (const { tile, button, heightREM, yREM } of to_tween_y_late) {
-      tile.core.tween = gsap.fromTo(tile.core.dom!,
+      const tween = gsap.fromTo(tile.core.dom!,
         {
           y: (yREM + heightREM / 2 < middle ? -heightREM : tile_list_height_rem + heightREM) + "rem",
         },
@@ -111,17 +126,28 @@ export abstract class Layout {
           duration: 0.18
         }
       );
+      tile.core.tween = tween;
+      tween!.then(() => {
+        const i = this.$._tile_tweens.indexOf(tween);
+        if (i != -1) {
+          this.$._tile_tweens.splice(i, 1);
+        }
+        if (this.$._tile_tweens.length == 0) {
+          group_tiles_div!.style.overflow = "";
+        }
+      });
+      group_tiles_div!.style.overflow = "hidden";
+      this.$._tile_tweens.push(tween);
     }
 
     // resize groupTiles div
-    if (group.dom) {
-      const group_tiles_div = group.dom!.getElementsByClassName(this.$._class_names.groupTiles)[0] as HTMLElement;
+    if (group_tiles_div) {
       let min_w = 0;
       if (this.$._dir == "horizontal") {
         min_w = 18;
       }
-      group_tiles_div.style.width = Math.max(min_w, tile_list_width_rem) + "rem";
-      group_tiles_div.style.height = tile_list_height_rem + "rem";
+      group_tiles_div!.style.width = Math.max(min_w, tile_list_width_rem) + "rem";
+      group_tiles_div!.style.height = tile_list_height_rem + "rem";
     }
 
     // bulkChange event (moved tiles only)
