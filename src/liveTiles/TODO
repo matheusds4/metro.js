@@ -3,7 +3,7 @@
 - [ ] `.direction` getter/setter
   - [ ] changes the layout and re-detect past DOM nodes (e.g. clear things up and add groups and tiles back based on past data).
 
-## CoreTiles.detect()
+## Core.detect()
 
 - [ ] Note that `detect()` must defer detection. It will collect multiple nodes and after a 7ms timeout it should detect these nodes and clear up again the detection list.
 
@@ -23,7 +23,38 @@ Groups:
 
 ## Group label
 
+- [ ] On rearrange, set the label's height style.
+- [ ] Re-setting the label height
+  - [ ] Rearrange
 - [ ] Editing
+
+## Size 1x1
+
+- [ ] Re-setting the 1x1 size
+  - [ ] Update `._tile_in_rem`
+  - [ ] Rearrange
+
+## Tile gap
+
+- [ ] Re-setting the tile gap
+  - [ ] Rearrange
+
+## Group gap
+
+- [ ] Re-setting the group gap
+  - [ ] Rearrange
+
+## Group width
+
+- [ ] Must be at least 4
+- [ ] Re-setting number of inline groups
+  - [ ] Rearrange
+
+## Inline groups
+
+- [ ] Minimum: 1
+- [ ] Re-setting number of inline groups
+  - [ ] Rearrange
 
 ## Tile drag-n-drop
 

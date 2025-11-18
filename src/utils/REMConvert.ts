@@ -16,3 +16,15 @@ export const pixels = {
     return value * 0.0625;
   }
 };
+
+/**
+ * Cascading `rem` conversion to logical pixels.
+ */
+export const rem = {
+  /**
+   * Returns logical pixels from `rem`.
+   */
+  pixels(value: number): number {
+    return value * 16;
+  },
+};
