@@ -1,12 +1,14 @@
 // third-party
 import assert from "assert";
 import { TypedEventTarget } from "@hydroperx/event";
+import Draggable from "@hydroperx/draggable";
 
 // local
 import { SimpleGroup, SimpleTile } from "./SimpleGroup";
-import { TileSize } from "./TileSize";
+import { TileSize, getWidth, getHeight, TileSizeMap } from "./TileSize";
 import { REMObserver } from "../utils/REMObserver";
 import * as MathUtils from "../utils/MathUtils";
+import * as ScaleUtils from "../utils/ScaleUtils";
 
 /**
  * Live tiles core implementation.

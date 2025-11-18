@@ -5,6 +5,8 @@
 
 ## CoreTiles.detect()
 
+- [ ] Note that `detect()` must defer detection. It will collect multiple nodes and after a 7ms timeout it should detect these nodes and clear up again the detection list.
+
 Tiles:
 
 - [ ] Contributes a newly-added DOM tile, or detects moving X/Y, resizing and group transfer (look at parent).
@@ -17,7 +19,7 @@ Groups:
 - [ ] Contributes a newly-added DOM group, or detects label change.
 - [ ] ... or, given a removed DOM group, remove group from state and rearrange groups.
   - *This is usually called on React.js effect cleanup.*
-- [ ] Group indices are based in DOM order among sibling `Group`s (e.g. disregard `TileDND`).
+- [ ] Group indices are based in DOM order among sibling `TileGroup`s (e.g. disregard `TileDND`).
 
 ## Group label
 

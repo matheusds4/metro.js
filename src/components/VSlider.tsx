@@ -13,7 +13,7 @@ import { MAXIMUM_Z_INDEX } from "../utils/Constants";
 import { REMObserver } from "../utils/REMObserver";
 import * as ColorUtils from "../utils/ColorUtils";
 import * as MathUtils from "../utils/MathUtils";
-import * as ScaleUtils from "../utils/ScaleUtilts";
+import * as ScaleUtils from "../utils/ScaleUtils";
 
 /**
  * Vertical slider.
