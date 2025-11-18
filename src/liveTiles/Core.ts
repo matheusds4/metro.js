@@ -29,6 +29,10 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
    */
   public _groups: CoreGroup[] = [];
   /**
+   * @hidden
+   */
+  public _tile_tweens: gsap.core.Tween[] = [];
+  /**
    * The container (the parent of groups and DND tiles) is resized
    * as the layout rearranges.
    *
@@ -242,6 +246,12 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
     this._dnd.tileDNDDraggable?.destroy();
     this._dnd.groupDraggable?.destroy();
 
+    // discard tile tweens
+    for (const tween of this._tile_tweens) {
+      tween.kill();
+    }
+    this._tile_tweens.length = 0;
+
     // discard deferred rearrangement
     if (this._rearrange_timeout != -1) {
       window.clearTimeout(this._rearrange_timeout);
@@ -308,6 +318,33 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
     assert(this._inline_groups >= 1, "Core.inlineGroups must be >= 1.");
     this._inline_groups = val;
     this.rearrange();
+  }
+
+  /**
+   * Returns the number of inline groups available for
+   * the given width (either in `px` or `rem`).
+   * *Applies to a vertical layout only.*
+   * 
+   * @throws If not in a vertical layout.
+   */
+  public inlineGroupsAvailable(width: string): number {
+    assert(this._dir == "vertical", "Core.inlineGroupsAvailable() can only be called on vertical layouts.");
+    const unitMatch = width.match(/(px|rem)$/i);
+    assert(!!unitMatch, "Core.inlineGroupsAvailable() takes a width with a 'px' or 'rem' unit.");
+    const unit = unitMatch[1].toLowerCase();
+    let w = parseFloat(width.trim());
+    // convert px to rem
+    if (unit == "px") {
+      w /= this._rem;
+    }
+    let r: number = 0;
+    for (let acc: number = 0; acc < w; r++) {
+      if (acc != 0) {
+        acc += this._group_gap;
+      }
+      acc += this._group_width*this._size_1x1 + (this._group_width-1)*this._group_gap;
+    }
+    return r;
   }
 
   /**
