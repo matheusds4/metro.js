@@ -6,6 +6,7 @@ import type { Core, BulkChange } from "./Core";
 import { CoreGroup, CoreTile } from "./CoreGroup";
 import { SimpleGroup } from "./SimpleGroup";
 import { TileSize, getWidth, getHeight, sizeNumbersToVariant } from "./TileSize";
+import * as MathUtils from "../utils/MathUtils";
 
 // node detection for groups and tiles
 export class Detection {
@@ -71,6 +72,9 @@ export class Detection {
     if (node.parentElement?.classList.contains(this.$._class_names.groupTiles)) {
       const group_id = node.parentElement!.getAttribute("data-id") ?? "";
 
+      //
+      let changed = false;
+
       // initialize group
       let new_group = this.$._groups.find(g => g.id == group_id);
       if (!new_group) {
@@ -85,6 +89,28 @@ export class Detection {
           label: group_dom.getAttribute("data-label") ?? "",
           simple,
         });
+
+        //
+        changed = true;
+
+        // add group to Core (`this.$._groups`)
+        let i = parseInt(group_dom.getAttribute("data-index") || "-1");
+        if (i == -1) {
+          this.$._groups.push(new_group!);
+          // signal group move (length - 1)
+          this.$.dispatchEvent(new CustomEvent("moveGroup", {
+            detail: { id: new_group!.id, index: this.$._groups.length - 1 }
+          }));
+        } else {
+          const final_index = MathUtils.clamp(i, 0, this.$._groups.length);
+          this.$._groups.splice(final_index, 0, new_group!);
+          // signal group move
+          if (i != final_index) {
+            this.$.dispatchEvent(new CustomEvent("moveGroup", {
+              detail: { id: new_group!.id, index: final_index }
+            }));
+          }
+        }
       }
 
       // find maybe old group
@@ -150,9 +176,6 @@ export class Detection {
 
         return true;
       }
-
-      //
-      let changed = false;
 
       //
       let simple = new_group!.simple.tiles.get(id)!;
@@ -242,6 +265,9 @@ export class Detection {
       return true;
     }
 
+    //
+    let changed = false;
+
     // initialize group
     let group = this.$._groups.find(g => g.id == group_id);
     if (!group) {
@@ -255,6 +281,37 @@ export class Detection {
         label: group_dom.getAttribute("data-label") ?? "",
         simple,
       });
+
+      //
+      changed = true;
+    }
+
+    //
+    const old_index = this.$._groups.findIndex(g => g.id == group_id);
+    if (old_index == -1 || old_index != new_index) {
+      let final_index = 0;
+
+      // add group to Core (`this.$._groups`)
+      if (new_index == -1) {
+        final_index = this.$._groups.length;
+        this.$._groups.push(group!);
+      } else {
+        final_index = MathUtils.clamp(new_index, 0, this.$._groups.length);
+        this.$._groups.splice(final_index, 0, group!);
+      }
+
+      // remove old duplicate
+      if (old_index != -1) {
+        this.$._groups.splice(old_index + (final_index <= old_index ? 1 : 0), 1);
+      }
+
+      // signal group move
+      final_index = this.$._groups.indexOf(group!);
+      if (new_index != final_index) {
+        this.$.dispatchEvent(new CustomEvent("moveGroup", {
+          detail: { id: group!.id, index: final_index }
+        }));
+      }
     }
 
     // attach pointer handlers (if not already attached)
@@ -262,9 +319,10 @@ export class Detection {
     // `CoreGroup.attachedHandlers` (compare element)
     fixme();
 
-    // note: if group to add has -1 index then change it to the last
-    // position and dispatch the `moveGroup` event.
-
+    //
     fixme();
+
+    // return
+    return changed;
   }
 }
