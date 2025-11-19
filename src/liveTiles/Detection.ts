@@ -1,8 +1,11 @@
+// third-party
+import assert from "assert";
+
 // local
 import type { Core, BulkChange } from "./Core";
 import { CoreGroup, CoreTile } from "./CoreGroup";
 import { SimpleGroup } from "./SimpleGroup";
-import { TileSize } from "./TileSize";
+import { TileSize, getWidth, getHeight, sizeNumbersToVariant } from "./TileSize";
 
 // node detection for groups and tiles
 export class Detection {
@@ -32,6 +35,7 @@ export class Detection {
     let any_changes = false;
     let bulk_change: BulkChange = {
       movedTiles: [],
+      resizedTiles: [],
       groupTransfers: [],
       groupRemovals: [],
       groupCreation: null,
@@ -97,27 +101,59 @@ export class Detection {
       // initialize tile
       if (!tile) {
         fixme();
+
+        // initialize SimpleTile on CoreGroup
+        fixme();
       }
       tile!.attachedHandlers = node;
       tile!.dom = node;
 
-      //
-      let changed = false;
-
       // transfer group?
-      fixme();
+      if (maybe_old_group ? maybe_old_group! !== new_group! : false) {
+        // change everything (x, y, size)
+        fixme();
+        return true;
+      }
 
       // add to group?
       //
       // - if x & y = -1, then contribute a movedTile
       //   in the bulkChange for the best last position.
-      fixme();
+      if (maybe_old_group) {
+        // put everything (x, y, size)
+        fixme();
+        return true;
+      }
+
+      //
+      let changed = false;
+
+      //
+      const simple = new_group!.simple.tiles.get(id)!;
 
       // move X/Y
-      fixme();
+      if (new_x != simple.x || new_y != simple.y) {
+        assert(new_x != -1 && new_y != -1, "Move tile coordinates must be specified and not equals -1.");
+        if (!new_group!.simple.moveTile(id, new_x, new_y)) {
+          // fail? then move back to previous position.
+          bulkChange.movedTiles.push({ id, x: simple.x, y: simple.y });
+        }
+
+        //
+        changed = true;
+      }
 
       // resize?
-      fixme();
+      if (getWidth(new_size) != simple.width || getHeight(new_size) != simple.height) {
+        if (!new_group!.simple.resizeTile(id, getWidth(new_size), getHeight(new_size))) {
+          // fail? then put previous size back.
+          const old_size = sizeNumbersToVariant(simple.width, simple.height);
+          bulkChange.resizedTiles.push({ id, size: old_size });
+        }
+
+        //
+        changed = true;
+      }
 
       return changed;
     }

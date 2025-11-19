@@ -631,6 +631,11 @@ export type BulkChange = {
    */
   movedTiles: { id: string, x: number, y: number }[],
   /**
+   * Resized tiles (triggered when the developer specifies a size that
+   * could not fit into the layout).
+   */
+  resizedTiles: { id: string, size: TileSize }[],
+  /**
    * Group transfers (tiles moving to other groups,
    * in response to actions like drag-n-drop).
    */

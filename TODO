@@ -29,6 +29,7 @@
   - [ ] Label+icon tiles use a subsubheading label. Icon should be way smaller than in icon+label tiles. They should be just "icon" tiles for small tiles (1x1).
   - [ ] 1x1 tile size = 42x42 logical pixels
   - [ ] Tile gap = 10 logical pixels
+  - [ ] Tile X/Y may be omitted or -1
   - [ ] Support size-conditional live content pages
     - [ ] One page can target multiple sizes (e.g. support attributes like `size="< wide"` (less-than), greater-than and exact (`=` prefix optional); the page's `size` attribute will result in multiple class names like `.medium` and `.wide`)
   - [ ] Icon/logo size should be more based in percentage

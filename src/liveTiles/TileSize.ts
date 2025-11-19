@@ -22,6 +22,13 @@ export function getHeight(size: TileSize): number {
 }
 
 /**
+ * Converts (width, height) pairs into a `TileSize` variant.
+ */
+export function sizeNumbersToVariant(width: number, height: number): TileSize {
+  return width == 4 ? (height == 4 ? "large" : "wide") : width == 2 ? "medium" : "small";
+}
+
+/**
  * Mapping of tile size variant to tile size pairs (width, height).
  */
 export type TileSizeMap = {
