@@ -18,6 +18,7 @@ export class Detection {
     if (this._timeout != -1) {
       window.clearTimeout(this._timeout);
     }
+    this._queue.push(node);
     this._timeout = window.setTimeout(() => {
       this._detect_now();
     }, 5);
@@ -25,6 +26,6 @@ export class Detection {
 
   //
   private _detect_now(): void {
-    fixme();
+    //
   }
 }

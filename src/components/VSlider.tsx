@@ -597,7 +597,6 @@ class DND {
   private m_global_pointerCancel: null | ((e: PointerEvent) => void) = null;
   private m_global_wheel: null | ((e: WheelEvent) => void) = null;
   private m_activePointerId: number = -1;
-  // private m_dragStart: [number, number] = [0, 0];
 
   // new DND()
   public constructor(
@@ -642,7 +641,11 @@ class DND {
     }
     if (this.m_global_pointerUp) {
       window.removeEventListener("pointerup", this.m_global_pointerUp);
-      this.m_global_pointerUp!(new PointerEvent("pointerup"));
+      if (this.m_activePointerId != -1) {
+        this.m_global_pointerUp!(new PointerEvent("pointerup", {
+          pointerId: this.m_activePointerId,
+        }));
+      }
       this.m_global_pointerUp = null;
     }
     if (this.m_global_pointerCancel) {
@@ -699,9 +702,6 @@ class DND {
     // remember pointer ID
     this.m_activePointerId = e.pointerId;
 
-    // remember drag start
-    // this.m_dragStart = [e.clientX, e.clientY];
-
     // update position
     this.update_position(e);
   }
@@ -735,7 +735,6 @@ class DND {
     }
     if (this.m_global_pointerUp) {
       window.removeEventListener("pointerup", this.m_global_pointerUp);
-      this.m_global_pointerUp!(new PointerEvent("pointerup"));
       this.m_global_pointerUp = null;
     }
     if (this.m_global_pointerCancel) {
