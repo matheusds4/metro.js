@@ -44,6 +44,7 @@ Trick to use: Draggable needs to drag the tileDND element, not the tile itself. 
 
 More:
 
+- [ ] Empty checked tiles on drag start, triggering `checkedChange`
 - [ ] Note that the tile may be removed while dragging
 
 ## Group drag-n-drop
