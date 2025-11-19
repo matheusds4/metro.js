@@ -5,8 +5,9 @@
 Tiles:
 
 - [ ] Contributes a newly-added DOM tile, or detects moving X/Y, resizing and group transfer (look at parent).
-- [ ] ... or, given a removed DOM tile, remove tile from state (both SimpleGroup and CoreGroup's tiles), remove parent group if empty and rearrange groups.
-  - *This is usually called on React.js effect cleanup.*
+- [ ] ... or, given a removed DOM tile, remove tile from state (both SimpleGroup and CoreGroup's tiles) and remove parent group if empty.
+  - *Also called on React.js effect cleanup.*
+- [ ] During group transfer, remove the previous group if empty.
 - [ ] Note that, in case of any change, `detect()` doesn't just rearrange. It will regardless of whatever circumstances invoke some of `addTile()`, `moveTile()`, `resizeTile()` and `removeTile()` in `SimpleGroup`s before requesting a rearrangement.
 - [ ] Attach mouse down/click/touch down/touch end handlers on tile addition for click, check and drag-n-drop events
   - [ ] Drag-n-drop only occurs if `Core.dragEnabled=true`
@@ -18,7 +19,7 @@ Groups:
   - [ ] If `data-index` is `> groups.length` (that is, it's not an existing group's place neither the last place available) then trigger a `moveGroup` event to put it at the last position.
   - [ ] If another group's index, then trigger `moveGroup` for the other group it's swaping index with.
 - [ ] ... or, given a removed DOM group, remove group from state and rearrange groups.
-  - *This is usually called on React.js effect cleanup.*
+  - *Also called on React.js effect cleanup.*
 - [ ] Group indices are based in DOM order among sibling `TileGroup`s (e.g. disregard `TileDND`).
 
 ## Group label
@@ -43,9 +44,7 @@ Trick to use: Draggable needs to drag the tileDND element, not the tile itself. 
 
 More:
 
-- [ ] While dragging a tile, enable overflow clipping at the groupTiles div.
-  - [ ] When drag ends, still leave overflow clipping active for around 750 ms.
-- [ ] When a group gets empty after drag end, remove it.
+- [ ] Note that the tile may be removed while dragging
 
 ## Group drag-n-drop
 
@@ -59,3 +58,7 @@ Group drag-n-drop mimmicks tiles a bit in how the Draggable instance is created,
   - [ ] Edit
   - [ ] Trigger drag-n-drop (after short-delta)
     - [ ] Trigger events
+
+More:
+
+- [ ] Note that the group may be removed while dragging

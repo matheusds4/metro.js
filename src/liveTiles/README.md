@@ -13,15 +13,17 @@
 
 ## Group attributes
 
-- `data-id` - Group ID.
+- `data-id` - Read-only group ID.
 - `data-index` - Group index.
-- `data-dragging` - Indicates whether a pointer is actively dragging a group. (`true` or `false`)
+- `data-label` - Group label.
+- `data-dragging` - *(Set by this library only.)* Indicates whether a pointer is actively dragging a group. (`true` or `false`)
 
 ## Tile attributes
 
-- `data-id` - Tile ID.
-- `data-size` - Tile size matching a `TileSize` variant.
-- `data-checked` - Indicates whether a tile is checked. (`true` or `false`)
+During tile addition, if `data-x` and `data-y` are `-1` or unspecified, the tile is added to the best last position, triggering a `bulkChange` event with `.movedTiles` entries.
+
+- `data-id` - Read-only tile ID. MUST BE unique across groups.
+- `data-checked` - *(Set by this library only.)* Indicates whether a tile is checked. (`true` or `false`)
 - `data-x` - Tile X coordinate (1x1).
 - `data-y` - Tile Y coordinate (1x1).
 - `data-size` - Tile size (indicated by the `TileSize` enumeration: `small` (1x1), `medium` (2x2), `wide` (4x2) and `large` (4x4))

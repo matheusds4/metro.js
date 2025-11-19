@@ -250,7 +250,9 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
 
     // destroy draggables
     this._dnd.tileDNDDraggable?.destroy();
-    this._dnd.groupDraggable?.destroy();
+    this._dnd.tileDNDDraggable = null;
+    this._dnd.groupDraggable?.[1].destroy();
+    this._dnd.groupDraggable = null;
 
     // discard tile tweens
     for (const tween of this._tile_tweens) {
@@ -683,7 +685,6 @@ export class CoreTile {
   public lastRearrange_positioned: boolean = false;
   public lastRearrange_x: number = 0;
   public lastRearrange_y: number = 0;
-  public lastRearrange_size: TileSize = "small";
 
   //
   public constructor(params: {
