@@ -446,7 +446,7 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
     // Uncheck any tile if `checkEnabled=false`
     if (!this._check_enabled) {
       // resize tiles
-      for (const group of this._groups) {
+      for (const [, group] of this._groups) {
         for (const [, tile] of group.tiles) {
           tile.dom?.removeAttribute("data-checked");
         }
@@ -510,7 +510,7 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
   // reset SimpleGroups and perform a rearrangement.
   private _re_add_tiles(): void {
     // re-assign SimpleGroups
-    for (const group of this._groups) {
+    for (const [, group] of this._groups) {
       // backup tiles
       const backups =  group.simple.tiles;
 

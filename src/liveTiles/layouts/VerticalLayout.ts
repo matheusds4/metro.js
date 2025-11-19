@@ -28,9 +28,12 @@ export class VerticalLayout extends Layout {
     let parent_h = 0;
     let max_rows_found = new Map<number, number>();
 
+    // read groups in sequential order
+    let groups = Array.from(this.$._groups.entries());
+    groups.sort((a, b) => a[0] - b[0]);
+
     // rearrange group tiles and reposition groups
-    for (let i = 0; i < this.$._groups.length; i++) {
-      const group = this.$._groups[i];
+    for (const [i, group] of groups) {
       this.rearrangeGroup(group);
 
       // ignore from layout any group being dragged.
@@ -98,8 +101,15 @@ export class VerticalLayout extends Layout {
     if (groupColumn === -1) {
       return null;
     }
+    //
+
+    // read groups in sequential order
+    let group_plus_idx = Array.from(this.$._groups.entries());
+    group_plus_idx.sort((a, b) => a[0] - b[0]);
+    const groups = group_plus_idx.map(([,g]) => g);
+
     // find groupIdx in this.groups for this column
-    for (let i = 0, col = 0; i < this.$._groups.length; i++, col = i % this.$._inline_groups) {
+    for (let i = 0, col = 0; i < groups.length; i++, col = i % this.$._inline_groups) {
       if (col === groupColumn) {
         groupIdx = i;
         break;
@@ -118,11 +128,11 @@ export class VerticalLayout extends Layout {
     // resultY
     // compute vertical positions for each group as in rearrange()
     const groupTops = new Map<number, number>(); // group index -> top Y
-    for (let i = 0; i < this.$._groups.length; i++) {
+    for (let i = 0; i < groups.length; i++) {
       const column = i % this.$._inline_groups;
       const prevY = column_y.get(column) ?? 0;
       groupTops.set(i, prevY);
-      const group = this.$._groups[i];
+      const group = groups[i];
       let h = 0;
       if (group.dom) {
         h = ((group.dom!.getBoundingClientRect().height / ScaleUtils.getScale(group.dom!).y) / this.$._rem);
@@ -132,8 +142,8 @@ export class VerticalLayout extends Layout {
       column_y.set(column, prevY + h + this.$._group_gap);
     }
     // now snap to the group in the correct column whose bounds contain offset.y
-    for (let i = 0; i < this.$._groups.length; i++) {
-      const group = this.$._groups[i];
+    for (let i = 0; i < groups.length; i++) {
+      const group = groups[i];
       const column = i % this.$._inline_groups;
       if (column !== groupColumn) {
         continue;

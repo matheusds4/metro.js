@@ -20,11 +20,15 @@ export class HorizontalLayout extends Layout {
   public override rearrange(): void {
     // current X in the cascading REM unit
     let x = 0;
-    let parent_w = this.$._groups.length == 0 ? 0 : (this.$._groups.length - 1) * this.$._group_gap;
+    let parent_w = this.$._groups.size == 0 ? 0 : (this.$._groups.size - 1) * this.$._group_gap;
     let parent_h = this.$._label_height + this.$._tile_gap + this.$._group_height*this.$._size_1x1 + (this.$._group_height-1)*this.$._tile_gap;
 
+    // read groups in sequential order
+    let groups = Array.from(this.$._groups.entries());
+    groups.sort((a, b) => a[0] - b[0]);
+
     // rearrange group tiles and reposition groups
-    for (const group of this.$._groups) {
+    for (const [, group] of groups) {
       this.rearrangeGroup(group);
 
       // ignore from layout any group being dragged.
@@ -89,12 +93,17 @@ export class HorizontalLayout extends Layout {
 
     let resultGroup: undefined | string = undefined;
 
+    // read groups in sequential order
+    let group_plus_idx = Array.from(this.$._groups.entries());
+    group_plus_idx.sort((a, b) => a[0] - b[0]);
+    const groups = group_plus_idx.map(([,g]) => g);
+
     // resultX
     const offset_center_x = offset.x + offset.w/2;
     if (offset_center_x < 0) {
       return null;
     }
-    for (const group of this.$._groups) {
+    for (const group of groups) {
       let w = 0;
       if (group.dom) {
         w = ((group.dom!.getBoundingClientRect().width / ScaleUtils.getScale(group.dom!).x) / this.$._rem);
