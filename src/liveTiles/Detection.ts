@@ -103,10 +103,7 @@ export class Detection {
 
       // initialize tile
       if (!tile) {
-        fixme();
-
-        // DO NOT initialize SimpleTile on CoreGroup right now
-        fixme();
+        tile = new CoreTile({ dom: node });
       }
       tile!.attachedHandlers = node;
       tile!.dom = node;
@@ -121,6 +118,11 @@ export class Detection {
         if (is_group_transfer) {
           maybe_old_group!.simple.removeTile(id);
           maybe_old_group!.tiles.delete(id);
+
+          // remove previous group if empty.
+          if (maybe_old_group!.tiles.size == 0 && !!maybe_old_group.dom) {
+            bulkChange.groupRemovals.push({ id: maybe_old_group.id });
+          }
         }
 
         // add to new group (handle -1 x, y too)

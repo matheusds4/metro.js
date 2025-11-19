@@ -4,23 +4,21 @@
 
 Tiles:
 
-- [ ] Contributes a newly-added DOM tile, or detects moving X/Y, resizing and group transfer (look at parent).
-- [ ] ... or, given a removed DOM tile, remove tile from state (both SimpleGroup and CoreGroup's tiles) and remove parent group if empty.
-  - *Also called on React.js effect cleanup.*
-- [ ] During group transfer, remove the previous group if empty.
-- [ ] Note that, in case of any change, `detect()` doesn't just rearrange. It will regardless of whatever circumstances invoke some of `addTile()`, `moveTile()`, `resizeTile()` and `removeTile()` in `SimpleGroup`s before requesting a rearrangement.
+- *Called on React.js effect involving changed properties (x, y, size).*
+- *Called on React.js empty-dependencies effect cleanup.*
 - [ ] Attach mouse down/click/touch down/touch end handlers on tile addition for click, check and drag-n-drop events
+  - [ ] Trigger click
+  - [ ] Trigger contextMenu
   - [ ] Drag-n-drop only occurs if `Core.dragEnabled=true`
   - [ ] (un-)checking tiles only occurs if `Core.checkEnabled=true`
 
 Groups:
 
+- *Called on React.js effect involving changed properties (x, y, size).*
+- *Called on React.js empty-dependencies effect cleanup.*
 - [ ] Contributes a newly-added DOM group, or detects label change, or reorders group (based on the `data-index` attribute changing from state's index).
   - [ ] If `data-index` is `> groups.length` (that is, it's not an existing group's place neither the last place available) then trigger a `moveGroup` event to put it at the last position.
   - [ ] If another group's index, then trigger `moveGroup` for the other group it's swaping index with.
-- [ ] ... or, given a removed DOM group, remove group from state and rearrange groups.
-  - *Also called on React.js effect cleanup.*
-- [ ] Group indices are based in DOM order among sibling `TileGroup`s (e.g. disregard `TileDND`).
 
 ## Group label
 
