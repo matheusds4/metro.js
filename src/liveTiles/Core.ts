@@ -5,6 +5,8 @@ import Draggable from "@hydroperx/draggable";
 import { gsap } from "gsap/gsap-core";
 
 // local
+import { DND } from "./DND";
+import { Detection } from "./Detection";
 import { Layout } from "./layouts/Layout";
 import { HorizontalLayout } from "./layouts/HorizontalLayout";
 import { VerticalLayout } from "./layouts/VerticalLayout";
@@ -14,7 +16,6 @@ import * as REMConvert from "../utils/REMConvert";
 import { REMObserver } from "../utils/REMObserver";
 import * as MathUtils from "../utils/MathUtils";
 import * as ScaleUtils from "../utils/ScaleUtils";
-import { DND } from "./DND";
 
 /**
  * Live tiles core implementation.
@@ -28,6 +29,10 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
    * @hidden
    */
   public _groups: CoreGroup[] = [];
+  /**
+   * @hidden
+   */
+  public _detection: Detection;
   /**
    * @hidden
    */
@@ -187,6 +192,7 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
   }) {
     super();
     this._layout = params.direction == "horizontal" ? new HorizontalLayout(this) : new VerticalLayout(this);
+    this._detection = new Detection(this);
     this._container = params.container;
     this._container.style.position = "relative";
     this._dir = params.direction;
@@ -469,6 +475,15 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
         }
       }
     }
+  }
+
+  /**
+   * Detects a node (tile or group) and checks
+   * if it has changed, re-positioning and
+   * rearranging things up.
+   */
+  public detect(node: HTMLElement): void {
+    this._detection.detect(node);
   }
 
   /**

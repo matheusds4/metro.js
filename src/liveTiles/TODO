@@ -2,7 +2,7 @@
 
 ## Core.detect()
 
-- [ ] Note that `detect()` must defer detection. It will collect multiple nodes and after a 7ms timeout it should detect these nodes and clear up again the detection list. After everything is detected (e.g. things are repositioned/resized/removed), rearrange (e.g. for mutating the container's size and groups size).
+- [ ] Note that `detect()` must defer detection. It will collect multiple nodes and after a 5ms timeout it should detect these nodes and clear up again the detection list. After everything is detected (e.g. things are repositioned/resized/removed), rearrange (e.g. for mutating the container's size and groups size).
 
 Tiles:
 

@@ -1,6 +1,6 @@
 # Core live tiles
 
-## Element structure
+## DOM structure
 
 - Container (the main `<div>`)
   - Groups
@@ -11,12 +11,16 @@
         - Tile content (a `<div>` with custom content that may be scaled up/down). In general, do any styling (like border, background and tilting) on this `<div>` instead of the tile itself.
   - Tile DND (a `<div>` that contains a tile representing the tile currently dragging)
 
-## Used attributes
+## Group attributes
 
-- `data-id` - Group or tile ID.
+- `data-id` - Group ID.
 - `data-index` - Group index.
+- `data-dragging` - Indicates whether a pointer is actively dragging a group. (`true` or `false`)
+
+## Tile attributes
+
+- `data-id` - Tile ID.
 - `data-size` - Tile size matching a `TileSize` variant.
-- `data-dragging` - Indicates whether a pointer is actively dragging a group or tile. (`true` or `false`)
 - `data-checked` - Indicates whether a tile is checked. (`true` or `false`)
 - `data-x` - Tile X coordinate (1x1).
 - `data-y` - Tile Y coordinate (1x1).
