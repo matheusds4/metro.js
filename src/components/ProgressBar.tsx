@@ -38,6 +38,9 @@ export function ProgressBar(params: {
   // variant
   const variant = React.useRef(params.variant ?? "solid");
 
+  // dot size decrease for progress dots
+  const [dot_decrease, set_dot_decrease] = React.useState<number>(0);
+
   // theme
   const theme = React.useContext(ThemeContext);
 
@@ -75,8 +78,10 @@ export function ProgressBar(params: {
 
   // reflect variant
   React.useEffect(() => {
+
     variant.current = params.variant ?? "solid";
     reset_animation();
+
   }, [params.variant ?? "solid"]);
 
   // setup animation
@@ -93,10 +98,14 @@ export function ProgressBar(params: {
       const div_width = div_ref.current!.offsetWidth;
       let center_start_x = 40;
       let center_end_x = 50;
+      let delay_multiplier = 0.3;
       const portrait_width = 500;
       if (div_width <= portrait_width) {
         center_start_x = 25;
         center_end_x = 69;
+        set_dot_decrease(2.5);
+      } else {
+        set_dot_decrease(0);
       }
       for (let i = 0; i < 5; i++) {
         animateDot(dots[i], i);
@@ -114,7 +123,7 @@ export function ProgressBar(params: {
             opacity: 1,
             duration: 0.5,
             ease: "power1.out",
-            delay: index * 0.3,
+            delay: index * delay_multiplier,
           }
         );
         gsap_tweens.current!.push(tween);
@@ -156,13 +165,12 @@ export function ProgressBar(params: {
       // ProgressBar_dots_div
       //   .progress-bar__wrap
       //     .progress-bar__dot
-      const size = REMConvert.pixels.remPlusUnit(params.size ?? 5);
       const color = primary ? theme.colors.primary : theme.colors.foreground;
 
       return (
         <ProgressBar_dots_div
           ref={div_ref}
-          $size={size}
+          $size={REMConvert.pixels.remPlusUnit((params.size ?? 5) - dot_decrease)}
           $color={color}
           className={["ProgressBar", "dots", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
           style={params.style}

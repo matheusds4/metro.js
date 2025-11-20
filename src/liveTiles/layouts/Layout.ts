@@ -183,6 +183,7 @@ export abstract class Layout {
     if (movedTiles.length != 0) {
       const bulkChange: BulkChange = {
         movedTiles,
+        resizedTiles: [],
         groupTransfers: [],
         groupRemovals: [],
         groupCreation: null,
