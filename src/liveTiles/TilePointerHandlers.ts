@@ -18,6 +18,12 @@ export class TilePointerHandlers {
   private toggle_timestamp: number = 0;
   private just_held_long: boolean = false;
 
+  // touch only
+  private touch_start_id: number = -1;
+  private allow_dnd_timeout: number = -1;
+  private enable_touch_dnd: boolean = false;
+  private touch_start_event: null | TouchEvent = null;
+
   //
   private bound_window_mouse_move_handler: null | Function = null;
 
@@ -40,9 +46,10 @@ export class TilePointerHandlers {
     node.addEventListener("click", this.click.bind(this));
 
     // touch handlers
-    // 
-    // - [ ] prevent default to avoid `click`
-    fixme();
+    node.addEventListener("touchstart", this.touch_start.bind(this));
+    node.addEventListener("touchmove", this.touch_move.bind(this));
+    node.addEventListener("touchend", this.touch_end.bind(this));
+    node.addEventListener("touchcancel", this.touch_cancel.bind(this));
 
     // context menu handlers
     node.addEventListener("contextmenu", this.context_menu.bind(this));
@@ -50,7 +57,7 @@ export class TilePointerHandlers {
 
   //
   private mouse_down(e: MouseEvent): void {
-    if (this.$._dnd.dragging || e.button != 1) {
+    if (this.$._dnd.dragging || e.button != 1 || this.touch_start_id != -1) {
       return;
     }
     this.draggable_ready = false;
@@ -88,6 +95,7 @@ export class TilePointerHandlers {
       this.$._dnd.tileId = this.id;
       this.$._dnd.tileButton = this.node;
       this.draggable_ready = true;
+      this.position_dnd();
       // tileDND#mousedown
       this.$._dnd.tileDNDDOM?.dispatchEvent(new MouseEvent("mousedown", {
         button: e.button,
@@ -105,17 +113,18 @@ export class TilePointerHandlers {
     if (this.$._dnd.dragging) {
       this.dragged = true;
     }
+  }
 
-    //
-    if (!this.$._dnd.dragging && this.$._dnd.tileDNDDOM) {
-      this.$._dnd.tileDNDDOM!.style.position = "absolute";
+  //
+  private position_dnd(): void {
+    // tileDND - absolute position
+    this.$._dnd.tileDNDDOM!.style.position = "absolute";
 
-      // put translate
-      let offset = getOffset(this.node, this.$._container)!;
-      OffsetUtils.divideOffsetBy(offset, this.$._rem);
-      this.$._dnd.tileDNDDOM!.style.left = offset.x + "rem";
-      this.$._dnd.tileDNDDOM!.style.top = offset.y + "rem";
-    }
+    // put translate
+    let offset = getOffset(this.node, this.$._container)!;
+    OffsetUtils.divideOffsetBy(offset, this.$._rem);
+    this.$._dnd.tileDNDDOM!.style.left = offset.x + "rem";
+    this.$._dnd.tileDNDDOM!.style.top = offset.y + "rem";
   }
 
   //
@@ -159,6 +168,184 @@ export class TilePointerHandlers {
 
     this.discard_window_handlers()
     this.short_click(e);
+  }
+
+  //
+  private touch_start(e: TouchEvent): void {
+    if (this.$._dnd.dragging || this.mouse_started) {
+      return;
+    }
+    e.preventDefault();
+    this.touch_start_id = e.touches[0].identifier;
+    this.enable_touch_dnd = false;
+    this.just_held_long = false;
+    this.dragged = false;
+    this.mouse_started = false;
+    this.draggable_ready = false;
+    this.touch_start_event = e;
+
+    // timeout to enable drag-n-drop
+    this.allow_dnd_timeout = window.setTimeout(() => {
+      this.allow_dnd_timeout = -1;
+      this.enable_touch_dnd = true;
+
+      this.toggle_timeout = window.setTimeout(() => {
+        // holding long on a tile will check it
+        if (this.dragged) return;
+        this.toggle_check();
+        this.just_held_long = true;
+        this.toggle_timestamp = Date.now();
+      }, 500);
+    }, 700);
+  }
+
+  //
+  private touch_move(e: TouchEvent): void {
+    const touch = Array.from(e.changedTouches).find(t => t.identifier == this.touch_start_id);
+    if (!touch) {
+      return;
+    }
+    e.preventDefault();
+
+    // if moving touch out of tile, prevent drag-n-drop.
+    if (this.allow_dnd_timeout != -1) {
+      const r = this.node.getBoundingClientRect();
+      const hover = touch.clientX >= r.x && touch.clientX < r.right && touch.clientY >= r.y && touch.clientY < r.bottom;
+      if (!hover) {
+        window.clearTimeout(this.allow_dnd_timeout);
+        this.allow_dnd_timeout = -1;
+      }
+    }
+
+    // prevent check toggle
+    if (this.toggle_timeout != -1) {
+      const r = this.node.getBoundingClientRect();
+      const hover = touch.clientX >= r.x && touch.clientX < r.right && touch.clientY >= r.y && touch.clientY < r.bottom;
+      if (!hover) {
+        window.clearTimeout(this.toggle_timeout);
+        this.toggle_timeout = -1;
+      }
+    }
+
+    //
+    if (this.enable_touch_dnd && !this.draggable_ready && this.$._drag_enabled) {
+      this.$._dnd.initTileDNDDraggable();
+      this.$._dnd.tileId = this.id;
+      this.$._dnd.tileButton = this.node;
+      this.draggable_ready = true;
+      this.position_dnd();
+      // tileDND#touchstart
+      this.$._dnd.tileDNDDOM?.dispatchEvent(this.touch_start_event!);
+    }
+
+    //
+    if (this.$._dnd.dragging) {
+      // if touch continues holding and drag starts, then uncheck tiles
+      if (!this.dragged) {
+        this.$.uncheckAll();
+      }
+      this.dragged = true;
+    }
+
+    if (this.dragged && this.toggle_timeout != -1) {
+      // cancel check-toggle timeout
+      window.clearTimeout(this.toggle_timeout);
+      this.toggle_timeout = -1;
+    }
+
+    //
+    if (this.dragged) {
+      // tileDND#touchmove
+      this.$._dnd.tileDNDDOM?.dispatchEvent(e);
+    }
+  }
+
+  //
+  private touch_end(e: TouchEvent): void {
+    const touch = Array.from(e.changedTouches).find(t => t.identifier == this.touch_start_id);
+    if (!touch) {
+      return;
+    }
+    this.touch_start_event = null;
+    if (this.dragged) {
+      // tileDND#touchend
+      this.$._dnd.tileDNDDOM?.dispatchEvent(e);
+
+      // cancel drag-n-drop timeout
+      if (this.allow_dnd_timeout != -1) {
+        window.clearTimeout(this.allow_dnd_timeout);
+        this.allow_dnd_timeout = -1;
+      }
+      // cancel check-toggle timeout
+      if (this.toggle_timeout != -1) {
+        window.clearTimeout(this.toggle_timeout);
+        this.toggle_timeout = -1;
+      }
+      return;
+    }
+    e.preventDefault();
+
+    if (this.just_held_long) {
+      this.just_held_long = false;
+      return;
+    }
+
+    const r = this.node.getBoundingClientRect();
+    const hover = touch.clientX >= r.x && touch.clientX < r.right && touch.clientY >= r.y && touch.clientY < r.bottom;
+
+    if (hover) {
+      // cancel drag-n-drop timeout
+      if (this.allow_dnd_timeout != -1) {
+        window.clearTimeout(this.allow_dnd_timeout);
+        this.allow_dnd_timeout = -1;
+      }
+
+      // cancel check-toggle timeout
+      if (this.toggle_timeout != -1) {
+        window.clearTimeout(this.toggle_timeout);
+        this.toggle_timeout = -1;
+      }
+
+      this.short_click(e);
+    }
+  }
+
+  //
+  private touch_cancel(e: TouchEvent): void {
+    const touch = Array.from(e.changedTouches).find(t => t.identifier == this.touch_start_id);
+    if (!touch) {
+      return;
+    }
+    this.touch_start_event = null;
+    if (this.dragged) {
+      // tileDND#touchend
+      this.$._dnd.tileDNDDOM?.dispatchEvent(e);
+
+      // cancel drag-n-drop timeout
+      if (this.allow_dnd_timeout != -1) {
+        window.clearTimeout(this.allow_dnd_timeout);
+        this.allow_dnd_timeout = -1;
+      }
+      // cancel check-toggle timeout
+      if (this.toggle_timeout != -1) {
+        window.clearTimeout(this.toggle_timeout);
+        this.toggle_timeout = -1;
+      }
+      return;
+    }
+    e.preventDefault();
+
+    // cancel drag-n-drop timeout
+    if (this.allow_dnd_timeout != -1) {
+      window.clearTimeout(this.allow_dnd_timeout);
+      this.allow_dnd_timeout = -1;
+    }
+
+    // cancel check-toggle timeout
+    if (this.toggle_timeout != -1) {
+      window.clearTimeout(this.toggle_timeout);
+      this.toggle_timeout = -1;
+    }
   }
 
   //

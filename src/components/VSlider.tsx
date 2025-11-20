@@ -755,14 +755,7 @@ class DND {
   // drag move
   private drag_stop(e: Event): void {
     if (e instanceof TouchEvent) {
-      let found = false;
-      // no way to use `Array.from()` with TouchList.
-      for (const touch of (e as TouchEvent).changedTouches) {
-        if (touch.identifier == this.m_activeTouchId) {
-          found = true;
-          break;
-        }
-      }
+      const found = !!Array.from((e as TouchEvent).changedTouches).find(t => t.identifier == this.m_activeTouchId);
       if (!found) {
         return;
       }
@@ -814,18 +807,11 @@ class DND {
     // x
     let e_clientY = 0;
     if (e instanceof TouchEvent) {
-      let found = false;
-      // no way to use `Array.from()` with TouchList.
-      for (const touch of (e as TouchEvent).changedTouches) {
-        if (touch.identifier == this.m_activeTouchId) {
-          found = true;
-          e_clientY = touch.clientY;
-          break;
-        }
-      }
-      if (!found) {
+      const touch = Array.from((e as TouchEvent).changedTouches).find(t => t.identifier == this.m_activeTouchId);
+      if (!touch) {
         return;
       }
+      e_clientY = touch!.clientY;
     } else {
       e_clientY = (e as MouseEvent).clientY;
     }

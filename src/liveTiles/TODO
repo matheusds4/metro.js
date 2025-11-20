@@ -6,14 +6,10 @@ Tiles:
 
 - *Called on React.js effect involving changed properties (x, y, size).*
 - *Called on React.js empty-dependencies effect cleanup.*
-- [ ] Attach mouse down/click/touch down/touch end handlers on tile addition for click, check and drag-n-drop events
-  - [ ] Trigger click
-  - [ ] Drag-n-drop only occurs if `Core.dragEnabled=true`
-  - [ ] (un-)checking tiles only occurs if `Core.checkEnabled=true`
 
 Groups:
 
-- *Called on React.js effect involving changed properties (x, y, size).*
+- *Called on React.js effect involving changed properties (index, label).*
 - *Called on React.js empty-dependencies effect cleanup.*h.
 
 ## Group label
@@ -22,23 +18,14 @@ Groups:
 
 ## Tile drag-n-drop
 
-Trick to use: Draggable needs to drag the tileDND element, not the tile itself. For this, simply dispatch virtual `mousedown` and `touchdown` (with the same device ID as the tile's touch) events with corresponding coordinates and touch collections (touches/targetTouches/changedTouches).
+Trick to use: Draggable needs to drag the tileDND element, not the tile itself. For this, simply dispatch virtual `mousedown` and `touchdown` events with corresponding data.
 
 - [ ] drag start should make tileDND visible and tileButton hidden
 - [ ] do not forget setting `dragging` on drag start and end
 - [ ] drag end should make tileDND hidden back and tileButton visible back
 
-## Tile pointer handlers
-
-- [ ] TilePointerHandlers: Touch start
-  - [ ] Trigger click
-  - [ ] Trigger drag-n-drop (long-held; shorter than check's hold)
-    - [ ] Trigger events
-  - [ ] Trigger check-toggle (longer-held than drag-n-drop's hold)
-
 More:
 
-- [ ] Empty checked tiles on drag start, triggering `checkedChange`
 - [ ] Note that the tile may be removed while dragging
 
 ## Group drag-n-drop
