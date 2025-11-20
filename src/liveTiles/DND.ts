@@ -3,6 +3,7 @@ import Draggable from "@hydroperx/draggable";
 
 // local
 import type { Core } from "./Core";
+import { CoreGroup, CoreTile } from "./CoreGroup";
 
 /**
  * Drag-n-drop implementation.
@@ -16,6 +17,9 @@ export class DND {
 
   // used for propagating click to the true tile <button>
   private _tile_dnd_click_handler: null | Function = null;
+
+  // original state (in compact form)
+  private _original_state: Map<number, CoreGroup> = new Map();
 
   //
   public tileButton: null | HTMLButtonElement = null;

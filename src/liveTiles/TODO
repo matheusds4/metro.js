@@ -20,9 +20,13 @@ Groups:
 
 Trick to use: Draggable needs to drag the tileDND element, not the tile itself. For this, simply dispatch virtual `mousedown` and `touchdown` events with corresponding data.
 
-- [ ] drag start should make tileDND visible and tileButton hidden
-- [ ] do not forget setting `dragging` on drag start and end
-- [ ] drag end should make tileDND hidden back and tileButton visible back
+- [ ] drag start
+  - [ ] Make tileDND visible and tileButton hidden
+  - [ ] Assign _original_state (compact, without DOM)
+  - [ ] Set `dragging=true`
+- [ ] drag end
+  - [ ] Set `dragging=false`
+  - [ ] Make tileDND hidden back and tileButton visible back
 
 More:
 

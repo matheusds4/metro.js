@@ -134,7 +134,7 @@ export class TilePointerHandlers {
       this.toggle_timeout = -1;
     }
 
-    this.discard_window_handlers()
+    this.discard_window_handlers();
   }
 
   //
@@ -148,6 +148,8 @@ export class TilePointerHandlers {
 
   //
   private click(e: MouseEvent): void {
+    this.discard_window_handlers();
+
     if (!this.mouse_started || this.dragged) {
       // cancel check-toggle timeout
       if (this.toggle_timeout != -1) {
@@ -166,7 +168,6 @@ export class TilePointerHandlers {
       this.toggle_timeout = -1;
     }
 
-    this.discard_window_handlers()
     this.short_click(e);
   }
 
@@ -201,6 +202,9 @@ export class TilePointerHandlers {
 
   //
   private touch_move(e: TouchEvent): void {
+    if (this.touch_start_id == -1) {
+      return;
+    }
     const touch = Array.from(e.changedTouches).find(t => t.identifier == this.touch_start_id);
     if (!touch) {
       return;
@@ -262,11 +266,15 @@ export class TilePointerHandlers {
 
   //
   private touch_end(e: TouchEvent): void {
+    if (this.touch_start_id == -1) {
+      return;
+    }
     const touch = Array.from(e.changedTouches).find(t => t.identifier == this.touch_start_id);
     if (!touch) {
       return;
     }
     this.touch_start_event = null;
+    this.touch_start_id  = -1;
     if (this.dragged) {
       // tileDND#touchend
       this.$._dnd.tileDNDDOM?.dispatchEvent(e);
@@ -312,11 +320,15 @@ export class TilePointerHandlers {
 
   //
   private touch_cancel(e: TouchEvent): void {
+    if (this.touch_start_id == -1) {
+      return;
+    }
     const touch = Array.from(e.changedTouches).find(t => t.identifier == this.touch_start_id);
     if (!touch) {
       return;
     }
     this.touch_start_event = null;
+    this.touch_start_id  = -1;
     if (this.dragged) {
       // tileDND#touchend
       this.$._dnd.tileDNDDOM?.dispatchEvent(e);
