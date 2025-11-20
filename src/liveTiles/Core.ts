@@ -720,15 +720,15 @@ export type CoreEventMap = {
   /**
    * Tile's drag start event.
    */
-  dragStart: CustomEvent<{ id: string, dom: HTMLButtonElement }>,
+  dragStart: CustomEvent<{ id: string, dnd: HTMLElement }>,
   /**
    * Tile's drag move event.
    */
-  dragMove: CustomEvent<{ id: string, dom: HTMLButtonElement }>,
+  dragMove: CustomEvent<{ id: string, dnd: HTMLElement }>,
   /**
    * Tile's drag start event.
    */
-  dragEnd: CustomEvent<{ id: string, dom: HTMLButtonElement }>,
+  dragEnd: CustomEvent<{ id: string, dnd: HTMLElement }>,
   /**
    * Group's drag start event.
    */

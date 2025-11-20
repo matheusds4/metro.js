@@ -147,6 +147,9 @@ export class Detection {
       // on tile's first iteration (add), or
       // on group transfer, we've identical code.
       if (tile_first_iteration || is_group_transfer) {
+        // positioned as absolute
+        node.style.position = "absolute";
+
         // remove tile from old group
         if (is_group_transfer) {
           maybe_old_group!.simple.removeTile(id);
@@ -337,6 +340,9 @@ export class Detection {
       new GroupPointerHandlers(this.$, group_dom).attach();
       group.attachedHandlers = group_dom;
     }
+
+    // positioned as absolute
+    group_dom.style.position = "absolute";
 
     // return
     return changed;

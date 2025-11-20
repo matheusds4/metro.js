@@ -1,13 +1,18 @@
+// third-party
+import getOffset from "getoffset";
+
 // local
 import type { Core, BulkChange } from "./Core";
 import { CoreGroup, CoreTile } from "./CoreGroup";
 import { SimpleGroup } from "./SimpleGroup";
 import * as MathUtils from "../utils/MathUtils";
+import * as OffsetUtils from "../utils/OffsetUtils";
 
 //
 export class TilePointerHandlers {
   //
-  private dragging: boolean = false;
+  private draggable_ready: boolean = false;
+  private dragged: boolean = false;
   private mouse_started: boolean = false;
   private toggle_timeout: number = -1;
   private toggle_timestamp: number = 0;
@@ -15,8 +20,6 @@ export class TilePointerHandlers {
 
   //
   private bound_window_mouse_move_handler: null | Function = null;
-  private bound_window_mouse_up_handler: null | Function = null;
-  private bound_window_click_handler: null | Function = null;
 
   //
   public constructor(
@@ -47,13 +50,15 @@ export class TilePointerHandlers {
 
   //
   private mouse_down(e: MouseEvent): void {
-    if (this.dragging) {
+    if (this.$._dnd.dragging || e.button != 1) {
       return;
     }
+    this.draggable_ready = false;
     this.mouse_started = true;
+    this.dragged = false;
     this.toggle_timeout = window.setTimeout(() => {
       // holding long on a tile will check it
-      if (this.dragging) return;
+      if (this.$._dnd.dragging) return;
       this.toggle_check();
       this.just_held_long = true;
       this.toggle_timestamp = Date.now();
@@ -63,16 +68,6 @@ export class TilePointerHandlers {
     this.bound_window_mouse_move_handler = this.window_mouse_move.bind(this);
     window.addEventListener("mousemove", this.bound_window_mouse_move_handler as any);
     this.$._window_handlers.push(["mousemove", this.bound_window_mouse_move_handler]);
-
-    // window#mouseup
-    this.bound_window_mouse_up_handler = this.window_mouse_up.bind(this);
-    window.addEventListener("mouseup", this.bound_window_mouse_up_handler as any);
-    this.$._window_handlers.push(["mouseup", this.bound_window_mouse_up_handler]);
-
-    // window#click
-    this.bound_window_click_handler = this.window_mouse_up.bind(this);
-    window.addEventListener("click", this.bound_window_click_handler as any);
-    this.$._window_handlers.push(["click", this.bound_window_click_handler]);
   }
 
   //
@@ -84,55 +79,50 @@ export class TilePointerHandlers {
       const i = this.$._window_handlers.findIndex(hB => h === hB[1]);
       if (i != -1) this.$._window_handlers.splice(i, 1);
     }
-
-    // window#mouseup
-    h = this.bound_window_mouse_up_handler;
-    if (h) {
-      window.removeEventListener("mouseup", h as any);
-      const i = this.$._window_handlers.findIndex(hB => h === hB[1]);
-      if (i != -1) this.$._window_handlers.splice(i, 1);
-    }
-
-    // window#mouseup
-    h = this.bound_window_click_handler;
-    if (h) {
-      window.removeEventListener("click", h as any);
-      const i = this.$._window_handlers.findIndex(hB => h === hB[1]);
-      if (i != -1) this.$._window_handlers.splice(i, 1);
-    }
   }
 
   //
   private window_mouse_move(e: MouseEvent): void {
-    fixme();
-  }
-
-  //
-  private window_mouse_up(e: MouseEvent): void {
-    // let the other handler run if directly for the tile.
-    if (e.target instanceof HTMLElement && this.node.contains(e.target)) {
-      return;
+    if (!this.draggable_ready) {
+      this.$._dnd.initTileDNDDraggable();
+      this.$._dnd.tileId = this.id;
+      this.draggable_ready = true;
+      // tileDND#mousedown
+      this.$._dnd.tileDNDDOM?.dispatchEvent(new MouseEvent("mousedown", {
+        button: e.button,
+        buttons: e.buttons,
+        clientX: e.clientX,
+        clientY: e.clientY,
+        movementX: e.movementX,
+        movementY: e.movementY,
+        screenX: e.screenX,
+        screenY: e.screenY,
+      }));
     }
 
-    fixme();
-
-    this.discard_window_handlers()
-  }
-
-  //
-  private window_click(e: MouseEvent): void {
-    // let the other handler run if directly for the tile.
-    if (e.target instanceof HTMLElement && this.node.contains(e.target)) {
-      return;
+    //
+    if (this.$._dnd.dragging) {
+      this.dragged = true;
     }
 
-    fixme();
+    //
+    if (!this.$._dnd.dragging && this.$._dnd.tileDNDDOM) {
+      this.$._dnd.tileDNDDOM!.style.position = "absolute";
 
-    this.discard_window_handlers()
+      // put translate
+      let offset = getOffset(this.node, this.$._container)!;
+      OffsetUtils.divideOffsetBy(offset, this.$._rem);
+      this.$._dnd.tileDNDDOM!.style.left = offset.x + "rem";
+      this.$._dnd.tileDNDDOM!.style.top = offset.y + "rem";
+    }
   }
 
   //
   private mouse_up(e: MouseEvent): void {
+    if (!this.mouse_started) {
+      return;
+    }
+
     fixme();
 
     this.discard_window_handlers()
@@ -140,14 +130,22 @@ export class TilePointerHandlers {
 
   //
   private mouse_out(e: MouseEvent): void {
+    if (!this.mouse_started) {
+      return;
+    }
+
     fixme();
   }
 
   //
   private click(e: MouseEvent): void {
+    if (!this.mouse_started) {
+      return;
+    }
+
     fixme();
 
-    // at some point... this.discard_window_handlers()
+    this.discard_window_handlers()
   }
 
   //
