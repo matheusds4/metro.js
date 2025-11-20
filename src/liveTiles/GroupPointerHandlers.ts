@@ -28,6 +28,8 @@ export class GroupPointerHandlers {
     fixme();
 
     // touch handlers
+    // 
+    // - [ ] prevent default to avoid `click`
     fixme();
 
     // context menu handlers
