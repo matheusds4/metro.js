@@ -253,6 +253,12 @@ export class Detection {
     }
     group!.simple.removeTile(id);
     group!.tiles.delete(id);
+
+    // dragging? cancel drag-n-drop then.
+    if (this.$._dnd.dragging && this.$._dnd.tileId == id) {
+      this.$._dnd.cancel();
+    }
+
     if (group!.tiles.size == 0 && !!group.dom) {
       // request group deletion if empty.
       bulkChange.groupRemovals.push({ id: group.id });
@@ -275,10 +281,12 @@ export class Detection {
         return false;
       }
       this.$._groups.delete(i);
+
+      // dragging? cancel drag-n-drop.
       if (this.$._dnd.groupDraggable?.[0] == group_id) {
-        this.$._dnd.groupDraggable![1].destroy();
-        this.$._dnd.groupDraggable = null;
+        this.$._dnd.cancel();
       }
+
       return true;
     }
 

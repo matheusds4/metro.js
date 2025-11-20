@@ -55,9 +55,9 @@ export class DND {
         threshold: "0.7rem",
         cascadingUnit: "rem",
         setPosition: false,
-        onDragStart: this._drag_start.bind(this),
-        onDrag: this._drag_move.bind(this),
-        onDragEnd: this._drag_end.bind(this),
+        onDragStart: this._tile_drag_start.bind(this),
+        onDrag: this._tile_drag_move.bind(this),
+        onDragEnd: this._tile_drag_end.bind(this),
       });
 
       // propagate click
@@ -78,9 +78,12 @@ export class DND {
       this.tileButton!.style.visibility = "visible";
     }
     this.tileButton = null;
+    this.tileId = "";
     // destroy previous Draggable
     this.tileDNDDraggable?.destroy();
+    this.tileDNDDraggable = null;
     this.groupDraggable?.[1].destroy();
+    this.groupDraggable = null;
 
     this._restore();
     this.dragging = false;
@@ -90,7 +93,7 @@ export class DND {
     this.tileDNDDOM = null;
   }
 
-  // restore initial state before drag-n-drop.
+  // restore initial layout state before drag-n-drop.
   //
   // for tiles: this should restore state, remove dead dragging tile if the case,
   // re-add any new tiles and groups,
