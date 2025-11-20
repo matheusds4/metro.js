@@ -21,12 +21,14 @@ Groups:
 Trick to use: Draggable needs to drag the tileDND element, not the tile itself. For this, simply dispatch virtual `mousedown` and `touchdown` events with corresponding data.
 
 - [ ] _tile_drag_start
-  - [ ] Make tileDND visible and tileButton hidden
-  - [ ] Assign _original_state (compact, without DOM)
-  - [ ] Set `dragging=true`
+  - [x] Make tileDND visible and tileButton hidden
+  - [x] Assign _original_state (compact, without DOM)
+  - [x] Set `dragging=true`
+  - [x] Make tileDND's Z-index maximum.
 - [ ] _tile_drag_move
 - [ ] _tile_drag_end
   - [ ] If tile was removed, exit.
+  - [ ] Set `_original_state=new Map();`
   - [ ] Set `dragging=false`
   - [ ] Set `tileId=""`
   - [ ] Make tileDND hidden back and tileButton visible back
@@ -50,8 +52,13 @@ Group drag-n-drop mimmicks tiles a bit in how the Draggable instance is created,
 
 - [ ] _group_drag_start
   - [ ] `groupDraggable=[groupId,draggable]`
+  - [ ] Assign _original_state (compact, without DOM)
+  - [ ] Set `dragging=true`
+  - [ ] Make group's Z-index maximum.
 - [ ] _group_drag_move
 - [ ] _group_drag_end
   - [ ] If group was removed, exit.
   - [ ] `groupDraggable![1].destroy()`
   - [ ] `groupDraggable=null`
+  - [ ] Set `dragging=false`
+  - [ ] Unassign group's Z-index.

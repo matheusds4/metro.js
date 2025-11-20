@@ -4,6 +4,7 @@ import Draggable from "@hydroperx/draggable";
 // local
 import type { Core } from "./Core";
 import { CoreGroup, CoreTile } from "./CoreGroup";
+import { MAXIMUM_Z_INDEX } from "../utils/Constants";
 
 /**
  * Drag-n-drop implementation.
@@ -18,7 +19,7 @@ export class DND {
   // used for propagating click to the true tile <button>
   private _tile_dnd_click_handler: null | Function = null;
 
-  // original state (in compact form)
+  // original state (in compact form (no DOM, no group labels))
   private _original_state: Map<number, CoreGroup> = new Map();
 
   //
@@ -104,6 +105,34 @@ export class DND {
   //
   // this might trigger some events.
   private _restore(): void {
+    fixme();
+  }
+
+  //
+  private _tile_drag_start(element: HTMLElement, x: number, y:  number, event: Event): void {
+    // visibility changes
+    this.tileDNDDOM!.style.visibility = "visible";
+    this.tileButton!.style.visibility = "hidden";
+
+    // original state
+    this._original_state = this.$._clone_state();
+
+    //
+    this.dragging = true;
+
+    //
+    this.tileDNDDOM!.style.zIndex = MAXIMUM_Z_INDEX;
+
+    fixme();
+  }
+
+  //
+  private _tile_drag_move(element: HTMLElement, x: number, y:  number, event: Event): void {
+    fixme();
+  }
+
+  //
+  private _tile_drag_end(element: HTMLElement, x: number, y:  number, event: Event): void {
     fixme();
   }
 }

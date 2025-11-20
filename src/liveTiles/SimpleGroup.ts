@@ -217,7 +217,7 @@ export class SimpleGroup {
   /**
    * Clones the `SimpleGroup`.
    */
-  public clone() {
+  public clone(): SimpleGroup {
     const r = new SimpleGroup({
       width: this.maxWidth,
       height: this.maxHeight,

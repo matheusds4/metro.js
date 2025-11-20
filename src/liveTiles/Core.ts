@@ -648,6 +648,25 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
     }
     if (outside) this.uncheckAll();
   }
+
+  /**
+   * Clones the state without DOM and group labels.
+   * @hidden
+   */
+  public _clone_state(): Map<number, CoreGroup> {
+    return new Map(this._groups.entries().map(([groupIndex, group]) => {
+      const clonedGroup = new CoreGroup({
+        dom: null,
+        id: group.id,
+        label: "",
+        simple: group.simple.clone(),
+      });
+      for (const [tileId] of group.tiles) {
+        clonedGroup.tiles.set(tileId, new CoreTile({ dom: null }));
+      }
+      return [groupIndex, clonedGroup];
+    }))
+  }
 }
 
 /**
