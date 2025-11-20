@@ -109,23 +109,33 @@ export class TilePointerHandlers {
 
   //
   private window_mouse_up(e: MouseEvent): void {
+    // let the other handler run if directly for the tile.
+    if (e.target instanceof HTMLElement && this.node.contains(e.target)) {
+      return;
+    }
+
     fixme();
 
-    // at some point... this.discard_window_handlers()
+    this.discard_window_handlers()
   }
 
   //
   private window_click(e: MouseEvent): void {
+    // let the other handler run if directly for the tile.
+    if (e.target instanceof HTMLElement && this.node.contains(e.target)) {
+      return;
+    }
+
     fixme();
 
-    // at some point... this.discard_window_handlers()
+    this.discard_window_handlers()
   }
 
   //
   private mouse_up(e: MouseEvent): void {
     fixme();
 
-    // at some point... this.discard_window_handlers()
+    this.discard_window_handlers()
   }
 
   //
