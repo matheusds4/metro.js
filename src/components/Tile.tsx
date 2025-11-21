@@ -1,6 +1,7 @@
 // third-party
 import React from "react";
 import { styled } from "styled-components";
+import { gsap } from "gsap";
 import { Color } from "@hydroperx/color";
 
 // local
@@ -48,13 +49,13 @@ export function Tile(params: {
    * Background color. If unspecified,
    * the tile is transparent.
    */
-  color?: string,
+  background?: string,
 
   /**
-   * Label color. If unspecified, defaults
+   * Foreground color. If unspecified, defaults
    * to the theme's color.
    */
-  labelColor?: string,
+  foreground?: string,
 
   /**
    * Whether the tile is disabled or not.
@@ -200,7 +201,7 @@ export function Tile(params: {
         "Tile",
         ...(mode.checking ? ["checking-mode"] : []),
         ...(mode.dnd ? ["dnd-mode"] : []),
-        ...(params.color ? [] : ["transparent"]),
+        ...(params.background ? [] : ["transparent"]),
         ...(params.className ?? "").split(" ").filter(c => c != "")
       ].join(" ")}
       disabled={params.disabled}
@@ -219,8 +220,8 @@ export function Tile(params: {
         }
       }}
       onPointerDown={pointer_down}
-      $background={params.color ?? theme.colors.foreground}
-      $label_color={params.labelColor || theme.colors.foreground}>
+      $background={params.background ?? theme.colors.foreground}
+      $foreground={params.foreground || theme.colors.foreground}>
 
       <div className="Tile-content" ref={content_ref}>
         {params.children}
@@ -232,7 +233,7 @@ export function Tile(params: {
 // style sheet
 const Tile_button = styled.button<{
   $background: string,
-  $label_color: string,
+  $foreground: string,
 }> `
   && {
     border: none;
@@ -248,7 +249,7 @@ const Tile_button = styled.button<{
 
   && > .Tile-content {
     border: none;
-    color: ${$ => $.$label_color};
+    color: ${$ => $.$foreground};
     transition: opacity 0.2s, transform 0.2s ease-out, scale 0.2s ease-out;
     background: linear-gradient(90deg, ${$ => $.$background} 0%, ${$ => Color($.$background).lighten(0.15).hex().toString()} 100%);
   }
