@@ -36,6 +36,7 @@ During tile addition, if `data-x` and `data-y` are `-1` or unspecified, the tile
 - `data-x` - Tile X coordinate (1x1).
 - `data-y` - Tile Y coordinate (1x1).
 - `data-size` - Tile size (indicated by the `TileSize` enumeration: `small` (1x1), `medium` (2x2), `wide` (4x2) and `large` (4x4))
+- `data-dragging` - *(Set by this library only.)* Indicates whether a pointer is actively dragging a tile. (`true` or `false`)
 
 ## Style recommendations
 

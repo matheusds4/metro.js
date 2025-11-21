@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 import { Color } from "@hydroperx/color";
 
 // local
+import { TileModeContext } from "./TileModeContext";
 import { TileSize } from "../liveTiles/TileSize";
 import { RTLContext } from "../layout/RTL";
 import { ThemeContext, Theme } from "../theme/Theme";
@@ -43,7 +44,25 @@ export function Tile(params: {
    */
   size: TileSize,
 
+  /**
+   * Background color. If unspecified,
+   * the tile is transparent.
+   */
+  color?: string,
+
+  /**
+   * Label color. If unspecified, defaults
+   * to the theme's color.
+   */
+  labelColor?: string,
+
 }): React.ReactNode {
+
+  //
+  const mode = React.useContext(TileModeContext);
+
+  //
+  const theme = React.useContext(ThemeContext);
 
   //
   const button_ref = React.useRef<null | HTMLButtonElement>(null);
@@ -118,6 +137,13 @@ export function Tile(params: {
     if (tilting.current) {
       return;
     }
+
+    // do not tilt if the tile <button> is inside
+    // a TileDND container.
+    if (button_ref.current!.getAttribute("data-dragging") == "true") {
+      return;
+    }
+
     tilting.current = true;
     tilting_pointer_id.current = e.pointerId;
 
@@ -167,6 +193,9 @@ export function Tile(params: {
     <Tile_button
       className={[
         "Tile",
+        ...(mode.checking ? ["checking-mode"] : []),
+        ...(mode.dnd ? ["dnd-mode"] : []),
+        ...(params.color ? [] : ["transparent"]),
         ...(params.className ?? "").split(" ").filter(c => c != "")
       ].join(" ")}
       data-id={params.id}
@@ -183,7 +212,9 @@ export function Tile(params: {
           params.ref!.current = obj;
         }
       }}
-      onPointerDown={pointer_down}>
+      onPointerDown={pointer_down}
+      $background={params.color ?? theme.colors.foreground}
+      $label_color={params.labelColor || theme.colors.foreground}>
 
       <div className="Tile-content" ref={content_ref}>
         {params.children}
@@ -194,7 +225,41 @@ export function Tile(params: {
 
 // style sheet
 const Tile_button = styled.button<{
-  //
+  $background: string,
+  $label_color: string,
 }> `
+  && {
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+  }
 
+  && > .Tile-content {
+    border: none;
+    color: ${$ => $.$label_color};
+    transition: opacity 0.2s, transform 0.2s ease-out, scale 0.2s ease-out;
+    background: linear-gradient(90deg, ${$ => $.$background} 0%, ${$ => Color($.$background).lighten(0.15).hex().toString()} 100%);
+  }
+
+  &&:hover > .Tile-content {
+    background: linear-gradient(90deg, ${$ => Color($.$background).lighten(0.15).hex().toString()} 0%, ${$ => Color($.$background).lighten(0.23).hex().toString()} 100%);
+  }
+
+  &&.transparent > .Tile-content {
+    background: ${$ => Color($.$background).alpha(0.18).hexa().toString()};
+  }
+
+  &&.transparent:hover > .Tile-content {
+    background: ${$ => Color($.$background).alpha(0.25).hexa().toString()};
+  }
+
+  &&.checking-mode > .Tile-content {
+    opacity: 0.7;
+  }
+
+  &&.dnd-mode > .Tile-content {
+    scale: 0.92;
+  }
 `;

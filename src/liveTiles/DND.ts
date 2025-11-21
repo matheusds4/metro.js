@@ -108,6 +108,18 @@ export class DND {
     if (this.dragging && this.tileButton) {
       this.tileButton!.style.visibility = "visible";
     }
+
+    //
+    if (this.tileDNDDOM?.children.length !== 0) {
+      this.tileDNDDOM?.children[0].removeAttribute("data-dragging");
+    }
+
+    // for groups, remove the data-dragging attribute
+    const group = this.groupDraggable ?
+      this.$._groups.values().find(g => g.id == this.groupDraggable![0]) :
+      null;
+    group?.dom?.removeAttribute("data-dragging");
+
     // cancel movement timeout
     if (this._movement_timeout != -1) {
       window.clearTimeout(this._movement_timeout);
@@ -163,6 +175,11 @@ export class DND {
     // visibility changes
     this.tileDNDDOM!.style.visibility = "visible";
     this.tileButton!.style.visibility = "hidden";
+
+    //
+    if (this.tileDNDDOM?.children.length !== 0) {
+      this.tileDNDDOM?.children[0].setAttribute("data-dragging", "true");
+    }
 
     // original state
     this._original_state = this.$._clone_state();
@@ -324,6 +341,11 @@ export class DND {
     this.tileButton!.style.visibility = "";
     this.tileDNDDOM!.style.visibility = "hidden";
 
+    //
+    if (this.tileDNDDOM?.children.length !== 0) {
+      this.tileDNDDOM?.children[0].removeAttribute("data-dragging");
+    }
+
     // Core#dragEnd
     this.$.dispatchEvent(new CustomEvent("dragEnd", {
       detail: { id: this.tileId, dnd: this.tileDNDDOM! },
@@ -343,6 +365,9 @@ export class DND {
 
     //
     this.dragging = true;
+
+    //
+    element.setAttribute("data-dragging", "true");
 
     //
     (element as HTMLElement).style.zIndex = MAXIMUM_Z_INDEX;
@@ -423,6 +448,9 @@ export class DND {
 
     //
     (element as HTMLElement).style.zIndex = "";
+
+    //
+    element.removeAttribute("data-dragging");
 
     // reset some vars
     this.dragging = false;

@@ -6,6 +6,7 @@ import { TypedEventTarget } from "@hydroperx/event";
 import { gsap } from "gsap";
 
 // local
+import { TileMode, TileModeContext } from "./TileModeContext";
 import { Core, CoreDirection, BulkChange } from "../liveTiles/Core";
 import { TileSize } from "../liveTiles/TileSize";
 import { RTLContext } from "../layout/RTL";
@@ -162,6 +163,16 @@ export function Tiles(params: {
 
 }): React.ReactNode {
 
+  // mode
+  //
+  // used to slightly alter style of all tiles
+  // during drag-n-drop or checking.
+  const [mode, set_mode] = React.useState<TileMode>({
+    checking: false,
+    dnd: false,
+  });
+  const mode_sync = React.useRef(mode);
+
   // event handlers
   const handlers = React.useRef<TilesHandlers>({
     click: params.click,
@@ -259,6 +270,10 @@ export function Tiles(params: {
 
     // dragStart (tile)
     this_core.addEventListener("dragStart", e => {
+      set_mode({
+        checking: mode_sync.current.checking,
+        dnd: true,
+      });
       handlers.current.drag_start?.(e.detail);
     });
 
@@ -269,6 +284,10 @@ export function Tiles(params: {
 
     // dragEnd (tile)
     this_core.addEventListener("dragEnd", e => {
+      set_mode({
+        checking: mode_sync.current.checking,
+        dnd: false,
+      });
       handlers.current.drag_end?.(e.detail);
     });
 
@@ -289,6 +308,10 @@ export function Tiles(params: {
 
     // checkedChange
     this_core.addEventListener("checkedChange", e => {
+      set_mode({
+        checking: e.detail.tiles.length != 0,
+        dnd: mode_sync.current.dnd,
+      });
       handlers.current.checked_change?.(e.detail);
     });
 
@@ -449,6 +472,13 @@ export function Tiles(params: {
 
   }, [params.open ?? true]);
 
+  // sync mode
+  React.useEffect(() => {
+
+    mode_sync.current = mode;
+
+  }, [mode]);
+
   // update several metrics like a 1x1 size and gaps.
   // (MUST ONLY be called directly from a React.js effect.)
   function update_metrics(): void {
@@ -491,7 +521,9 @@ export function Tiles(params: {
       }}
       $foreground={theme.colors.foreground}>
       <div className="Tiles-sub" ref={sub_div_ref}>
-        {params.children}
+        <TileModeContext.Provider value={mode}>
+          {params.children}
+        </TileModeContext.Provider>
       </div>
     </Tiles_div>
   );
@@ -633,6 +665,10 @@ const Tiles_div = styled.div<{
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  && > .TileDND {
+    opacity: 0.6;
   }
 
   && .TileGroup-label {
