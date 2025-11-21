@@ -24,21 +24,20 @@
   - [ ] Propagate tile click event to right child
   - [ ] Propagate tile context menu event to right child
   - [ ] Propagate group-label right click event to right child
-  - [ ] Group/tile components do refresh the parent live tiles component on initialization.
+  - [ ] Group/tile components are detected for the parent live tiles component on initialization.
+  - [ ] Group/tile components are detected for the parent live tiles component on React.js cleanup/destruction.
   - [ ] Group/tile components must signal the parent live tiles component when certain properties change (like x, y, size... group index)
   - [ ] Icon+label tiles should be displayed like that: (note that icon may be a logo as a rectangle)
     - [ ] label = div with display=flex, flex-direction=column, justify-content=end
   - [ ] Icon+label tiles = hide label in small tiles (1x1)
   - [ ] Label+icon tiles use a subsubheading label. Icon should be way smaller than in icon+label tiles. They should be just "icon" tiles for small tiles (1x1).
-  - [ ] 1x1 tile size = 42x42 logical pixels
-  - [ ] Tile gap = 10 logical pixels
   - [ ] Tile X/Y may be omitted or -1
   - [ ] Support size-conditional live content pages
     - [ ] One page can target multiple sizes (e.g. support attributes like `size="< wide"` (less-than), greater-than and exact (`=` prefix optional); the page's `size` attribute will result in multiple class names like `.medium` and `.wide`)
   - [ ] Icon/logo size should be more based in percentage
     - [ ] Icon size = percent inside 57x57 logical pixels.
     - [ ] Logo size = percent inside horizontal 172 logical pixels.
-  - [ ] Optional `TileController` controller with `.checked()`, `.checkAll()`, `.uncheckAll()` and `.inlineGroupsAvailable()` methods
+  - [x] Optional `TilePlus` controller with `.checked()`, `.checkAll()`, `.uncheckAll()` and `.inlineGroupsAvailable()` methods
 - [ ] Transparent tiles should have a drop shadow
 
 # Page

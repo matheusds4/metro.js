@@ -1,5 +1,6 @@
 /**
- * Logical pixels conversion to cascading `rem`.
+ * Logical pixels conversion to cascading `rem`
+ * (based on default rem value = 16).
  */
 export const pixels = {
   /**
@@ -18,7 +19,8 @@ export const pixels = {
 };
 
 /**
- * Cascading `rem` conversion to logical pixels.
+ * Cascading `rem` conversion to logical pixels
+ * (based on default rem value = 16).
  */
 export const rem = {
   /**
