@@ -39,8 +39,9 @@ Drag-n-drop handlers (DND.ts):
 - [x] _group_drag_start
 - [ ] _group_drag_move
 - [ ] _group_drag_end
-  - [ ] If group was removed, exit.
+  - [ ] If group was removed, trigger `groupDragEnd` and exit.
   - [ ] `groupDraggable![1].destroy()`
   - [ ] `groupDraggable=null`
   - [ ] Set `dragging=false`
   - [ ] Unassign group's Z-index.
+  - [ ] Rearrange (because its position is invalidated)

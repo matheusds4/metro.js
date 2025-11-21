@@ -46,7 +46,8 @@ export class VerticalLayout extends Layout {
       const left = column*group_w + column*this.$._group_gap;
       const top = column_y.get(column) ?? 0;
       let h = 0;
-      if (group.dom) {
+      const dragging = this.$._dnd.dragging && this.$._dnd.groupDraggable?.[0] == group.id;
+      if (group.dom && !dragging) {
         group.dom!.style.transform = `translateX(${left}rem) translateY(${top}rem)`;
         h = ((group.dom!.getBoundingClientRect().height / ScaleUtils.getScale(group.dom!).y) / this.$._rem);
       } else {

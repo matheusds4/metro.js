@@ -38,7 +38,8 @@ export class HorizontalLayout extends Layout {
 
       // reposition group
       let width = 0;
-      if (group.dom) {
+      const dragging = this.$._dnd.dragging && this.$._dnd.groupDraggable?.[0] == group.id;
+      if (group.dom && !dragging) {
         group.dom!.style.transform = `translateX(${x}rem) translateY(0)`;
         width = ((group.dom!.getBoundingClientRect().width / ScaleUtils.getScale(group.dom!).x) / this.$._rem);
       } else {
