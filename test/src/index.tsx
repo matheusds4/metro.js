@@ -12,7 +12,10 @@ import {
   Button,
   Label,
   Icon,
-  TextInput,
+  Tiles,
+  TileGroup,
+  Tile,
+  TilePage,
 } from "@hydroperx/metrodesign/components";
 import { RTLProvider } from "@hydroperx/metrodesign/layout";
 import {
@@ -35,11 +38,38 @@ function App() {
             solid
             selection={false}
             style={{
-              overflowY: "auto",
+              overflowX: "auto",
             }}
-            wheelVertical>
-            <VGroup padding={10} gap={10}>
-            </VGroup>
+            wheelHorizontal>
+            <Tiles
+              direction="horizontal"
+              dragEnabled
+              checkEnabled
+              renamingGroupsEnabled
+              bulkChange={e => {
+                fixme();
+              }}
+              reorderGroups={e => {
+                fixme();
+              }}
+              renameGroup={e => {
+                fixme();
+              }}>
+              <TileGroup id="group1" index={0}>
+                <Tile id="camera" size="medium" background="#937" foreground="white">
+                  <TilePage variant="iconLabel">
+                    <Group><Icon native="camera"/></Group>
+                    <Label>Camera</Label>
+                  </TilePage>
+                </Tile>
+                <Tile id="bing" size="small" background="#e9e900" foreground="white">
+                  <TilePage variant="iconLabel">
+                    <Group><Icon native="bing"/></Group>
+                    <Label>Bing</Label>
+                  </TilePage>
+                </Tile>
+              </TileGroup>
+            </Tiles>
           </Root>
         </Primary>
       </RTLProvider>

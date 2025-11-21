@@ -427,7 +427,7 @@ export class TilePointerHandlers {
   }
 
   //
-  private context_menu(e: PointerEvent): void {
+  private context_menu(e: MouseEvent): void {
     e.preventDefault();
     this.$.dispatchEvent(new CustomEvent("contextMenu", {
       detail: {
