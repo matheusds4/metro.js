@@ -96,6 +96,21 @@ export function Tiles(params: {
   inlineGroups?: number,
 
   /**
+   * Event triggered when a tile is clicked.
+   */
+  click?: (event: { tile: string }) => void,
+
+  /**
+   * Event triggered when the context menu button clicks in a tile.
+   */
+  contextMenu?: (event: { tile: string, clientX: number, clientY: number }) => void,
+
+  /**
+   * Event triggered when the context menu button clicks in a group's label.
+   */
+  groupContextMenu?: (event: { group: string, clientX: number, clientY: number, original: Event }) => void,
+
+  /**
    * Event triggered for a bulk change.
    */
   bulkChange: (event: BulkChange) => void,
@@ -149,6 +164,9 @@ export function Tiles(params: {
 
   // event handlers
   const handlers = React.useRef<TilesHandlers>({
+    click: params.click,
+    context_menu: params.contextMenu,
+    group_context_menu: params.groupContextMenu,
     bulk_change: params.bulkChange,
     reorder_groups: params.reorderGroups,
     rename_group: params.renameGroup,
@@ -208,6 +226,21 @@ export function Tiles(params: {
 
     //
     core.current = this_core;
+
+    // click
+    this_core.addEventListener("click", e => {
+      handlers.current.click?.(e.detail);
+    });
+
+    // contextMenu
+    this_core.addEventListener("contextMenu", e => {
+      handlers.current.context_menu?.(e.detail);
+    });
+
+    // groupContextMenu
+    this_core.addEventListener("groupContextMenu", e => {
+      handlers.current.group_context_menu?.(e.detail);
+    });
 
     // bulkChange
     this_core.addEventListener("bulkChange", e => {
@@ -288,6 +321,9 @@ export function Tiles(params: {
   React.useEffect(() => {
 
     handlers.current = {
+      click: params.click,
+      context_menu: params.contextMenu,
+      group_context_menu: params.groupContextMenu,
       bulk_change: params.bulkChange,
       reorder_groups: params.reorderGroups,
       rename_group: params.renameGroup,
@@ -564,6 +600,9 @@ type TilePlusEventMap = {
 
 // handler references
 type TilesHandlers = {
+  click: undefined | ((event: { tile: string }) => void),
+  context_menu: undefined | ((event: { tile: string, clientX: number, clientY: number }) => void),
+  group_context_menu: undefined | ((event: { group: string, clientX: number, clientY: number, original: Event }) => void),
   bulk_change: (event: BulkChange) => void,
   reorder_groups: (event: Map<number, string>) => void,
   rename_group: (event: { id: string, label: string }) => void,

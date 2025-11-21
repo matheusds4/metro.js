@@ -21,12 +21,9 @@
 # Live tiles
 
 - [ ] Done
-  - [ ] Propagate tile click event to right child
-  - [ ] Propagate tile context menu event to right child
-  - [ ] Propagate group-label right click event to right child
-  - [ ] Group/tile components are detected for the parent live tiles component on initialization.
-  - [ ] Group/tile components are detected for the parent live tiles component on React.js cleanup/destruction.
-  - [ ] Group/tile components must signal the parent live tiles component when certain properties change (like x, y, size... group index)
+  - [ ] When one or more tiles are checked, enter checking mode styles
+  - [ ] When tiles are dragging, enter drag-n-drop mode styles
+  - [ ] Stylize tiles and their pages
   - [ ] Icon+label tiles should be displayed like that: (note that icon may be a logo as a rectangle)
     - [ ] label = div with display=flex, flex-direction=column, justify-content=end
   - [ ] Icon+label tiles = hide label in small tiles (1x1)

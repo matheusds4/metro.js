@@ -8,10 +8,9 @@ import { TileSize } from "../liveTiles/TileSize";
 import { RTLContext } from "../layout/RTL";
 import { ThemeContext, Theme } from "../theme/Theme";
 import * as ColorUtils from "../utils/ColorUtils";
-import { REMObserver } from "../utils/REMObserver";
 
 /**
- * Tile group inside a `Tiles` container.
+ * Live tile group inside a `Tiles` container.
  */
 export function TileGroup(params: {
   className?: string,
@@ -26,7 +25,7 @@ export function TileGroup(params: {
 
   /**
    * Group label.
-  */
+   */
   label?: string,
 
   /**
@@ -52,6 +51,7 @@ export function TileGroup(params: {
       // final node detection
       if (container.classList.contains("Tiles-sub") && detection_timeout.current == -1) {
         window.setTimeout(() => {
+          detection_timeout.current = -1;
           container.dispatchEvent(new CustomEvent("_Tiles_detect", {
             detail: div,
           }));
@@ -70,6 +70,7 @@ export function TileGroup(params: {
     // node detection
     if (container.classList.contains("Tiles-sub") && detection_timeout.current == -1) {
       detection_timeout.current = window.setTimeout(() => {
+        detection_timeout.current = -1;
         container.dispatchEvent(new CustomEvent("_Tiles_detect", {
           detail: div,
         }));
