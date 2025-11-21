@@ -32,8 +32,6 @@
         - [ ] `>=`
     - [ ] Make visible pages matching size
     - [ ] Make invisible pages matching size
-    - [ ] Reset page roll animation in case tile size changes
-    - [ ] Reset page roll animation in case page size conditions change
 
 # Page
 

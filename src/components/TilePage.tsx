@@ -40,6 +40,15 @@ export function TilePage(params: {
 
 }): React.ReactNode {
 
+  //
+  const div_ref = React.useRef<null | HTMLDivElement>(null);
+
+  // updating size condition should reset
+  // page roll animation.
+  React.useEffect(() => {
+    div_ref.current!.parentElement!.parentElement!.dispatchEvent(new Event("_Tile_pageRollReset"));
+  }, [params.size]);
+
   return (
     <div
       className={[
@@ -48,7 +57,14 @@ export function TilePage(params: {
       ].join(" ")}
       id={params.id}
       style={params.style}
-      ref={params.ref}
+      ref={obj => {
+        div_ref.current = obj;
+        if (typeof params.ref == "function") {
+          params.ref(obj);
+        } else if (params.ref) {
+          params.ref!.current = obj;
+        }
+      }}
       data-variant={(params.variant || "custom").toString()}
       data-size={params.size}>
 

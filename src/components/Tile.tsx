@@ -93,6 +93,9 @@ export function Tile(params: {
   const detection_timeout = React.useRef<number>(-1);
 
   //
+  const page_roll = React.useRef<null | PageRoll>(null);
+
+  //
   const rem = React.useRef<number>(16);
 
   // initialization
@@ -101,15 +104,36 @@ export function Tile(params: {
     const button = button_ref.current!;
     const container = button.parentElement?.parentElement?.parentElement;
 
+    //
+    const page_roll_obj = new PageRoll(button);
+    page_roll.current = page_roll_obj;
+
     // REMObserver
     const rem_observer = new REMObserver(val => {
       rem.current = val;
     });
 
+    // internal request to reset page roll
+    let roll_reset_timeout = -1;
+    function internal_page_roll_reset(): void {
+      if (roll_reset_timeout != -1) return;
+      roll_reset_timeout = window.setTimeout(() => {
+        page_roll.current!.reset();
+      }, 5);
+    }
+    button.addEventListener("_Tile_pageRollReset" as any, internal_page_roll_reset);
+
     // cleanup
     return () => {
       // dispose of REMObserver
       rem_observer.cleanup();
+
+      // PageRoll stuff
+      page_roll_obj.destroy();
+      button.removeEventListener("_Tile_pageRollReset" as any, internal_page_roll_reset);
+      if (roll_reset_timeout != -1) {
+        window.clearTimeout(roll_reset_timeout);
+      }
 
       // dispose of window handlers
       if (window_pointer_up.current) {
@@ -147,6 +171,14 @@ export function Tile(params: {
     }
 
   }, [params.x, params.y, params.size]);
+
+  // size changing should reset the PageRoll animation
+  React.useEffect(() => {
+
+    //
+    page_roll.current!.reset();
+
+  }, [params.size]);
 
   // tilting
   function pointer_down(e: React.PointerEvent<HTMLButtonElement>): void {
@@ -381,3 +413,34 @@ const Tile_button = styled.button<{
       bottom: 0.7rem;
     }
 `;
+
+// page roll animation
+class PageRoll {
+  private mutation_observer: MutationObserver;
+
+  //
+  public constructor(private button: HTMLButtonElement) {
+    // set mutation observer up
+    this.mutation_observer = new MutationObserver(records => {
+      for (const r of records) {
+        if (r.addedNodes.length != 0 || r.removedNodes.length != 0) {
+          this.reset();
+        }
+      }
+    });
+    this.mutation_observer.observe(button);
+
+    // initial reset
+    this.reset();
+  }
+
+  //
+  public destroy(): void {
+    this.mutation_observer.disconnect();
+  }
+
+  //
+  public reset(): void {
+    fixme();
+  }
+}
