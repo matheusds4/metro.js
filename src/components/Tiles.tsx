@@ -163,7 +163,7 @@ export function Tiles(params: {
 
   // 
   const super_div_ref = React.useRef<null | HTMLDivElement>(null);
-  const div_ref = React.useRef<null | HTMLDivElement>(null);
+  const sub_div_ref = React.useRef<null | HTMLDivElement>(null);
 
   //
   const core = React.useRef<null | Core>(null);
@@ -182,8 +182,10 @@ export function Tiles(params: {
   // initialization
   React.useEffect(() => {
 
-    core.current = new Core({
-      container: div_ref.current!,
+    const sub_div = sub_div_ref.current!;
+
+    const this_core = new Core({
+      container: sub_div_ref.current!,
       direction: params.direction,
       classNames: {
         group: "TileGroup",
@@ -204,55 +206,67 @@ export function Tiles(params: {
       labelHeight: 0,
     });
 
+    //
+    core.current = this_core;
+
     // bulkChange
-    core.current!.addEventListener("bulkChange", e => {
+    this_core.addEventListener("bulkChange", e => {
       handlers.current.bulk_change(e.detail);
     });
 
     // reorderGroups
-    core.current!.addEventListener("reorderGroups", e => {
+    this_core.addEventListener("reorderGroups", e => {
       handlers.current.reorder_groups(e.detail);
     });
 
     // renameGroup
-    core.current!.addEventListener("renameGroup", e => {
+    this_core.addEventListener("renameGroup", e => {
       handlers.current.rename_group(e.detail);
     });
 
     // dragStart (tile)
-    core.current!.addEventListener("dragStart", e => {
+    this_core.addEventListener("dragStart", e => {
       handlers.current.drag_start?.(e.detail);
     });
 
     // dragMove (tile)
-    core.current!.addEventListener("dragMove", e => {
+    this_core.addEventListener("dragMove", e => {
       handlers.current.drag_move?.(e.detail);
     });
 
     // dragEnd (tile)
-    core.current!.addEventListener("dragEnd", e => {
+    this_core.addEventListener("dragEnd", e => {
       handlers.current.drag_end?.(e.detail);
     });
 
     // groupDragStart (group)
-    core.current!.addEventListener("groupDragStart", e => {
+    this_core.addEventListener("groupDragStart", e => {
       handlers.current.group_drag_start?.(e.detail);
     });
 
     // groupDragMove (group)
-    core.current!.addEventListener("groupDragMove", e => {
+    this_core.addEventListener("groupDragMove", e => {
       handlers.current.group_drag_move?.(e.detail);
     });
 
     // groupDragEnd (group)
-    core.current!.addEventListener("groupDragEnd", e => {
+    this_core.addEventListener("groupDragEnd", e => {
       handlers.current.group_drag_end?.(e.detail);
     });
 
     // checkedChange
-    core.current!.addEventListener("checkedChange", e => {
+    this_core.addEventListener("checkedChange", e => {
       handlers.current.checked_change?.(e.detail);
     });
+
+    // handle child requesting detection
+    sub_div.addEventListener("_Tiles_detect" as any, (e: CustomEvent<HTMLElement>) => {
+      this_core.detect(e.detail);
+    });
+
+    return () => {
+      this_core.destroy();
+    };
 
   }, []);
 
@@ -440,7 +454,7 @@ export function Tiles(params: {
         }
       }}
       $foreground={theme.colors.foreground}>
-      <div className="Tiles-sub" ref={div_ref}>
+      <div className="Tiles-sub" ref={sub_div_ref}>
         {params.children}
       </div>
     </Tiles_div>
@@ -514,6 +528,7 @@ export class TilePlus extends (EventTarget as TypedEventTarget<TilePlusEventMap>
 
   /**
    * Shorthand to `addEventListener()`.
+   * @hidden
    */
   public on<K extends keyof TilePlusEventMap>(type: K, listenerFn: (event: TilePlusEventMap[K]) => void, options?: AddEventListenerOptions): void;
   public on(type: string, listenerFn: (event: Event) => void, options?: AddEventListenerOptions): void;
@@ -523,6 +538,7 @@ export class TilePlus extends (EventTarget as TypedEventTarget<TilePlusEventMap>
 
   /**
    * Shorthand to `removeEventListener()`.
+   * @hidden
    */
   public off<K extends keyof TilePlusEventMap>(type: K, listenerFn: (event: TilePlusEventMap[K]) => void, options?: EventListenerOptions): void;
   public off(type: string, listenerFn: (event: Event) => void, options?: EventListenerOptions): void;
