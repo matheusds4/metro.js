@@ -108,6 +108,11 @@ export class DND {
     if (this.dragging && this.tileButton) {
       this.tileButton!.style.visibility = "visible";
     }
+    // cancel movement timeout
+    if (this._movement_timeout != -1) {
+      window.clearTimeout(this._movement_timeout);
+      this._movement_timeout = -1;
+    }
     this.tileButton = null;
     this.tileId = "";
     // destroy previous Draggable

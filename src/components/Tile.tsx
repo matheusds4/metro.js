@@ -47,9 +47,18 @@ export function Tile(params: {
 
   //
   const button_ref = React.useRef<null | HTMLButtonElement>(null);
+  const content_ref = React.useRef<null | HTMLDivElement>(null);
+
+  //
+  const tilting = React.useRef(false);
+  const tilting_pointer_id = React.useRef(-1);
+  const window_pointer_up = React.useRef<null | Function>(null);
 
   //
   const detection_timeout = React.useRef<number>(-1);
+
+  //
+  const rem = React.useRef<number>(16);
 
   // initialization
   React.useEffect(() => {
@@ -57,7 +66,21 @@ export function Tile(params: {
     const button = button_ref.current!;
     const container = button.parentElement?.parentElement?.parentElement;
 
+    // REMObserver
+    const rem_observer = new REMObserver(val => {
+      rem.current = val;
+    });
+
+    // cleanup
     return () => {
+      // dispose of REMObserver
+      rem_observer.cleanup();
+
+      // dispose of window handlers
+      if (window_pointer_up.current) {
+        window.removeEventListener("pointerup", window_pointer_up.current as any);
+      }
+
       // final node detection
       if (container?.classList.contains("Tiles-sub") && detection_timeout.current == -1) {
         window.setTimeout(() => {
@@ -90,6 +113,56 @@ export function Tile(params: {
 
   }, [params.x, params.y, params.size]);
 
+  // tilting
+  function pointer_down(e: React.PointerEvent<HTMLButtonElement>): void {
+    if (tilting.current) {
+      return;
+    }
+    tilting.current = true;
+    tilting_pointer_id.current = e.pointerId;
+
+    // stop tilting
+    window_pointer_up.current = (e: PointerEvent) => {
+      if (!tilting.current || tilting_pointer_id.current != e.pointerId) {
+        return;
+      }
+      window.removeEventListener("pointerup", window_pointer_up.current as any);
+      window_pointer_up.current = null;
+      content_ref.current!.style.transform = "";
+      tilting.current = false;
+      tilting_pointer_id.current = -1;
+    };
+
+    window.addEventListener("pointerup", window_pointer_up.current as any);
+    
+    // slightly tilt tile depending on where the click held.
+    const deg = 5;
+    const rect = button_ref.current!.getBoundingClientRect();
+    const x = e.clientX,
+      y = e.clientY;
+    let rotate_3d = "";
+    if (
+      x < rect.left + rect.width / 2 &&
+      y > rect.top + rect.height / 3 &&
+      y < rect.bottom - rect.height / 3
+    )
+      rotate_3d = `perspective(${rect.width / rem.current!}rem) rotate3d(0, -1, 0, ${deg}deg)`;
+    else if (
+      x > rect.right - rect.width / 2 &&
+      y > rect.top + rect.height / 3 &&
+      y < rect.bottom - rect.height / 3
+    )
+      rotate_3d = `perspective(${rect.width / rem.current!}rem) rotate3d(0, 1, 0, ${deg}deg)`;
+    else if (y < rect.top + rect.height / 2)
+      rotate_3d = `perspective(${rect.width / rem.current!}rem) rotate3d(1, 0, 0, ${deg}deg)`;
+    else
+      rotate_3d = `perspective(${rect.width / rem.current!}rem) rotate3d(-1, 0, 0, ${deg}deg)`;
+
+    // content <div>
+    const content = content_ref.current!;
+    content.style.transform = rotate_3d;
+  }
+
   return (
     <Tile_button
       className={[
@@ -109,8 +182,10 @@ export function Tile(params: {
         } else if (params.ref) {
           params.ref!.current = obj;
         }
-      }}>
-      <div className="Tile-content">
+      }}
+      onPointerDown={pointer_down}>
+
+      <div className="Tile-content" ref={content_ref}>
         {params.children}
       </div>
     </Tile_button>
