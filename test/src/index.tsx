@@ -49,6 +49,7 @@ function App() {
       id: "group1",
       label: "Group 1",
       tiles: new Map([
+        ["terminal", { size: "wide", x: -1, y: -1 }],
         ["camera", { size: "medium", x: -1, y: -1 }],
         ["bing", { size: "small", x: -1, y: -1 }],
       ]),
@@ -86,6 +87,22 @@ function App() {
   // render a tile.
   function render_tile(id: string, tile: MyTile): undefined | React.ReactNode {
     switch (id) {
+      case "terminal": {
+        return (
+          <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#04bed6" foreground="white">
+            <TilePage variant="iconLabel">
+              <Group><Icon native="terminal"/></Group>
+              <Label>Terminal</Label>
+            </TilePage>
+            <TilePage size=">= wide">
+              <VGroup padding={10} gap={10}>
+                <Icon native="terminal" size={27}/>
+                <Label variant="subsubsubheading" style={{margin: "0"}}>Run some Bash</Label>
+              </VGroup>
+            </TilePage>
+          </Tile>
+        );
+      }
       case "camera": {
         return (
           <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#937" foreground="white">
@@ -203,7 +220,7 @@ function App() {
   }
 
   return (
-    <ThemeProvider theme={ThemePresets.get("purple")}>
+    <ThemeProvider theme={ThemePresets.get("cyan")}>
       <RTLProvider rtl={false}>
         <Primary prefer={false}>
           <Root
