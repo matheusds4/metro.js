@@ -712,6 +712,7 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
           e.clientY >= r.top && e.clientY < r.bottom
         )) {
           const new_label = (input as HTMLInputElement).value;
+          (input.previousElementSibling! as HTMLElement).style.visibility = "";
           input!.remove();
           this.dispatchEvent(new CustomEvent("renameGroup", {
             detail: { id: g.id, label: new_label },
@@ -756,12 +757,14 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
         if (key == "enter") {
           // submit
           const new_label = (input as HTMLInputElement).value;
+          (input.previousElementSibling! as HTMLElement).style.visibility = "";
           input!.remove();
           this.dispatchEvent(new CustomEvent("renameGroup", {
             detail: { id: g.id, label: new_label },
           }));
         } else {
           // escape
+          (input.previousElementSibling! as HTMLElement).style.visibility = "";
           input!.remove();
         }
         break;

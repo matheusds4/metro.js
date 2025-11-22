@@ -57,7 +57,7 @@ export class TilePointerHandlers {
 
   //
   private mouse_down(e: MouseEvent): void {
-    if (this.$._dnd.dragging || e.button != 1 || this.touch_start_id != -1) {
+    if (this.$._dnd.dragging || e.button != 0 || this.touch_start_id != -1) {
       return;
     }
     this.draggable_ready = false;

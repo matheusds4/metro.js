@@ -55,7 +55,7 @@ export class GroupPointerHandlers {
 
   //
   private mouse_down(e: MouseEvent): void {
-    if (this.$._dnd.dragging || e.button != 1 || this.touch_start_id != -1) {
+    if (this.$._dnd.dragging || e.button != 0 || this.touch_start_id != -1) {
       return;
     }
     this.draggable_ready = false;
@@ -294,9 +294,13 @@ export class GroupPointerHandlers {
     input!.style.top = "0";
     input!.style.bottom = "0";
     input!.dirName = this.$._rtl ? "rtl" : "ltr";
+    this.group_label_text.style.visibility = "hidden";
 
     // initial value
     input!.value = group.label;
+
+    // focus
+    input!.focus();
   }
 
   //
