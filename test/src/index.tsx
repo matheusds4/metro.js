@@ -198,7 +198,7 @@ function App() {
   }
 
   return (
-    <ThemeProvider theme={ThemePresets.get("dark")}>
+    <ThemeProvider theme={ThemePresets.get("purple")}>
       <RTLProvider rtl={false}>
         <Primary prefer={false}>
           <Root
