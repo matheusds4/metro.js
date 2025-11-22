@@ -93,6 +93,11 @@ function App() {
               <Group><Icon native="camera"/></Group>
               <Label>Camera</Label>
             </TilePage>
+            <TilePage size=">= wide">
+              <Group paddingLeft={10}>
+                <Label variant="subsubheading">Shoot!</Label>
+              </Group>
+            </TilePage>
           </Tile>
         );
       }

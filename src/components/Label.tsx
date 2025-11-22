@@ -474,7 +474,7 @@ const TooltipDiv = styled.div<{
     font-size: 0.77rem;
     z-index: ${MAXIMUM_Z_INDEX};
     overflow-wrap: anywhere;
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
   }
 `;
 
@@ -491,7 +491,7 @@ const NormalLabel = styled.label<LabelCSSProps>`
       : ""}
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
     ${$ => $.$bold ? "font-weight: bold;" : ""}
   }
 `;
@@ -507,7 +507,7 @@ const NormalSpan = styled.span<LabelCSSProps>`
       : ""}
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
     ${$ => $.$bold ? "font-weight: bold;" : ""}
   }
 `;
@@ -530,7 +530,7 @@ const H1Label = styled.label<LabelCSSProps>`
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
   }
 `;
 
@@ -550,7 +550,7 @@ const H1 = styled.h1<LabelCSSProps>`
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
   }
 `;
 
@@ -573,7 +573,7 @@ const H2Label = styled.label<LabelCSSProps>`
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
   }
 `;
 
@@ -594,7 +594,7 @@ const H2 = styled.h2<LabelCSSProps>`
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
   }
 `;
 
@@ -616,7 +616,7 @@ const H3Label = styled.label<LabelCSSProps>`
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
   }
 `;
 
@@ -637,7 +637,7 @@ const H3 = styled.h3<LabelCSSProps>`
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
   }
 `;
 
@@ -660,7 +660,7 @@ const H4Label = styled.label<LabelCSSProps>`
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
   }
 `;
 
@@ -681,7 +681,7 @@ const H4 = styled.h4<LabelCSSProps>`
     margin: 0.67rem 0;
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
   }
 `;
 
@@ -698,7 +698,7 @@ const LegendLabel = styled.label<LabelCSSProps>`
       : ""}
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
     ${$ => $.$bold ? "font-weight: bold;" : ""}
   }
 `;
@@ -714,7 +714,7 @@ const LegendSpan = styled.span<LabelCSSProps>`
       : ""}
     ${$ => $.$sizing}
     ${$ => $.$wrap ? "overflow-wrap: anywhere;" : ""}
-    ${$ => $.$rtl ? "text-align: right;" : ""}
+    ${$ => $.$rtl ? "text-align: right;" : "text-align: left;"}
     ${$ => $.$bold ? "font-weight: bold;" : ""}
   }
 `;
