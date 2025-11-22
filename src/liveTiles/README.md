@@ -14,7 +14,7 @@
 
 ## Group list
 
-- For representing a group list, you need a `Map<number, T>` array (`index => T`). You should manually optimize this map so that indices are zero-based and contiguous. A common trick is to defer group re-order, accumulating them, so that same-time group moves will result in a consistent order when optimizing the map.
+- For representing a group list, you need a manually optimized `T[]` array. You should manually optimize the `reorderGroups` event's map into this array making indices zero-based and contiguous. A common trick is to defer group re-order, accumulating them, so that same-time group moves will result in a consistent order when optimizing the map.
 
 ## Tile rules
 
