@@ -53,7 +53,21 @@ function App() {
         ["camera", { size: "medium", x: -1, y: -1 }],
         ["bing", { size: "small", x: -1, y: -1 }],
       ]),
-    }
+    },
+    {
+      id: "group2",
+      label: "Group 2",
+      tiles: new Map([
+        ["internetExplorer", { size: "medium", x: -1, y: -1 }],
+      ]),
+    },
+    {
+      id: "group3",
+      label: "Group 3",
+      tiles: new Map([
+        ["settings", { size: "medium", x: -1, y: -1 }],
+      ]),
+    },
   ]);
   const groups_sync = React.useRef(groups);
 
@@ -124,6 +138,26 @@ function App() {
             <TilePage variant="iconLabel">
               <Group><Icon native="bing"/></Group>
               <Label>Bing</Label>
+            </TilePage>
+          </Tile>
+        );
+      }
+      case "internetExplorer": {
+        return (
+          <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#04bed6" foreground="white">
+            <TilePage variant="iconLabel">
+              <Group><Icon native="internetExplorer"/></Group>
+              <Label>Internet Explorer</Label>
+            </TilePage>
+          </Tile>
+        );
+      }
+      case "settings": {
+        return (
+          <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#04bed6" foreground="white">
+            <TilePage variant="iconLabel">
+              <Group><Icon native="settings"/></Group>
+              <Label>Settings</Label>
             </TilePage>
           </Tile>
         );
