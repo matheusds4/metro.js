@@ -243,6 +243,11 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
     // *click outside tiles* handler
     this._container.addEventListener("click", this._click_outside.bind(this));
 
+    // *click outside* handler for the whole `window`
+    const window_click_handler = this._window_click_outside.bind(this);
+    this._window_handlers.push(["click", window_click_handler]);
+    window.addEventListener("click", window_click_handler);
+
     // handle key presses
     const key_down_handler = this._key_down.bind(this);
     window.addEventListener("keydown", key_down_handler);
@@ -701,6 +706,28 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
   private _click_outside(e: MouseEvent): void {
     let outside = true;
     g: for (const [,g] of this._groups) {
+      // iterate tiles
+      for (const [,tile] of g.tiles) {
+        if (tile.dom) {
+          const r = tile.dom!.getBoundingClientRect();
+          // .matches(":hover") does not work
+          // on touchscreens.
+          if (
+            e.clientX >= r.left && e.clientX < r.right &&
+            e.clientY >= r.top && e.clientY < r.bottom
+          ) {
+            outside = false;
+            break g;
+          }
+        }
+      }
+    }
+    if (outside) this.uncheckAll();
+  }
+
+  // handle click outside on whole window
+  private _window_click_outside(e: MouseEvent): void {
+    for (const [,g] of this._groups) {
       // if label is being actively edited and
       // the user clicks out, submit it.
       const inputs = g.dom?.getElementsByClassName(this._class_names.groupLabelInput);
@@ -719,24 +746,7 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
           }));
         }
       }
-
-      // iterate tiles
-      for (const [,tile] of g.tiles) {
-        if (tile.dom) {
-          const r = tile.dom!.getBoundingClientRect();
-          // .matches(":hover") does not work
-          // on touchscreens.
-          if (
-            e.clientX >= r.left && e.clientX < r.right &&
-            e.clientY >= r.top && e.clientY < r.bottom
-          ) {
-            outside = false;
-            break g;
-          }
-        }
-      }
     }
-    if (outside) this.uncheckAll();
   }
 
   // handle Escape and Enter for label inputs

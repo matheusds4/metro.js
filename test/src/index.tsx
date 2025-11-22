@@ -64,7 +64,7 @@ function App() {
   }, [groups]);
 
   // render groups.
-  function render_groups(groups: MyGroup[]): React.ReactNode[] {
+  function render_groups(): React.ReactNode[] {
     let group_nodes: React.ReactNode[] = [];
     for (let [i, group] of groups_sync.current.entries()) {
       const tile_nodes: React.ReactNode[] = [];
@@ -151,7 +151,7 @@ function App() {
       old_group.tiles.delete(tile_id);
       new_group.tiles.set(tile_id, t);
     }
-    set_groups(new_groups);
+    set_groups(groups_sync.current = new_groups);
   }
 
   // re-order groups
@@ -170,7 +170,8 @@ function App() {
       for (let [, group_id] of seq_1) {
         seq_2.push(group_id);
       }
-      set_groups(seq_2.map(group_id => new_groups.find(g => g.id == group_id)!));
+      new_groups = seq_2.map(group_id => new_groups.find(g => g.id == group_id)!);
+      set_groups(groups_sync.current = new_groups);
     }, 3);
   }
 
@@ -179,9 +180,9 @@ function App() {
     let new_groups = structuredClone(groups_sync.current);
     const group = new_groups.find(g => g.id == e.id);
     if (group) {
-      group.label = e.label;
+      group!.label = e.label;
     }
-    set_groups(new_groups);
+    set_groups(groups_sync.current = new_groups);
   }
 
   //
@@ -218,7 +219,7 @@ function App() {
               renameGroup={rename_group}
               dragStart={drag_start}
               dragEnd={drag_end}>
-              {render_groups(groups)}
+              {render_groups()}
               <TileDND>
                 {tile_dragging ? render_tile(tile_dragging!.id, tile_dragging!.tile) : undefined}
               </TileDND>

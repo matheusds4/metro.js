@@ -278,11 +278,13 @@ export class GroupPointerHandlers {
 
     const inputs = this.group_label.getElementsByClassName(this.$._class_names.groupLabelInput);
     let input = (inputs.length === 0 ? null : inputs[0]) as null | HTMLInputElement
-    if (!input) {
-      input = document.createElement("input");
-      input.type = "text";
-      this.group_label.appendChild(input);
+    if (input) {
+      return;
     }
+
+    input = document.createElement("input");
+    input.type = "text";
+    this.group_label.appendChild(input);
 
     // style settings
     if (!input!.classList.contains(this.$._class_names.groupLabelInput)) {

@@ -21,5 +21,6 @@
 # Live tiles
 
 - [x] Done
-  - [ ] Fix renaming groups not working nice.
+  - [ ] Fix click outside not ranging wide
   - [ ] Fix tile drag-n-drop not doing any move
+- [ ] Test group drag-n-drop
