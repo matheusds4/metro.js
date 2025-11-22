@@ -359,11 +359,11 @@ const Tile_button = styled.button<{
     }
 
     &&[data-checked="true"] > .Tile-content > .Tile-checked-rect {
-      visible: true;
+      visibility: visible;
     }
 
     && > .Tile-content > .Tile-checked-rect > .Icon {
-      transform: rotate(-45deg) translate(-3.2rem, 6.9rem);
+      transform: rotate(-45deg) translate(-5.5rem, 4.5rem);
     }
 
   /* icon-label page variant */
