@@ -400,7 +400,7 @@ export class DND {
     let new_index = -1;
     let greater_intersection: null | Rectangle = null;
     for (const [idx,g] of this.$._groups) {
-      if (g.id == this.groupDraggable![0] || !g.dom) {
+      if (!g.dom) {
         continue;
       }
       const g_rect = Rectangle.from(getOffset(g.dom!, this.$._container)!);
