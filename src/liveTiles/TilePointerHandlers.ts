@@ -4,6 +4,7 @@ import getOffset from "getoffset";
 // local
 import type { Core, BulkChange } from "./Core";
 import { CoreGroup, CoreTile } from "./CoreGroup";
+import { TileSize, TileSizeMapPair } from "./TileSize";
 import { SimpleGroup } from "./SimpleGroup";
 import * as MathUtils from "../utils/MathUtils";
 import * as OffsetUtils from "../utils/OffsetUtils";
@@ -125,6 +126,13 @@ export class TilePointerHandlers {
     OffsetUtils.divideOffsetBy(offset, this.$._rem);
     this.$._dnd.tileDNDDOM!.style.left = offset.x + "rem";
     this.$._dnd.tileDNDDOM!.style.top = offset.y + "rem";
+
+    // resize tileDND
+    const size = (this.node.getAttribute("data-size") ?? "small") as TileSize;
+    const p = ((this.$._tile_in_rem as any)[size]) as TileSizeMapPair;
+    // const tile_inside_dnd = this.$._dnd.tileDNDDOM!.getElementsByClassName("Tile")[0] as HTMLElement;
+    this.$._dnd.tileDNDDOM!.style.width = p.width + "rem";
+    this.$._dnd.tileDNDDOM!.style.height = p.height + "rem";
   }
 
   //

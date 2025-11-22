@@ -16,6 +16,7 @@ import {
   TileGroup,
   Tile,
   TilePage,
+  TileDND,
 } from "@hydroperx/metrodesign/components";
 import {
   type BulkChange,
@@ -38,6 +39,9 @@ import {
 function App() {
   // short defer for reordering groups
   const group_reorder_timeout = React.useRef(-1);
+
+  // drag-n-drop related
+  const [tile_dragging, set_tile_dragging] = React.useState<null | { id: string, tile: MyTile }>(null);
 
   // our groups
   const [groups, set_groups] = React.useState<MyGroup[]>([
@@ -84,7 +88,7 @@ function App() {
     switch (id) {
       case "camera": {
         return (
-          <Tile key={id} id={id} size="medium" background="#937" foreground="white">
+          <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#937" foreground="white">
             <TilePage variant="iconLabel">
               <Group><Icon native="camera"/></Group>
               <Label>Camera</Label>
@@ -94,7 +98,7 @@ function App() {
       }
       case "bing": {
         return (
-          <Tile key={id} id={id} size="small" background="#f9c000" foreground="white">
+          <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#f9c000" foreground="white">
             <TilePage variant="iconLabel">
               <Group><Icon native="bing"/></Group>
               <Label>Bing</Label>
@@ -180,6 +184,18 @@ function App() {
     set_groups(new_groups);
   }
 
+  //
+  function drag_start(e: { id: string, dnd: HTMLElement }): void {
+    const group = groups.find(g => g.tiles.has(e.id))!;
+    const tile = group.tiles.get(e.id)!;
+    set_tile_dragging({ id: e.id, tile });
+  }
+
+  //
+  function drag_end(e: { id: string, dnd: HTMLElement }): void {
+    set_tile_dragging(null);
+  }
+
   return (
     <ThemeProvider theme={ThemePresets.get("dark")}>
       <RTLProvider rtl={false}>
@@ -199,8 +215,13 @@ function App() {
               renamingGroupsEnabled
               bulkChange={bulk_change}
               reorderGroups={reorder_groups}
-              renameGroup={rename_group}>
+              renameGroup={rename_group}
+              dragStart={drag_start}
+              dragEnd={drag_end}>
               {render_groups(groups)}
+              <TileDND>
+                {tile_dragging ? render_tile(tile_dragging!.id, tile_dragging!.tile) : undefined}
+              </TileDND>
             </Tiles>
           </Root>
         </Primary>

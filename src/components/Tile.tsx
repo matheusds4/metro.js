@@ -389,7 +389,7 @@ const Tile_button = styled.button<{
     && > .Tile-content > .TilePage[data-variant="iconLabel"] > .Label {
       position: absolute;
       left: 0.6rem;
-      right: 0.6em;
+      right: 0.6rem;
       bottom: 0.3rem;
       overflow-wrap: anywhere;
       max-height: 2.5rem;
@@ -556,6 +556,7 @@ class PageRoll {
     }
 
     //
+    this.pages = pages;
     this.pageIndex = 0;
 
     //
@@ -572,12 +573,12 @@ class PageRoll {
     this.pageIndex %= this.pages.length;
     this.tween_1 = gsap.to(
       current_page,
-      { top: "-100%", duration: 0.7, ease: "bounce.out" },
+      { top: "-100%", duration: 0.7, ease: "power1.out" },
     );
     this.tween_2 = gsap.fromTo(
       next_page,
       { top: "100%" },
-      { top: "0", duration: 0.7, ease: "bounce.out" },
+      { top: "0", duration: 0.7, ease: "power1.out" },
     );
     this.tween_2.then(() => {
       //

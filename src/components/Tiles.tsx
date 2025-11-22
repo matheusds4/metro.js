@@ -702,7 +702,7 @@ const Tiles_div = styled.div<{
     height: 100%;
     word-break: none;
     color: ${$ => $.$foreground};
-    font-size: 1.2em;
+    font-size: 1rem;
     font-weight: lighter;
   }
 

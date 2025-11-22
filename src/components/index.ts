@@ -29,3 +29,4 @@ export * from "./Tiles";
 export * from "./TileGroup";
 export * from "./Tile";
 export * from "./TilePage";
+export * from "./TileDND";

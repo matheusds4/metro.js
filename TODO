@@ -21,9 +21,9 @@
 # Live tiles
 
 - [x] Done
+  - [ ] Fix renaming groups not working nice.
 - [ ] Test it
   - [ ] Checking tiles
   - [ ] Live tile content (2+ pages)
   - [ ] Tile drag-n-drop
   - [ ] Group drag-n-drop
-  - [ ] Label editing
