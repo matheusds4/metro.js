@@ -281,7 +281,7 @@ export class DND {
               detail: bulkChange,
             }));
           }
-        }, 700 * this._movement_timeout_multiplier);
+        }, 570 * this._movement_timeout_multiplier);
       }
     } else {
       // clear movement timeout
@@ -441,7 +441,7 @@ export class DND {
 
         // rearrange
         this.$.rearrange();
-      }, 700 * this._movement_timeout_multiplier);
+      }, 570 * this._movement_timeout_multiplier);
     }
 
     // Core#groupDragMove
