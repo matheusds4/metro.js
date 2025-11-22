@@ -71,7 +71,7 @@ export class Detection {
 
     // in a group?
     if (node.parentElement?.classList.contains(this.$._class_names.groupTiles)) {
-      const group_id = node.parentElement!.getAttribute("data-id") ?? "";
+      const group_id = node.parentElement!.parentElement!.getAttribute("data-id") ?? "";
 
       //
       let changed = false;
