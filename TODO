@@ -23,3 +23,4 @@
 - [x] Done
   - [ ] Fix group transfer
   - [ ] Check-mode not working perfectly
+  - [ ] Fix: checking a tile may accidentally drag it

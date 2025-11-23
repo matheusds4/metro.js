@@ -9,6 +9,7 @@ import {
   Group,
   HGroup,
   VGroup,
+  CheckBox,
   Button,
   Label,
   Icon,
@@ -21,6 +22,7 @@ import {
 import {
   type BulkChange,
   type TileSize,
+  type CoreDirection,
 } from "@hydroperx/metrodesign/liveTiles";
 import { RTLProvider } from "@hydroperx/metrodesign/layout";
 import {
@@ -42,6 +44,9 @@ function App() {
 
   // drag-n-drop related
   const [tile_dragging, set_tile_dragging] = React.useState<null | { id: string, tile: MyTile }>(null);
+
+  // live tiles direction
+  const [tiles_direction, set_tiles_direction] = React.useState<CoreDirection>(window.matchMedia("(orientation: portrait)").matches ? "vertical" : "horizontal");
 
   // our groups
   const [groups, set_groups] = React.useState<MyGroup[]>([
@@ -70,6 +75,23 @@ function App() {
     },
   ]);
   const groups_sync = React.useRef(groups);
+
+  // initialization
+  React.useEffect(() => {
+
+    // observe orientation
+    const portrait_media_query = window.matchMedia("(orientation: portrait)");
+    portrait_media_query.addEventListener("change", adapt);
+    function adapt(e: MediaQueryListEvent): void {
+      set_tiles_direction(e.matches ? "vertical" : "horizontal");
+    }
+
+    // cleanup
+    return () => {
+      portrait_media_query.removeEventListener("change", adapt);
+    };
+
+  }, []);
 
   // sync groups into a ref
   React.useEffect(() => {
@@ -270,10 +292,11 @@ function App() {
             style={{
               overflowX: "auto",
             }}
-            wheelHorizontal>
+            wheelHorizontal={tiles_direction == "horizontal"}
+            wheelVertical={tiles_direction == "vertical"}>
 
             <Tiles
-              direction="horizontal"
+              direction={tiles_direction}
               dragEnabled
               checkEnabled
               renamingGroupsEnabled
