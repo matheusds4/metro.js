@@ -327,7 +327,7 @@ export class TilePointerHandlers {
       }
       return;
     }
-    // e.preventDefault();
+    e.preventDefault();
 
     if (this.just_held_long) {
       this.just_held_long = false;

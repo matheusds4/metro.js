@@ -22,5 +22,5 @@
 
 - [x] Done
   - [ ] Fix group transfer
-  - [ ] Check-mode not working perfectly (mobile neither; it's checking-unchecking when clicking a tile during checking-mode)
+  - [ ] Check-mode not working perfectly
   - [ ] Fix: checking a tile may accidentally drag it
