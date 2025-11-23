@@ -22,6 +22,9 @@ export class DND {
   // used for propagating click to the true tile <button>
   private _tile_dnd_click_handler: null | Function = null;
 
+  //
+  private _document_touch_move_handler: null | Function = null
+
   // original state (in compact form (no DOM, no group labels))
   //
   // NOTE: _original_state is entirely unused for now.
@@ -69,6 +72,7 @@ export class DND {
     this.tileDNDDOM = dnd_dom_list.length == 0 ? null : dnd_dom_list[0] as HTMLElement;
     if (this.tileDNDDOM) {
       this.tileDNDDOM!.style.visibility = "visible";
+      this.tileDNDDOM!.style.pointerEvents = "none";
       this.tileDNDDraggable = new Draggable(this.tileDNDDOM!, {
         threshold: "0.7rem",
         cascadingUnit: "rem",
@@ -79,11 +83,13 @@ export class DND {
       });
 
       // propagate click
+      /*
       this._tile_dnd_click_handler = (e: MouseEvent) => {
         this.tileButton?.click();
         this.cancel();
       };
       this.tileDNDDOM!.addEventListener("click", this._tile_dnd_click_handler! as any);
+      */
     }
   }
 
@@ -115,6 +121,12 @@ export class DND {
     //
     if (this.tileDNDDOM?.children.length !== 0) {
       this.tileDNDDOM?.children[0].removeAttribute("data-dragging");
+    }
+
+    //
+    if (this._document_touch_move_handler) {
+      document.removeEventListener("touchmove", this._document_touch_move_handler as any);
+      this._document_touch_move_handler = null;
     }
 
     // groups
@@ -180,9 +192,25 @@ export class DND {
       this._movement_timeout = -1;
     }
 
-    // visibility changes
+    // style settings
     this.tileDNDDOM!.style.visibility = "visible";
     this.tileButton!.style.display = "none";
+    document.documentElement.style.touchAction =
+    document.documentElement.style.overscrollBehavior =
+    document.body.style.touchAction =
+    document.body.style.overscrollBehavior = "none";
+
+    //
+    if (this._document_touch_move_handler) {
+      document.removeEventListener("touchmove", this._document_touch_move_handler as any);
+    }
+    this._document_touch_move_handler = (e: Event): void => {
+      // unfortunately browsers don't allow
+      // preventing scrolling for our purpose.
+      //
+      // e.preventDefault();
+    };
+    document.addEventListener("touchmove", this._document_touch_move_handler as any, { passive: false });
 
     //
     if (this.tileDNDDOM?.children.length !== 0) {
@@ -217,9 +245,13 @@ export class DND {
     this.tileButton = this.$._groups.values()
       .find(g => g.tiles.has(this.tileId))?.tiles.get(this.tileId)?.dom ?? null;
 
-    // visibility changes
+    // style settings
     if (this.tileButton) {
       this.tileButton!.style.display = "none";
+      document.documentElement.style.touchAction =
+      document.documentElement.style.overscrollBehavior =
+      document.body.style.touchAction =
+      document.body.style.overscrollBehavior = "none";
     }
 
     // exit if the tile has been removed while dragging.
@@ -316,6 +348,12 @@ export class DND {
       this._movement_timeout = -1;
     }
 
+    //
+    if (this._document_touch_move_handler) {
+      document.removeEventListener("touchmove", this._document_touch_move_handler as any);
+      this._document_touch_move_handler = null;
+    }
+
     // exit if the tile has been removed while dragging.
     if (!(this.tileButton && this.tileButton!.parentElement)) {
       // Core#dragEnd
@@ -352,6 +390,10 @@ export class DND {
 
     // visibility changes
     this.tileButton!.style.display = "";
+    document.documentElement.style.touchAction =
+    document.documentElement.style.overscrollBehavior =
+    document.body.style.touchAction =
+    document.body.style.overscrollBehavior = "";
     this.tileDNDDOM!.style.visibility = "hidden";
 
     //

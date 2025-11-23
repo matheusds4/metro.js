@@ -294,6 +294,9 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
     this._dnd.groupDraggable?.[1].destroy();
     this._dnd.groupDraggable = null;
 
+    //
+    this._dnd.cancel();
+
     // discard global handlers
     for (const [type, fn] of this._window_handlers) {
       window.removeEventListener(type, fn as any);

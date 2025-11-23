@@ -44,10 +44,10 @@ export class GroupPointerHandlers {
     group_label.addEventListener("click", this.click.bind(this));
 
     // touch handlers
-    group_label.addEventListener("touchstart", this.touch_start.bind(this));
-    group_label.addEventListener("touchmove", this.touch_move.bind(this));
-    group_label.addEventListener("touchend", this.touch_end.bind(this));
-    group_label.addEventListener("touchcancel", this.touch_cancel.bind(this));
+    group_label.addEventListener("touchstart", this.touch_start.bind(this), { passive: false });
+    group_label.addEventListener("touchmove", this.touch_move.bind(this), { passive: false });
+    group_label.addEventListener("touchend", this.touch_end.bind(this), { passive: false });
+    group_label.addEventListener("touchcancel", this.touch_cancel.bind(this), { passive: false });
 
     // context menu handlers
     group_label.addEventListener("contextmenu", this.context_menu.bind(this));

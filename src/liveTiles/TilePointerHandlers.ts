@@ -47,10 +47,10 @@ export class TilePointerHandlers {
     node.addEventListener("click", this.click.bind(this));
 
     // touch handlers
-    node.addEventListener("touchstart", this.touch_start.bind(this));
-    node.addEventListener("touchmove", this.touch_move.bind(this));
-    node.addEventListener("touchend", this.touch_end.bind(this));
-    node.addEventListener("touchcancel", this.touch_cancel.bind(this));
+    node.addEventListener("touchstart", this.touch_start.bind(this), { passive: false });
+    node.addEventListener("touchmove", this.touch_move.bind(this), { passive: false });
+    node.addEventListener("touchend", this.touch_end.bind(this), { passive: false });
+    node.addEventListener("touchcancel", this.touch_cancel.bind(this), { passive: false });
 
     // context menu handlers
     node.addEventListener("contextmenu", this.context_menu.bind(this));
@@ -187,6 +187,9 @@ export class TilePointerHandlers {
       this.toggle_timeout = -1;
     }
 
+    //
+    this.mouse_started = false;
+
     if (this.toggle_timestamp < Date.now() - 100) {
       this.short_click(e);
     }
@@ -231,7 +234,7 @@ export class TilePointerHandlers {
     if (!touch) {
       return;
     }
-    // e.preventDefault();
+    e.preventDefault();
 
     // if moving touch out of tile, prevent drag-n-drop.
     if (this.allow_dnd_timeout != -1) {
@@ -281,13 +284,15 @@ export class TilePointerHandlers {
       this.toggle_timeout = -1;
     }
 
+    // tileDND#touchmove
+    window.setTimeout(() => {
+      this.$._dnd.tileDNDDOM?.dispatchEvent(e);
+    }, 0);
+
     //
-    if (this.dragged) {
-      // tileDND#touchmove
-      window.setTimeout(() => {
-        this.$._dnd.tileDNDDOM?.dispatchEvent(e);
-      }, 0);
-    }
+    // if (this.dragged) {
+    //   e.preventDefault();
+    // }
   }
 
   //
@@ -417,9 +422,8 @@ export class TilePointerHandlers {
     // during selection mode a click is a check toggle
 
     const tile_buttons = this.$._groups.values()
-      .map(g =>
-        Array.from(g.tiles.values().map(t => t.dom).filter(btn => !!btn))
-      ).reduce((a, b) => a.concat(b), []);
+      .map(g =>Array.from(g.tiles.values().map(t => t.dom).filter(btn => !!btn)))
+      .reduce((a, b) => a.concat(b), []);
 
     const selection_mode = tile_buttons.some(btn => btn.getAttribute("data-checked") === "true");
     if (selection_mode) {
