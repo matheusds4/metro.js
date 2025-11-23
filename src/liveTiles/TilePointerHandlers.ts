@@ -69,6 +69,7 @@ export class TilePointerHandlers {
       this.toggle_timeout = -1;
       // holding long on a tile will check it
       if (this.dragged) return;
+      this.$._dnd.cancel();
       this.toggle_check();
       this.just_held_long = true;
       this.toggle_timestamp = Date.now();
@@ -152,7 +153,7 @@ export class TilePointerHandlers {
       window.clearTimeout(this.toggle_timeout);
       this.toggle_timeout = -1;
     }
-    if (!this.dragged) {
+    if (this.just_held_long) {
       this.$._dnd.cancel();
     }
     this.just_held_long = false;
@@ -164,7 +165,9 @@ export class TilePointerHandlers {
     this.discard_window_handlers();
 
     if (!this.mouse_started || this.dragged) {
-      this.$._dnd.cancel();
+      if (!this.dragged) {
+        this.$._dnd.cancel();
+      }
       this.mouse_started = false;
 
       // cancel check-toggle timeout
@@ -402,6 +405,9 @@ export class TilePointerHandlers {
       window.clearTimeout(this.toggle_timeout);
       this.toggle_timeout = -1;
     }
+
+    //
+    this.$._dnd.cancel();
 
     // removed? do nothing.
     if (!this.node.parentElement) {
