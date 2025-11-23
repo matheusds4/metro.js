@@ -117,11 +117,15 @@ export class DND {
       this.tileDNDDOM?.children[0].removeAttribute("data-dragging");
     }
 
-    // for groups, remove the data-dragging attribute
+    // groups
     const group = this.groupDraggable ?
       this.$._groups.values().find(g => g.id == this.groupDraggable![0]) :
       null;
     group?.dom?.removeAttribute("data-dragging");
+    if (group?.dom) {
+      group!.dom!.style.zIndex = "";
+      group!.dom!.style.inset = "";
+    }
 
     // cancel movement timeout
     if (this._movement_timeout != -1) {

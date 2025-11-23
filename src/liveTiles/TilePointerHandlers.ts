@@ -151,6 +151,9 @@ export class TilePointerHandlers {
       window.clearTimeout(this.toggle_timeout);
       this.toggle_timeout = -1;
     }
+    if (!this.dragged) {
+      this.$._dnd.cancel();
+    }
     this.just_held_long = false;
   }
 
@@ -159,6 +162,8 @@ export class TilePointerHandlers {
     this.discard_window_handlers();
 
     if (!this.mouse_started || this.dragged) {
+      this.$._dnd.cancel();
+
       // cancel check-toggle timeout
       if (this.toggle_timeout != -1) {
         window.clearTimeout(this.toggle_timeout);
@@ -285,6 +290,9 @@ export class TilePointerHandlers {
     if (!touch) {
       return;
     }
+    if (!this.dragged) {
+      this.$._dnd.cancel();
+    }
     this.touch_start_event = null;
     this.touch_start_id  = -1;
     if (this.dragged) {
@@ -340,6 +348,9 @@ export class TilePointerHandlers {
     const touch = Array.from(e.changedTouches).find(t => t.identifier == this.touch_start_id);
     if (!touch) {
       return;
+    }
+    if (!this.dragged) {
+      this.$._dnd.cancel();
     }
     this.touch_start_event = null;
     this.touch_start_id  = -1;

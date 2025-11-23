@@ -105,6 +105,9 @@ export class GroupPointerHandlers {
 
   //
   private mouse_up(e: MouseEvent): void {
+    if (!this.dragged) {
+      this.$._dnd.cancel();
+    }
     this.discard_window_handlers();
   }
 
@@ -112,6 +115,12 @@ export class GroupPointerHandlers {
   private click(e: MouseEvent): void {
     this.discard_window_handlers();
 
+    //
+    if (!this.dragged) {
+      this.$._dnd.cancel();
+    }
+
+    //
     if (!this.mouse_started || this.dragged) {
       return;
     }
@@ -193,6 +202,9 @@ export class GroupPointerHandlers {
     if (!touch) {
       return;
     }
+    if (!this.dragged) {
+      this.$._dnd.cancel();
+    }
     this.touch_start_event = null;
     this.touch_start_id  = -1;
     if (this.dragged) {
@@ -230,6 +242,9 @@ export class GroupPointerHandlers {
     const touch = Array.from(e.changedTouches).find(t => t.identifier == this.touch_start_id);
     if (!touch) {
       return;
+    }
+    if (!this.dragged) {
+      this.$._dnd.cancel();
     }
     this.touch_start_event = null;
     this.touch_start_id  = -1;

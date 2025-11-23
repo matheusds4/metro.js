@@ -189,9 +189,9 @@ gray.colors.primary = "#bebebe";
 gray.colors.anchor = "#66de0d";
 gray.colors.anchor = "#bebebe";
 
-// grayLight
+// graylight
 const gray_light = structuredClone(light);
-gray_light.colors.background = "#bbb";
+gray_light.colors.background = "#a5a5a5";
 
 // red
 const red = structuredClone(dark);
@@ -270,7 +270,7 @@ export type ThemeColor =
   | "light"
   | "dark"
   | "gray"
-  | "grayLight"
+  | "graylight"
   | "red"
   | "green"
   | "blue"
@@ -285,7 +285,7 @@ export type ThemeColor =
 const __map__ = new Map<ThemeColor, Theme>([
   ["dark", dark],
   ["gray", gray],
-  ["grayLight", gray_light],
+  ["graylight", gray_light],
   ["light", light],
   ["red", red],
   ["orange", orange],
@@ -320,13 +320,13 @@ export const ThemePresets = {
    * Returns a `Theme` object matching the given colors.
    * 
    * @param accent Applicable when `preset` is one of {
-   * `light`, `dark`, `gray`, `grayLight` }. Ignored if equals one
-   * of { `light`, `dark`, `grayLight` }.
+   * `light`, `dark`, `gray`, `graylight` }. Ignored if equals one
+   * of { `light`, `dark`, `graylight` }.
    */
   get(preset: ThemeColor, accent: null | ThemeColor = null): Theme {
     if (accent
-    && ["light", "dark", "gray", "grayLight"].includes(preset)
-    && !["light", "dark", "grayLight"].includes(accent!)) {
+    && ["light", "dark", "gray", "graylight"].includes(preset)
+    && !["light", "dark", "graylight"].includes(accent!)) {
       const result = structuredClone(__map__.get(preset)!);
       const accent_preset = __map__.get(accent!)!;
 
