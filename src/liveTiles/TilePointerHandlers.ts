@@ -215,8 +215,8 @@ export class TilePointerHandlers {
         this.toggle_check();
         this.just_held_long = true;
         this.toggle_timestamp = Date.now();
-      }, 500);
-    }, 700);
+      }, 300);
+    }, 500);
   }
 
   //

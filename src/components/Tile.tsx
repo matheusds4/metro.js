@@ -88,6 +88,7 @@ export function Tile(params: {
   const tilting = React.useRef(false);
   const tilting_pointer_id = React.useRef(-1);
   const window_pointer_up = React.useRef<null | Function>(null);
+  const window_pointer_cancel = React.useRef<null | Function>(null);
 
   //
   const detection_timeout = React.useRef<number>(-1);
@@ -138,6 +139,9 @@ export function Tile(params: {
       // dispose of window handlers
       if (window_pointer_up.current) {
         window.removeEventListener("pointerup", window_pointer_up.current as any);
+      }
+      if (window_pointer_cancel.current) {
+        window.removeEventListener("pointercancel", window_pointer_cancel.current as any);
       }
 
       // final node detection
@@ -207,7 +211,19 @@ export function Tile(params: {
       tilting_pointer_id.current = -1;
     };
 
-    window.addEventListener("pointerup", window_pointer_up.current as any);
+    // stop tilting
+    window_pointer_cancel.current = (e: PointerEvent) => {
+      if (!tilting.current || tilting_pointer_id.current != e.pointerId) {
+        return;
+      }
+      window.removeEventListener("pointercancel", window_pointer_cancel.current as any);
+      window_pointer_cancel.current = null;
+      content_ref.current!.style.transform = "";
+      tilting.current = false;
+      tilting_pointer_id.current = -1;
+    };
+
+    window.addEventListener("pointercancel", window_pointer_cancel.current as any);
     
     // slightly tilt tile depending on where the click held.
     const deg = 5;
