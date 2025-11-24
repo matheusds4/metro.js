@@ -423,7 +423,7 @@ const Tile_button = styled.button<{
     }
 
     &&.medium > .Tile-content > .TilePage[data-variant="iconLabel"] > .Label {
-      max-height: 1.1rem;
+      max-height: 2.4rem;
     }
 
     &&.small > .Tile-content > .TilePage[data-variant="iconLabel"] > .Label {
