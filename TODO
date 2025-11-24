@@ -22,4 +22,3 @@
 
 - [x] Done
   - [ ] Fix: checking a tile may sometimes drag it together.
-  - [ ] Fix: switching layouts seems to mess tile positioning a bit.
