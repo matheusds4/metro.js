@@ -272,11 +272,12 @@ export function Tiles(params: {
 
     // dragStart (tile)
     this_core.addEventListener("dragStart", e => {
-      set_mode({
+      const new_mode: TileMode = {
         checking: mode_sync.current.checking,
         dnd: true,
         horizontal: mode_sync.current.horizontal,
-      });
+      };
+      set_mode(mode_sync.current = new_mode);
       handlers.current.drag_start?.(e.detail);
     });
 
@@ -287,11 +288,12 @@ export function Tiles(params: {
 
     // dragEnd (tile)
     this_core.addEventListener("dragEnd", e => {
-      set_mode({
+      const new_mode: TileMode = {
         checking: mode_sync.current.checking,
         dnd: false,
         horizontal: mode_sync.current.horizontal,
-      });
+      };
+      set_mode(mode_sync.current = new_mode);
       handlers.current.drag_end?.(e.detail);
     });
 
@@ -312,11 +314,12 @@ export function Tiles(params: {
 
     // checkedChange
     this_core.addEventListener("checkedChange", e => {
-      set_mode({
+      const new_mode: TileMode = {
         checking: e.detail.tiles.length != 0,
         dnd: mode_sync.current.dnd,
         horizontal: mode_sync.current.horizontal,
-      });
+      };
+      set_mode(mode_sync.current = new_mode);
       handlers.current.checked_change?.(e.detail);
     });
 
@@ -493,11 +496,12 @@ export function Tiles(params: {
     core.current!.inlineGroups = params.inlineGroups ?? 1;
 
     if (params.direction == "horizontal" ? !mode.horizontal : !!mode.horizontal) {
-      set_mode({
+      const new_mode: TileMode = {
         checking: mode_sync.current.checking,
         dnd: mode_sync.current.dnd,
         horizontal: params.direction == "horizontal",
-      });
+      };
+      set_mode(mode_sync.current = new_mode);
     }
     core.current!.direction = params.direction;
 

@@ -98,7 +98,7 @@ export class TilePointerHandlers {
 
   //
   private window_mouse_move(e: MouseEvent): void {
-    if (!this.draggable_ready && this.$._drag_enabled) {
+    if (!this.draggable_ready && this.$._drag_enabled && !this.just_held_long) {
       this.$._dnd.initTileDNDDraggable();
       this.$._dnd.tileId = this.id;
       this.$._dnd.tileButton = this.node;
@@ -160,7 +160,6 @@ export class TilePointerHandlers {
     if (this.just_held_long) {
       this.$._dnd.cancel();
     }
-    this.just_held_long = false;
     this.mouse_started = false;
   }
 
@@ -182,7 +181,6 @@ export class TilePointerHandlers {
       return;
     }
     if (this.just_held_long) {
-      this.just_held_long = false;
       return;
     }
     // cancel check-toggle timeout
@@ -230,11 +228,12 @@ export class TilePointerHandlers {
         this.toggle_timeout = -1;
         // holding long on a tile will check it
         if (this.dragged) return;
+        this.$._dnd.cancel();
         this.toggle_check();
         this.just_held_long = true;
         this.toggle_timestamp = Date.now();
-      }, 300);
-    }, 500);
+      }, 570);
+    }, 400);
   }
 
   //
@@ -276,7 +275,7 @@ export class TilePointerHandlers {
     }
 
     //
-    if (this.enable_touch_dnd && !this.draggable_ready && this.$._drag_enabled) {
+    if (this.enable_touch_dnd && !this.draggable_ready && this.$._drag_enabled && !this.just_held_long) {
       this.$._dnd.initTileDNDDraggable();
       this.$._dnd.tileId = this.id;
       this.$._dnd.tileButton = this.node;
@@ -352,7 +351,6 @@ export class TilePointerHandlers {
     e.preventDefault();
 
     if (this.just_held_long) {
-      this.just_held_long = false;
       return;
     }
 
