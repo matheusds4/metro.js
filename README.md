@@ -16,7 +16,7 @@ Modern Metro design library for React.js, with look and feel close to Windows 8.
 - [Scrolling](./docs/scrolling.md)
 - [Themes](./docs/themes.md)
 - Components
-  - [Live tiles](./docs/live-tiles.md)
+  - [Live tiles](./docs/components/live-tiles.md)
   - [Popover menu](./docs/components/popover-menu.md)
 
 ## Examples
