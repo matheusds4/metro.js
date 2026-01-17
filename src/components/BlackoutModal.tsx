@@ -1,6 +1,6 @@
 // third-party
 import React from "react";
-import { input } from "@hydroperx/inputaction";
+import { input } from "com.sweaxizone.inputaction";
 import { styled } from "styled-components";
 
 // local

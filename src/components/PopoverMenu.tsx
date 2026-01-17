@@ -2,9 +2,8 @@
 import assert from "assert";
 import * as React from "react";
 import { styled } from "styled-components";
-import { Color } from "@hydroperx/color";
-import { TypedEventTarget } from "@hydroperx/event";
-import { input } from "@hydroperx/inputaction";
+import { Color } from "com.sweaxizone.color";
+import { input } from "com.sweaxizone.inputaction";
 import gsap from "gsap";
 import * as FloatingUI from "@floating-ui/dom";
 import $ from "jquery";
@@ -135,17 +134,17 @@ export function PopoverMenu(params: {
     function controller_open(e: CustomEvent<PopoverMenuOpenParams>): void {
       open(e.detail);
     }
-    controller.addEventListener("openSignal", controller_open);
+    controller.on("openSignal", controller_open);
     // close signal
     function controller_close(e: Event): void {
       close();
     }
-    controller.addEventListener("closeSignal", controller_close);
+    controller.on("closeSignal", controller_close);
 
     // cleanup
     return () => {
-      controller.removeEventListener("openSignal", controller_open);
-      controller.removeEventListener("closeSignal", controller_close);
+      controller.off("openSignal", controller_open);
+      controller.off("closeSignal", controller_close);
     };
   }, [params.controller]);
 
@@ -426,7 +425,7 @@ export function PopoverMenu(params: {
 
     // handle escape
     if (input.justPressed("escape")) {
-      if (!EscapableUtils.escapable(div.current!)) {
+      if (!EscapableUtils.escapable(innermost)) {
         return;
       }
 
@@ -644,13 +643,13 @@ export function PopoverMenu(params: {
       $foreground={theme.colors.foreground}>
 
       <div className="PopoverMenu-up-arrow" ref={arrow_up}>
-        <Icon native="arrowUp" size={13}/>
+        <Icon variant="arrowUp" size={13}/>
       </div>
       <div className="PopoverMenu-content">
         {params.children}
       </div>
       <div className="PopoverMenu-down-arrow" ref={arrow_down}>
-        <Icon native="arrowDown" size={13}/>
+        <Icon variant="arrowDown" size={13}/>
       </div>
     </Div>
   );
@@ -709,7 +708,7 @@ const Div = styled.div<{
   && > .PopoverMenu-content > .Item:focus:not(:disabled),
   && > .PopoverMenu-content > .Item:active:not(:disabled),
   && > .PopoverMenu-content > .Item[data-open="true"] {
-    background: ${$ => ColorUtils.contrast($.$backgroundColor, 0.4)};
+    background: ${$ => ColorUtils.sc($.$backgroundColor, 0.4)};
     color: ${$ => $.$foreground};
   }
   && > .PopoverMenu-content > .Item:disabled {
@@ -761,17 +760,19 @@ const Div = styled.div<{
 /**
  * Allows opening and closing a `PopoverMenu`.
  */
-export class PopoverMenuController extends (EventTarget as TypedEventTarget<{
-  /** @hidden */
-  openSignal: CustomEvent<PopoverMenuOpenParams>,
-  /** @hidden */
-  closeSignal: Event,
-}>) {
+export class PopoverMenuController extends SAEventTarget {
+  declare [EventRecord]: {
+    /** @hidden */
+    openSignal: CustomEvent<PopoverMenuOpenParams>,
+    /** @hidden */
+    closeSignal: Event,
+  };
+
   /**
    * Opens the popover menu.
    */
   public open(params: PopoverMenuOpenParams): void {
-    this.dispatchEvent(new CustomEvent("openSignal", {
+    this.emit(new CustomEvent("openSignal", {
       detail: params,
     }));
   }
@@ -780,7 +781,7 @@ export class PopoverMenuController extends (EventTarget as TypedEventTarget<{
    * Closes the popover menu, including any nested popover menus.
    */
   public close(): void {
-    this.dispatchEvent(new Event("closeSignal"));
+    this.emit(new Event("closeSignal"));
   }
 }
 

@@ -1,4 +1,4 @@
-import { Color } from "@hydroperx/color";
+import { Color } from "com.sweaxizone.color";
 
 /**
  * Returns a value between 0 and 100 inclusive that determines
@@ -51,9 +51,9 @@ export function enhance({ background, color }: {
 }
 
 /**
- * Color alpha=0 if backgrund is far different.
+ * Color alpha=0 if background is far different.
  */
-export function alphaZeroIfFar({ background, color }: {
+export function hide({ background, color }: {
   background: any,
   color: any,
 }): string {
@@ -85,9 +85,9 @@ export function lighten(a: any, ratio: number): string {
 }
 
 /**
- * Lightens a color if dark; darkens a color if light.
+ * Simple contrast: lightens a color if dark; darkens a color if light.
  */
-export function contrast(a: any, ratio: number): string {
+export function sc(a: any, ratio: number): string {
   a = Color(a);
   return a.isLight() ? darken(a, ratio) : lighten(a, ratio);
 }

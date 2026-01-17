@@ -1,3 +1,5 @@
+import "com.sweaxizone.w3c.extension";
+
 /**
  * Easing function enumeration.
  */
@@ -20,3 +22,6 @@ export type Alignment =
   | "right"
   | "top"
   | "bottom";
+
+export * from "./Icon";
+export * from "./Logo";

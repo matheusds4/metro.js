@@ -1,8 +1,7 @@
 // third-party
 import React from "react";
 import { styled } from "styled-components";
-import { Color } from "@hydroperx/color";
-import { TypedEventTarget } from "@hydroperx/event";
+import { Color } from "com.sweaxizone.color";
 import { gsap } from "gsap";
 
 // local
@@ -241,37 +240,37 @@ export function Tiles(params: {
     core.current = this_core;
 
     // click
-    this_core.addEventListener("click", e => {
+    this_core.on("click", e => {
       handlers.current.click?.(e.detail);
     });
 
     // contextMenu
-    this_core.addEventListener("contextMenu", e => {
+    this_core.on("contextMenu", e => {
       handlers.current.context_menu?.(e.detail);
     });
 
     // groupContextMenu
-    this_core.addEventListener("groupContextMenu", e => {
+    this_core.on("groupContextMenu", e => {
       handlers.current.group_context_menu?.(e.detail);
     });
 
     // bulkChange
-    this_core.addEventListener("bulkChange", e => {
+    this_core.on("bulkChange", e => {
       handlers.current.bulk_change(e.detail);
     });
 
     // reorderGroups
-    this_core.addEventListener("reorderGroups", e => {
+    this_core.on("reorderGroups", e => {
       handlers.current.reorder_groups(e.detail);
     });
 
     // renameGroup
-    this_core.addEventListener("renameGroup", e => {
+    this_core.on("renameGroup", e => {
       handlers.current.rename_group(e.detail);
     });
 
     // dragStart (tile)
-    this_core.addEventListener("dragStart", e => {
+    this_core.on("dragStart", e => {
       const new_mode: TileMode = {
         checking: mode_sync.current.checking,
         dnd: true,
@@ -282,12 +281,12 @@ export function Tiles(params: {
     });
 
     // dragMove (tile)
-    this_core.addEventListener("dragMove", e => {
+    this_core.on("dragMove", e => {
       handlers.current.drag_move?.(e.detail);
     });
 
     // dragEnd (tile)
-    this_core.addEventListener("dragEnd", e => {
+    this_core.on("dragEnd", e => {
       const new_mode: TileMode = {
         checking: mode_sync.current.checking,
         dnd: false,
@@ -298,22 +297,22 @@ export function Tiles(params: {
     });
 
     // groupDragStart (group)
-    this_core.addEventListener("groupDragStart", e => {
+    this_core.on("groupDragStart", e => {
       handlers.current.group_drag_start?.(e.detail);
     });
 
     // groupDragMove (group)
-    this_core.addEventListener("groupDragMove", e => {
+    this_core.on("groupDragMove", e => {
       handlers.current.group_drag_move?.(e.detail);
     });
 
     // groupDragEnd (group)
-    this_core.addEventListener("groupDragEnd", e => {
+    this_core.on("groupDragEnd", e => {
       handlers.current.group_drag_end?.(e.detail);
     });
 
     // checkedChange
-    this_core.addEventListener("checkedChange", e => {
+    this_core.on("checkedChange", e => {
       const new_mode: TileMode = {
         checking: e.detail.tiles.length != 0,
         dnd: mode_sync.current.dnd,
@@ -412,7 +411,7 @@ export function Tiles(params: {
     function external_get_inline_groups_available(
       e: CustomEvent<{ requestId: string; width: string }>,
     ): void {
-      plus.dispatchEvent(
+      plus.emit(
         new CustomEvent("getInlineGroupsAvailableResult", {
           detail: {
             requestId: e.detail.requestId,

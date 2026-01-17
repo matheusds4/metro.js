@@ -358,7 +358,7 @@ export class GroupPointerHandlers {
 
   //
   private context_menu(e: MouseEvent): void {
-    this.$.dispatchEvent(new CustomEvent("groupContextMenu", {
+    this.$.emit(new CustomEvent("groupContextMenu", {
       detail: {
         group: this.id,
         clientX: e.clientX,

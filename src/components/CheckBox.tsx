@@ -1,8 +1,8 @@
 // third-party
 import * as React from "react";
 import { styled } from "styled-components";
-import { Color } from "@hydroperx/color";
-import Draggable from "@hydroperx/draggable";
+import { Color } from "com.sweaxizone.color";
+import Draggable from "com.sweaxizone.draggable";
 
 // local
 import { RTLContext } from "../layout/RTL";
@@ -50,7 +50,7 @@ export function CheckBox(params: CheckBoxParams) {
   const checked_hover_color = ColorUtils.lighten(checked_color, 0.2);
   const border_color = primary
     ? checked_color
-    : ColorUtils.contrast(theme.colors.background, 0.4);
+    : ColorUtils.sc(theme.colors.background, 0.4);
   let unchecked_color = primary ? checked_color : border_color;
   const unchecked_hover_color = ColorUtils.lighten(unchecked_color, 0.2);
 

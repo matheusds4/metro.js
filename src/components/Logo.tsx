@@ -1,11 +1,12 @@
 // third-party
-import { Color, ColorObserver } from "@hydroperx/color";
+import { Color, ColorObserver } from "com.sweaxizone.color";
 import React from "react";
 import { styled, keyframes } from "styled-components";
 import extend from "extend";
 import assert from "assert";
 
 // local
+import { Logo as ELogo } from "../enum/Logo";
 import * as REMConvert from "../utils/REMConvert";
 
 /**
@@ -15,11 +16,11 @@ export type LogoParams = {
   /**
    * Logo ID.
    */
-  type?: string;
+  dynamic?: string;
   /**
    * Identifies an logo included in the Metro design library.
    */
-  native?: NativeLogo,
+  variant?: ELogo,
   /**
    * Width in logical pixels.
    */
@@ -70,33 +71,12 @@ export const LogoMap = {
   },
 };
 
-/**
- * Metro library's native logo enumeration.
- */
-export type NativeLogo =
-  | "doNotUseMe";
-
-/**
- * Used for type inference for a `NativeLogo` identity
- * in case a context type isn't directly typed as `NativeLogo`.
- * 
- * @example
- *
- * ```
- * let type: string;
- * type = TypedNativeLogo("example");
- * ```
- */
-export function TypedNativeLogo(logo: NativeLogo): NativeLogo {
-  return logo;
-}
-
 // logo map
 const logoMap = new Map<string, { black: any; white: any }>();
 
 // initial registers
 LogoMap.registerMap(new Map([
-  // [TypedNativeLogo("example"), { black: example_black, white: example_white }],
+  // [ELogo("example"), { black: example_black, white: example_white }],
 ]));
 
 const Img = styled.img<{
@@ -122,8 +102,8 @@ export function Logo(params: LogoParams) {
   const color_ref = React.useRef<string>("white");
 
   // logo type
-  assert(!!params.type || !!params.native, "Logo type must be specified.");
-  const type = React.useRef(params.type ?? TypedNativeLogo(params.native!));
+  assert(!!params.dynamic || !!params.variant, "Logo type must be specified.");
+  const type = React.useRef(params.dynamic ?? ELogo(params.variant!));
 
   // compute size
   const computed_width = params.width !== undefined ? REMConvert.pixels.remPlusUnit(params.width) : "100%";
@@ -150,14 +130,14 @@ export function Logo(params: LogoParams) {
 
   // sync logo type
   React.useEffect(() => {
-    type.current = params.type ?? TypedNativeLogo(params.native!);
+    type.current = params.dynamic ?? ELogo(params.variant!);
 
     // update source
     const m = logoMap.get(type.current);
     assert(m !== undefined, "Logo is not defined: " + type.current);
     ref.current!.src = (m as any)[color_ref.current!];
 
-  }, [params.type, params.native]);
+  }, [params.dynamic, params.variant]);
 
   const m = logoMap.get(type.current);
   assert(m !== undefined, "Logo is not defined: " + type.current);
@@ -166,7 +146,7 @@ export function Logo(params: LogoParams) {
       ref={ref}
       src={(m as any)[color_ref.current]}
       draggable={false}
-      alt={params.type}
+      alt={params.dynamic}
       style={params.style}
       className={["Logo", ...(params.className ?? "").split(" ").filter(c => c != "")].join(" ")}
       id={params.id}

@@ -1,5 +1,5 @@
 // register Metro design fonts
-import "@hydroperx/metrodesign/fonts";
+import "com.sweaxizone.metro/fonts";
 
 // third-party
 import { createRoot } from "react-dom/client";
@@ -13,14 +13,14 @@ import {
   Label,
   Icon,
   TextInput,
-} from "@hydroperx/metrodesign/components";
-import { RTLProvider } from "@hydroperx/metrodesign/layout";
+} from "com.sweaxizone.metro/components";
+import { RTLProvider } from "com.sweaxizone.metro/layout";
 import {
   Primary,
   ThemePresets,
   ThemeProvider,
   type Theme,
-} from "@hydroperx/metrodesign/theme";
+} from "com.sweaxizone.metro/theme";
 
 /**
  * The test.

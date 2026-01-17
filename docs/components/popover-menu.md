@@ -9,7 +9,7 @@ Each item must contain three tags: the icon, the label, and the ending (usually 
 ```tsx
 <PopoverMenu>
     <Item>
-        <span><Icon native="internetExplorer"/></span>
+        <span><Icon variant="internetExplorer"/></span>
         <Label>Internet Explorer</Label>
         <span>Ctrl+E</span>
     </Item>

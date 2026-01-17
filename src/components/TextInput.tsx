@@ -1,7 +1,7 @@
 // third-party
 import React from "react";
 import { styled } from "styled-components";
-import { Color } from "@hydroperx/color";
+import { Color } from "com.sweaxizone.color";
 import extend from "extend";
 
 // local
@@ -136,7 +136,7 @@ export function TextInput(params: {
   const css = `
     && {
       background: ${theme.colors.inputBackground};
-      border: 0.15rem solid  ${ColorUtils.alphaZeroIfFar({ background: theme.colors.background, color: theme.colors.inputBorder })};
+      border: 0.15rem solid  ${ColorUtils.hide({ background: theme.colors.background, color: theme.colors.inputBorder })};
       color: ${theme.colors.foreground};
       padding: ${REMConvert.pixels.remPlusUnit(6.45)} 0.7rem;
       ${icon === null || params.multiline ? "" : `${rtl ? "padding-left" : "padding-right"}: ${REMConvert.pixels.remPlusUnit(iconSize + 3)};`}

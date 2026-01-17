@@ -3,8 +3,8 @@ import assert from "assert";
 import $ from "jquery";
 import React from "react";
 import { styled } from "styled-components";
-import { Color } from "@hydroperx/color";
-import { input } from "@hydroperx/inputaction";
+import { Color } from "com.sweaxizone.color";
+import { input } from "com.sweaxizone.inputaction";
 
 // local
 import * as ComboBoxPlacement from "./combobox/ComboBoxPlacement";
@@ -559,7 +559,7 @@ export function ComboBox(params: {
         </div>
 
         <div className="ComboBox-button-arrow">
-          <Icon native="arrowDown" size={params.big ? 20 : params.medium ? 18 : 16}/>
+          <Icon variant="arrowDown" size={params.big ? 20 : params.medium ? 18 : 16}/>
         </div>
       </ComboBoxButton>
       <ComboBoxDropdown
@@ -578,11 +578,11 @@ export function ComboBox(params: {
         $selected_foreground_color={selected_foreground_color}>
 
         <div className="ComboBox-up-arrow">
-          <Icon native="arrowUp" size={7.5}/>
+          <Icon variant="arrowUp" size={7.5}/>
         </div>
         <div className="ComboBox-list">{params.children}</div>
         <div className="ComboBox-down-arrow">
-          <Icon native="arrowDown" size={7.5}/>
+          <Icon variant="arrowDown" size={7.5}/>
         </div>
       </ComboBoxDropdown>
     </>
@@ -598,7 +598,7 @@ const ComboBoxButton = styled.button<{
 }> `
   && {
     background: ${$ => $.$background};
-    border: 0.16rem solid ${$ => ColorUtils.alphaZeroIfFar({ background: $.$background_behind, color: $.$border })};
+    border: 0.16rem solid ${$ => ColorUtils.hide({ background: $.$background_behind, color: $.$border })};
     color: ${$ => $.$foreground};
     display: flex;
     flex-direction: row;
@@ -612,10 +612,10 @@ const ComboBoxButton = styled.button<{
   }
   &&:hover:not(:disabled),
   &&:focus:not(:disabled) {
-    background: ${$ => ColorUtils.contrast($.$background, 0.4)};
+    background: ${$ => ColorUtils.sc($.$background, 0.4)};
   }
   &&:active:not(:disabled) {
-    background: ${$ => ColorUtils.contrast($.$background, 0.6)};
+    background: ${$ => ColorUtils.sc($.$background, 0.6)};
   }
   &&:disabled {
     opacity: 0.5;
@@ -752,10 +752,10 @@ const ComboBoxDropdown = styled.div<{
     border-right: 0.3rem solid ${$ => $.$option_border};
   }
   && .ComboBox-list > .Option:focus {
-    background: ${$ => ColorUtils.contrast($.$option_background, 0.3)};
+    background: ${$ => ColorUtils.sc($.$option_background, 0.3)};
   }
   && .ComboBox-list > .Option:active {
-    background: ${$ => ColorUtils.contrast($.$option_background, 0.5)};
+    background: ${$ => ColorUtils.sc($.$option_background, 0.5)};
   }
   && .ComboBox-list > .Option[data-selected="true"] {
     color: ${$ => $.$selected_foreground_color};

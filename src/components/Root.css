@@ -1,43 +1,43 @@
-.metrodesign-root,
-.metrodesign-root div,
-.metrodesign-root button,
-.metrodesign-root input,
-.metrodesign-root textarea
-.metrodesign-root select,
-.metrodesign-root img {
+.metro-root,
+.metro-root div,
+.metro-root button,
+.metro-root input,
+.metro-root textarea
+.metro-root select,
+.metro-root img {
   box-sizing: border-box;
 }
 
-.metrodesign-root,
-.metrodesign-root button,
-.metrodesign-root input,
-.metrodesign-root textarea,
-.metrodesign-root select {
+.metro-root,
+.metro-root button,
+.metro-root input,
+.metro-root textarea,
+.metro-root select {
   font-family: "Noto Sans", "Segoe UI", sans;
   font-size: inherit;
 }
 
-.metrodesign-root code,
-.metrodesign-root pre {
-  font-family: "Nimbus Mono", "Courier New", monospace;
+.metro-root code,
+.metro-root pre {
+  font-family: "Source Code Pro", monospace;
   font-size: 0.87rem;
 }
 
-.metrodesign-root h1,
-.metrodesign-root h2,
-.metrodesign-root h3,
-.metrodesign-root h4 {
+.metro-root h1,
+.metro-root h2,
+.metro-root h3,
+.metro-root h4 {
   font-weight: lighter;
 }
-.metrodesign-root h1 {
+.metro-root h1 {
   font-size: 4.5rem;
 }
-.metrodesign-root h2 {
+.metro-root h2 {
   font-size: 3.2rem;
 }
-.metrodesign-root h3 {
+.metro-root h3 {
   font-size: 2.1rem;
 }
-.metrodesign-root h4 {
+.metro-root h4 {
   font-size: 1.5rem;
 }

@@ -453,7 +453,7 @@ export class TilePointerHandlers {
       this.toggle_check();
     } else {
       // click
-      this.$.dispatchEvent(new CustomEvent("click", {
+      this.$.emit(new CustomEvent("click", {
         detail: { tile: this.id }
       }));
     }
@@ -488,7 +488,7 @@ export class TilePointerHandlers {
         }
       }
     }
-    this.$.dispatchEvent(new CustomEvent("checkedChange", {
+    this.$.emit(new CustomEvent("checkedChange", {
       detail: { tiles: current },
     }));
   }
@@ -496,7 +496,7 @@ export class TilePointerHandlers {
   //
   private context_menu(e: MouseEvent): void {
     e.preventDefault();
-    this.$.dispatchEvent(new CustomEvent("contextMenu", {
+    this.$.emit(new CustomEvent("contextMenu", {
       detail: {
         tile: this.id,
         clientX: e.clientX,

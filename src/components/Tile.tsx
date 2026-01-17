@@ -2,7 +2,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { gsap } from "gsap";
-import { Color } from "@hydroperx/color";
+import { Color } from "com.sweaxizone.color";
 
 // local
 import { Icon } from "./Icon";
@@ -293,7 +293,7 @@ export function Tile(params: {
       <div className="Tile-content" ref={content_ref}>
         {params.children}
         <div className="Tile-checked-rect">
-          <Icon native="checked" size={13}/>
+          <Icon variant="checked" size={13}/>
         </div>
       </div>
     </Tile_button>

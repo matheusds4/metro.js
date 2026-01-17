@@ -1,7 +1,6 @@
 // third-party
 import assert from "assert";
-import { TypedEventTarget } from "@hydroperx/event";
-import Draggable from "@hydroperx/draggable";
+import Draggable from "com.sweaxizone.draggable";
 import { gsap } from "gsap/gsap-core";
 
 // local
@@ -21,7 +20,65 @@ import * as ScaleUtils from "../utils/ScaleUtils";
 /**
  * Live tiles core implementation.
  */
-export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
+export class Core extends SAEventTarget {
+
+  declare [EventRecord]: {
+    /**
+     * Event that dispatches when a tile is clicked.
+     */
+    click: CustomEvent<{ tile: string }>,
+    /**
+     * Event that dispatches when right click occurs in a tile.
+     * Default behavior is prevented beforehand.
+     */
+    contextMenu: CustomEvent<{ tile: string, clientX: number, clientY: number }>,
+    /**
+     * Event that dispatches when right click occurs in a group's label.
+     * Default behavior is **not** prevented beforehand.
+     */
+    groupContextMenu: CustomEvent<{ group: string, clientX: number, clientY: number, original: Event }>,
+    /**
+     * Bulk change event.
+     */
+    bulkChange: CustomEvent<BulkChange>,
+    /**
+     * Reorder groups event. (`index => groupId`)
+     */
+    reorderGroups: CustomEvent<Map<number, string>>,
+    /**
+     * Rename group event.
+     */
+    renameGroup: CustomEvent<{ id: string, label: string }>,
+    /**
+     * Tile's drag start event.
+     */
+    dragStart: CustomEvent<{ id: string, dnd: HTMLElement }>,
+    /**
+     * Tile's drag move event.
+     */
+    dragMove: CustomEvent<{ id: string, dnd: HTMLElement }>,
+    /**
+     * Tile's drag start event.
+     */
+    dragEnd: CustomEvent<{ id: string, dnd: HTMLElement }>,
+    /**
+     * Group's drag start event.
+     */
+    groupDragStart: CustomEvent<{ id: string, element: HTMLDivElement }>,
+    /**
+     * Group's drag move event.
+     */
+    groupDragMove: CustomEvent<{ id: string, element: HTMLDivElement }>,
+    /**
+     * Group's drag start event.
+     */
+    groupDragEnd: CustomEvent<{ id: string, element: HTMLDivElement }>,
+    /**
+     * Event indicating which tiles are currently checked.
+     */
+    checkedChange: CustomEvent<{ tiles: string[] }>,
+  };
+
   /**
    * @hidden
    */
@@ -255,24 +312,6 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
 
     // rearrange
     this.rearrange();
-  }
-
-  /**
-   * Shorthand to `addEventListener()`.
-   */
-  public on<K extends keyof CoreEventMap>(type: K, listenerFn: (event: CoreEventMap[K]) => void, options?: AddEventListenerOptions): void;
-  public on(type: string, listenerFn: (event: Event) => void, options?: AddEventListenerOptions): void;
-  public on(type: any, listenerFn: any, options?: AddEventListenerOptions): void {
-    this.addEventListener(type, listenerFn, options);
-  }
-
-  /**
-   * Shorthand to `removeEventListener()`.
-   */
-  public off<K extends keyof CoreEventMap>(type: K, listenerFn: (event: CoreEventMap[K]) => void, options?: EventListenerOptions): void;
-  public off(type: string, listenerFn: (event: Event) => void, options?: EventListenerOptions): void;
-  public off(type: any, listenerFn: any, options?: EventListenerOptions): void {
-    this.removeEventListener(type, listenerFn, options);
   }
 
   /**
@@ -587,7 +626,7 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
       }
     }
     if (changed) {
-      this.dispatchEvent(new CustomEvent("checkedChange", {
+      this.emit(new CustomEvent("checkedChange", {
         detail: { tiles: current },
       }));
     }
@@ -611,7 +650,7 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
       }
     }
     if (changed) {
-      this.dispatchEvent(new CustomEvent("checkedChange", {
+      this.emit(new CustomEvent("checkedChange", {
         detail: { tiles: current },
       }));
     }
@@ -631,7 +670,7 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
       }
     }
     if (changed) {
-      this.dispatchEvent(new CustomEvent("checkedChange", {
+      this.emit(new CustomEvent("checkedChange", {
         detail: { tiles: [] },
       }));
     }
@@ -744,7 +783,7 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
           const new_label = (input as HTMLInputElement).value;
           (input.previousElementSibling! as HTMLElement).style.visibility = "";
           input!.remove();
-          this.dispatchEvent(new CustomEvent("renameGroup", {
+          this.emit(new CustomEvent("renameGroup", {
             detail: { id: g.id, label: new_label },
           }));
         }
@@ -772,7 +811,7 @@ export class Core extends (EventTarget as TypedEventTarget<CoreEventMap>) {
           const new_label = (input as HTMLInputElement).value;
           (input.previousElementSibling! as HTMLElement).style.visibility = "";
           input!.remove();
-          this.dispatchEvent(new CustomEvent("renameGroup", {
+          this.emit(new CustomEvent("renameGroup", {
             detail: { id: g.id, label: new_label },
           }));
         } else {
@@ -843,66 +882,6 @@ export type CoreClassNames = {
    * contains the active drag-n-drop tile.
    */
   tileDND: string,
-};
-
-/**
- * Events emitted by `Core` instances.
- */
-export type CoreEventMap = {
-  /**
-   * Event that dispatches when a tile is clicked.
-   */
-  click: CustomEvent<{ tile: string }>,
-  /**
-   * Event that dispatches when right click occurs in a tile.
-   * Default behavior is prevented beforehand.
-   */
-  contextMenu: CustomEvent<{ tile: string, clientX: number, clientY: number }>,
-  /**
-   * Event that dispatches when right click occurs in a group's label.
-   * Default behavior is **not** prevented beforehand.
-   */
-  groupContextMenu: CustomEvent<{ group: string, clientX: number, clientY: number, original: Event }>,
-  /**
-   * Bulk change event.
-   */
-  bulkChange: CustomEvent<BulkChange>,
-  /**
-   * Reorder groups event. (`index => groupId`)
-   */
-  reorderGroups: CustomEvent<Map<number, string>>,
-  /**
-   * Rename group event.
-   */
-  renameGroup: CustomEvent<{ id: string, label: string }>,
-  /**
-   * Tile's drag start event.
-   */
-  dragStart: CustomEvent<{ id: string, dnd: HTMLElement }>,
-  /**
-   * Tile's drag move event.
-   */
-  dragMove: CustomEvent<{ id: string, dnd: HTMLElement }>,
-  /**
-   * Tile's drag start event.
-   */
-  dragEnd: CustomEvent<{ id: string, dnd: HTMLElement }>,
-  /**
-   * Group's drag start event.
-   */
-  groupDragStart: CustomEvent<{ id: string, element: HTMLDivElement }>,
-  /**
-   * Group's drag move event.
-   */
-  groupDragMove: CustomEvent<{ id: string, element: HTMLDivElement }>,
-  /**
-   * Group's drag start event.
-   */
-  groupDragEnd: CustomEvent<{ id: string, element: HTMLDivElement }>,
-  /**
-   * Event indicating which tiles are currently checked.
-   */
-  checkedChange: CustomEvent<{ tiles: string[] }>,
 };
 
 /**

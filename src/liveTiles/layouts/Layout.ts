@@ -197,7 +197,7 @@ export abstract class Layout {
         groupRemovals: [],
         groupCreation: null,
       };
-      this.$.dispatchEvent(new CustomEvent("bulkChange", {
+      this.$.emit(new CustomEvent("bulkChange", {
         detail: bulkChange,
       }));
     }

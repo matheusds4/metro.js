@@ -132,7 +132,7 @@ export function Root(params: {
       id={params.id}
       className={
         [
-          "metrodesign-root",
+          "metro-root",
           ...[params.full ? ["full"] : []],
           ...[params.solid ? ["solid"] : []],
           ...[params.className ? [params.className] : []]

@@ -1,7 +1,9 @@
 /**
- * This module registers the fonts required by the `@hydroperx/metrodesign` library.
+ * This module registers the fonts required by the `com.sweaxizone.metro` library.
  * @packageDocumentation
  */
+
+import "com.sweaxizone.w3c.extension";
 
 // noto sans
 import "@fontsource/noto-sans/200.css";
@@ -15,5 +17,8 @@ import "@fontsource/noto-sans/600-italic.css";
 import "@fontsource/noto-sans/700.css";
 import "@fontsource/noto-sans/700-italic.css";
 
-// nimbus mono
-import "@hydroperx/nimbusmono/400.css";
+// source code pro
+import "@fontsource/source-code-pro/400.css";
+import "@fontsource/source-code-pro/400-italic.css";
+import "@fontsource/source-code-pro/700.css";
+import "@fontsource/source-code-pro/700-italic.css";

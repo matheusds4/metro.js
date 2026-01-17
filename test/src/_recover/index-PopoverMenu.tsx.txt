@@ -1,5 +1,5 @@
 // register Metro design fonts
-import "@hydroperx/metrodesign/fonts";
+import "com.sweaxizone.metro/fonts";
 
 // third-party
 import { createRoot } from "react-dom/client";
@@ -19,14 +19,14 @@ import {
   Item,
   Indicator,
   Separator,
-} from "@hydroperx/metrodesign/components";
-import { RTLProvider } from "@hydroperx/metrodesign/layout";
+} from "com.sweaxizone.metro/components";
+import { RTLProvider } from "com.sweaxizone.metro/layout";
 import {
   Primary,
   ThemePresets,
   ThemeProvider,
   type Theme,
-} from "@hydroperx/metrodesign/theme";
+} from "com.sweaxizone.metro/theme";
 
 /**
  * The test.
@@ -47,18 +47,18 @@ function App() {
               <Button outline>click me</Button>
               <PopoverMenu>
                 <Item>
-                  <span><Icon native="internetExplorer"/></span>
+                  <span><Icon variant="internetExplorer"/></span>
                   <Label>Internet Explorer</Label>
                   <span><Indicator state="none"/></span>
                 </Item>
                 <Item>
-                  <span><Icon native="bing"/></span>
+                  <span><Icon variant="bing"/></span>
                   <Label>Bing</Label>
                   <span>Ctrl+B</span>
                 </Item>
                 <Separator/>
                 <Item>
-                  <span><Icon native="firefox"/></span>
+                  <span><Icon variant="firefox"/></span>
                   <Label>Firefox</Label>
                   <span>Ctrl+F</span>
                 </Item>

@@ -1,7 +1,7 @@
 // third-party
 import assert from "assert";
 import React from "react";
-import { input } from "@hydroperx/inputaction";
+import { input } from "com.sweaxizone.inputaction";
 import { styled } from "styled-components";
 import * as FloatingUI from "@floating-ui/dom";
 
@@ -574,7 +574,7 @@ const ValueDisplayDiv = styled.div<{
 }>`
   && {
     background: ${$ => $.$bg};
-    border: 0.15rem solid ${$ => ColorUtils.alphaZeroIfFar({ background: $.$bg_behind, color: $.$border })};
+    border: 0.15rem solid ${$ => ColorUtils.hide({ background: $.$bg_behind, color: $.$border })};
     color: ${$ => $.$foreground};
     display: inline-block;
     visibility: hidden;

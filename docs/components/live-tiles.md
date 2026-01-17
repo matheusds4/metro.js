@@ -10,7 +10,7 @@ For creating live tiles, you need some additional code due to the drag-n-drop be
 
 ```tsx
 // register Metro design fonts
-import "@hydroperx/metrodesign/fonts";
+import "com.sweaxizone.metro/fonts";
 
 // third-party
 import { createRoot } from "react-dom/client";
@@ -29,22 +29,22 @@ import {
   Tile,
   TilePage,
   TileDND,
-} from "@hydroperx/metrodesign/components";
+} from "com.sweaxizone.metro/components";
 import {
   type BulkChange,
   type TileSize,
   type CoreDirection,
-} from "@hydroperx/metrodesign/liveTiles";
-import { RTLProvider } from "@hydroperx/metrodesign/layout";
+} from "com.sweaxizone.metro/liveTiles";
+import { RTLProvider } from "com.sweaxizone.metro/layout";
 import {
   Primary,
   ThemePresets,
   ThemeProvider,
   type Theme,
-} from "@hydroperx/metrodesign/theme";
+} from "com.sweaxizone.metro/theme";
 import {
   randomHex,
-} from "@hydroperx/metrodesign/utils";
+} from "com.sweaxizone.metro/utils";
 
 /**
  * The test.
@@ -138,18 +138,18 @@ function App() {
         return (
           <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#04bed6" foreground="white">
             <TilePage variant="iconLabel" size="small">
-              <Group><Icon native="terminal"/></Group>
+              <Group><Icon variant="terminal"/></Group>
               <Label>Terminal</Label>
             </TilePage>
             <TilePage size="medium">
               <VGroup padding={10} gap={10}>
-                <Icon native="terminal" size={27}/>
+                <Icon variant="terminal" size={27}/>
                 <Label variant="heading" style={{fontSize: "1rem", margin: "0"}}>Run some Bash</Label>
               </VGroup>
             </TilePage>
             <TilePage size=">= wide">
               <VGroup padding={10} gap={10}>
-                <Icon native="terminal" size={27}/>
+                <Icon variant="terminal" size={27}/>
                 <Label variant="subsubsubheading" style={{margin: "0"}}>Run some Bash</Label>
               </VGroup>
             </TilePage>
@@ -161,7 +161,7 @@ function App() {
           <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#937" foreground="white">
             <TilePage variant="labelIcon">
               <Label>Camera</Label>
-              <Group><Icon native="camera"/></Group>
+              <Group><Icon variant="camera"/></Group>
             </TilePage>
             <TilePage size=">= wide">
               <Group paddingLeft={10}>
@@ -175,7 +175,7 @@ function App() {
         return (
           <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#f9c000" foreground="white">
             <TilePage variant="iconLabel">
-              <Group><Icon native="bing"/></Group>
+              <Group><Icon variant="bing"/></Group>
               <Label>Bing</Label>
             </TilePage>
           </Tile>
@@ -185,7 +185,7 @@ function App() {
         return (
           <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#04bed6" foreground="white">
             <TilePage variant="iconLabel">
-              <Group><Icon native="internetExplorer"/></Group>
+              <Group><Icon variant="internetExplorer"/></Group>
               <Label>Internet Explorer</Label>
             </TilePage>
           </Tile>
@@ -195,7 +195,7 @@ function App() {
         return (
           <Tile key={id} id={id} size={tile.size} x={tile.x} y={tile.y} background="#04bed6" foreground="white">
             <TilePage variant="iconLabel">
-              <Group><Icon native="settings"/></Group>
+              <Group><Icon variant="settings"/></Group>
               <Label>Settings</Label>
             </TilePage>
           </Tile>

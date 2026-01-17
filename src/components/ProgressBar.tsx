@@ -1,5 +1,5 @@
 // third-party
-import { Color, ColorObserver } from "@hydroperx/color";
+import { Color, ColorObserver } from "com.sweaxizone.color";
 import React from "react";
 import { styled, keyframes } from "styled-components";
 import extend from "extend";

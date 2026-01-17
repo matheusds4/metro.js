@@ -2,7 +2,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { gsap } from "gsap";
-import { Color } from "@hydroperx/color";
+import { Color } from "com.sweaxizone.color";
 
 // local
 import { Icon } from "./Icon";

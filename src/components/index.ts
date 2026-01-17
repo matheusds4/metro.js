@@ -1,3 +1,5 @@
+import "com.sweaxizone.w3c.extension";
+
 export * from "./Root";
 export * from "./Icon";
 export * from "./Logo";

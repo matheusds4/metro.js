@@ -3,13 +3,14 @@ import extend from "extend";
 import { styled } from "styled-components";
 import { computePosition, offset, flip, shift } from "@floating-ui/dom";
 import React from "react";
-import { Color } from "@hydroperx/color";
+import { Color } from "com.sweaxizone.color";
 
 // local
+import { Icon as EIcon } from "../enum/Icon";
 import * as REMConvert from "../utils/REMConvert";
 import { MAXIMUM_Z_INDEX } from "../utils/Constants";
 import * as ColorUtils from "../utils/ColorUtils";
-import { Icon, NativeIcon } from "./Icon";
+import { Icon } from "./Icon";
 import { RTLContext } from "../layout/RTL";
 import { PrimaryContext, Theme, ThemeContext } from "../theme/Theme";
 import {
@@ -686,7 +687,7 @@ const TooltipDiv = styled.div<{
 }>`
   && {
     background: ${($) => $.$theme.colors.inputBackground};
-    border: 0.15rem solid ${($) => ColorUtils.alphaZeroIfFar({ background: $.$theme.colors.background, color: $.$theme.colors.inputBorder })};
+    border: 0.15rem solid ${($) => ColorUtils.hide({ background: $.$theme.colors.background, color: $.$theme.colors.inputBorder })};
     color: ${$ => $.$theme.colors.foreground};
     display: inline-block;
     visibility: ${($) => ($.$tooltip_visible ? "visible" : "hidden")};
@@ -903,7 +904,7 @@ export function CircleButton(params: CircleButtonParams) {
         onTouchCancel={params.touchCancel}
       >
         <Icon
-          type={params.icon ?? params.native}
+          dynamic={params.dynamic ?? params.variant}
           size={size - (size <= 16 ? 0 : 16)}
           style={iconStyle}
         />
@@ -926,12 +927,12 @@ export function CircleButton(params: CircleButtonParams) {
 }
 
 export type CircleButtonParams = {
-  icon?: string;
+  dynamic?: string;
 
   /**
    * Native icon.
    */
-  native?: NativeIcon;
+  variant?: EIcon;
 
   /**
    * Button type.
@@ -1044,7 +1045,7 @@ export function ArrowButton(params: ArrowButtonParams) {
 
   return (
     <CircleButton
-      native={
+      variant={
         d == "left" ? "fullArrowLeft" :
         d == "right" ? "fullArrowRight" :
         d == "up" ? "fullArrowUp" : "fullArrowDown"

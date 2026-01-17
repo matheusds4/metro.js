@@ -1,7 +1,7 @@
 // third-party
 import React from "react";
 import { styled } from "styled-components";
-import { Color } from "@hydroperx/color";
+import { Color } from "com.sweaxizone.color";
 
 // local
 import { TilePageVariant } from "./TilePageVariant";

@@ -1,5 +1,5 @@
 // third-party
-import Draggable from "@hydroperx/draggable";
+import Draggable from "com.sweaxizone.draggable";
 import getOffset from "getoffset";
 
 // local
@@ -212,7 +212,7 @@ export class DND {
     this._snap = null;
 
     // Core#dragStart
-    this.$.dispatchEvent(new CustomEvent("dragStart", {
+    this.$.emit(new CustomEvent("dragStart", {
       detail: { id: this.tileId, dnd: this.tileDNDDOM! },
     }));
   }
@@ -283,7 +283,7 @@ export class DND {
               groupRemovals: [],
               groupCreation: null,
             };
-            this.$.dispatchEvent(new CustomEvent("bulkChange", {
+            this.$.emit(new CustomEvent("bulkChange", {
               detail: bulkChange,
             }));
           } else {
@@ -301,7 +301,7 @@ export class DND {
               groupRemovals: [],
               groupCreation: null,
             };
-            this.$.dispatchEvent(new CustomEvent("bulkChange", {
+            this.$.emit(new CustomEvent("bulkChange", {
               detail: bulkChange,
             }));
           }
@@ -316,7 +316,7 @@ export class DND {
     }
 
     // trigger Core#dragMove
-    this.$.dispatchEvent(new CustomEvent("dragMove", {
+    this.$.emit(new CustomEvent("dragMove", {
       detail: { id: this.tileId, dnd: this.tileDNDDOM! },
     }));
   }
@@ -337,7 +337,7 @@ export class DND {
     // exit if the tile has been removed while dragging.
     if (!(this.tileButton && this.tileButton!.parentElement)) {
       // Core#dragEnd
-      this.$.dispatchEvent(new CustomEvent("dragEnd", {
+      this.$.emit(new CustomEvent("dragEnd", {
         detail: { id: this.tileId, dnd: this.tileDNDDOM! },
       }));
 
@@ -359,7 +359,7 @@ export class DND {
         groupRemovals: [],
         groupCreation: { tile: this.tileId },
       };
-      this.$.dispatchEvent(new CustomEvent("bulkChange", {
+      this.$.emit(new CustomEvent("bulkChange", {
         detail: bulkChange,
       }));
     }
@@ -382,7 +382,7 @@ export class DND {
     }
 
     // Core#dragEnd
-    this.$.dispatchEvent(new CustomEvent("dragEnd", {
+    this.$.emit(new CustomEvent("dragEnd", {
       detail: { id: this.tileId, dnd: this.tileDNDDOM! },
     }));
   }
@@ -411,7 +411,7 @@ export class DND {
     (element as HTMLElement).style.zIndex = MAXIMUM_Z_INDEX;
 
     // Core#groupDragStart
-    this.$.dispatchEvent(new CustomEvent("groupDragStart", {
+    this.$.emit(new CustomEvent("groupDragStart", {
       detail: { id: this.groupDraggable![0], element: element as HTMLDivElement },
     }));
   }
@@ -460,7 +460,7 @@ export class DND {
           this.$._groups.set(pair_1[0], pair_2[1]);
           this.$._groups.set(pair_2[0], pair_1[1]);
           // trigger Core#reorderGroups event
-          this.$.dispatchEvent(new CustomEvent("reorderGroups", {
+          this.$.emit(new CustomEvent("reorderGroups", {
             detail: new Map(this.$._groups.entries().map(([i, g]) => [i, g.id]))
           }));
         }
@@ -481,7 +481,7 @@ export class DND {
     }
 
     // Core#groupDragMove
-    this.$.dispatchEvent(new CustomEvent("groupDragMove", {
+    this.$.emit(new CustomEvent("groupDragMove", {
       detail: { id: this.groupDraggable![0], element: element as HTMLDivElement },
     }));
   }
@@ -498,7 +498,7 @@ export class DND {
     element.removeAttribute("data-dragging");
 
     // Core#groupDragEnd
-    this.$.dispatchEvent(new CustomEvent("groupDragEnd", {
+    this.$.emit(new CustomEvent("groupDragEnd", {
       detail: { id: this.groupDraggable![0], element: element as HTMLDivElement },
     }));
 

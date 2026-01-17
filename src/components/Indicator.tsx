@@ -78,7 +78,9 @@ export function Indicator(params: {
 
   // detect changes to the `state` parameter.
   React.useEffect(() => {
-    set_indicator_type(params.state ?? indicator_type);
+    if (params.state) {
+      set_indicator_type(params.state!);
+    }
   }, [params.state]);
 
   return (
@@ -88,11 +90,11 @@ export function Indicator(params: {
 
       {
         indicator_type == "popoverMenu" ?
-          <Icon native={rtl ? "arrowLeft" : "arrowRight"} size={params.size ?? 20}/> :
+          <Icon variant={rtl ? "arrowLeft" : "arrowRight"} size={params.size ?? 20}/> :
         indicator_type == "checked" ?
-          <Icon native="checked" size={params.size ?? 20}/> :
+          <Icon variant="checked" size={params.size ?? 20}/> :
         indicator_type == "option" ?
-          <Icon native="bullet" size={params.size ?? 20}/> :
+          <Icon variant="bullet" size={params.size ?? 20}/> :
           undefined
       }
     </div>

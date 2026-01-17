@@ -1,6 +1,6 @@
 // third-party
 import * as React from "react";
-import { Color } from "@hydroperx/color";
+import { Color } from "com.sweaxizone.color";
 
 // local
 import * as ColorUtils from "../utils/ColorUtils";

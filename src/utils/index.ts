@@ -1,3 +1,5 @@
+import "com.sweaxizone.w3c.extension";
+
 // constants
 export * from "./Constants";
 

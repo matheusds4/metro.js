@@ -5,7 +5,7 @@
 Using the NPM package manager:
 
 ```sh
-npm i @hydroperx/metrodesign
+npm i com.sweaxizone.metro
 ```
 
 ## Fonts
@@ -13,13 +13,13 @@ npm i @hydroperx/metrodesign
 The library requires the following fonts:
 
 - Noto Sans
-- Nimbus Mono (bold as regular)
+- Source Code Pro
 
 They can be explicitly linked using:
 
 ```tsx
 // link fonts
-import "@hydroperx/metrodesign/fonts";
+import "com.sweaxizone.metro/fonts";
 ```
 
 ## Simple example
@@ -32,12 +32,12 @@ import {
     HGroup,
     VGroup,
     Label,
-} from "@hydroperx/metrodesign/components";
-import { RTLProvider } from "@hydroperx/metrodesign/layout";
+} from "com.sweaxizone.metro/components";
+import { RTLProvider } from "com.sweaxizone.metro/layout";
 import {
     ThemePresets,
     ThemeProvider,
-} from "@hydroperx/metrodesign/theme";
+} from "com.sweaxizone.metro/theme";
 
 // simple example
 function SimpleExample(): React.ReactNode {
@@ -58,7 +58,7 @@ The `<Root>` component integrates basic style sheets of the Metro design library
 To opt in to using primary colors in certain components such as heading titles and checkboxes, use the `Primary` context provider:
 
 ```tsx
-import { Primary } from "@hydroperx/metrodesign/theme";
+import { Primary } from "com.sweaxizone.metro/theme";
 
 // somewhere in React content
 <Primary prefer>
@@ -71,7 +71,7 @@ import { Primary } from "@hydroperx/metrodesign/theme";
 Indicate whether a LTR layout or RTL layout is preferred through `RTLProvider`:
 
 ```tsx
-import { RTLProvider } from "@hydroperx/metrodesign/layout";
+import { RTLProvider } from "com.sweaxizone.metro/layout";
 
 // somewhere in React content
 <RTLProvider rtl={false}>

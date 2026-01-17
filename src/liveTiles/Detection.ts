@@ -53,7 +53,7 @@ export class Detection {
       }
     }
     if (any_changes) {
-      this.$.dispatchEvent(new CustomEvent("bulkChange", {
+      this.$.emit(new CustomEvent("bulkChange", {
         detail: bulk_change,
       }));
       this.$.rearrange();
@@ -101,7 +101,7 @@ export class Detection {
           const final_index = Math.max.apply(null, Array.from(this.$._groups.keys()).concat([-1])) + 1;
           this.$._groups.set(final_index, new_group!);
           // signal group move (length - 1)
-          this.$.dispatchEvent(new CustomEvent("reorderGroups", {
+          this.$.emit(new CustomEvent("reorderGroups", {
             detail: new Map(this.$._groups.entries().map(([i, g]) => [i, g.id]))
           }));
         } else {
@@ -112,7 +112,7 @@ export class Detection {
           this.$._groups.set(final_index, new_group!);
           // signal group move
           if (i != final_index) {
-            this.$.dispatchEvent(new CustomEvent("reorderGroups", {
+            this.$.emit(new CustomEvent("reorderGroups", {
               detail: new Map(this.$._groups.entries().map(([i, g]) => [i, g.id]))
             }));
           }
@@ -335,7 +335,7 @@ export class Detection {
 
       // signal group move
       if (new_index != final_index) {
-        this.$.dispatchEvent(new CustomEvent("reorderGroups", {
+        this.$.emit(new CustomEvent("reorderGroups", {
           detail: new Map(this.$._groups.entries().map(([i, g]) => [i, g.id]))
         }));
       }

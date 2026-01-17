@@ -13,10 +13,10 @@ export function TableSkin(theme: Theme): string {
     }
     && table td {
       padding: 3px 20px;
-      border: 0.2rem ${ColorUtils.contrast(theme.colors.foreground, 0.5)} solid;
+      border: 0.2rem ${ColorUtils.sc(theme.colors.foreground, 0.5)} solid;
     }
     && table thead {
-      background: ${ColorUtils.contrast(theme.colors.foreground, 0.8)};
+      background: ${ColorUtils.sc(theme.colors.foreground, 0.8)};
     }
     && table thead td {
       font-weight: 700;
@@ -28,10 +28,10 @@ export function TableSkin(theme: Theme): string {
     }
     && table thead th {
       padding: 3px 20px;
-      border: 0.2rem ${ColorUtils.contrast(theme.colors.foreground, 0.5)} solid;
+      border: 0.2rem ${ColorUtils.sc(theme.colors.foreground, 0.5)} solid;
     }
     && table tbody tr:nth-of-type(2n) {
-      background: ${ColorUtils.contrast(theme.colors.foreground, 0.8)};
+      background: ${ColorUtils.sc(theme.colors.foreground, 0.8)};
     }
   `;
 }
