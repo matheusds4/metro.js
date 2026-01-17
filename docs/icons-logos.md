@@ -4,7 +4,9 @@ The `Icon` component is colored automatically as black or white every frame acco
 
 The `CircleButton` component represents a circle button consisting of an icon. For example, `ArrowButton` is an alias to `<CircleButton variant="fullArrow{Left|Right|Up|down}" {...rest}/>`.
 
-For native icons, use the `native` property for a component where applicable, or `IconMap.get(TypedNativeIcon("type"), "white|black")` as applicable..
+For built-in icons, use the `variant` property for a component where applicable, or `IconMap.get(Icon("type").toString(), "white|black")` as applicable..
+
+For dynamically-registered icons, use the `dynamic` property.
 
 ## Icon registry
 
